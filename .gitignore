@@ -1,0 +1,6 @@
+calorie_db.json
+backups/
+server.py
+server.log
+Calorie-Offline.html
+.DS_Store
