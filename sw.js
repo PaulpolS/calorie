@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calorie-pwa-v13';
+const CACHE_NAME = 'calorie-pwa-v14';
 const ASSETS = [
   './',
   './index.html',
@@ -30,7 +30,17 @@ const ASSETS = [
   './wk_db_press.gif',
   './wk_db_squat.gif',
   './wk_db_row.gif',
-  './wk_db_twist.gif'
+  './wk_db_twist.gif',
+  './wk_highknees.gif',
+  './wk_waisttwist.gif',
+  './wk_boxing.gif',
+  './wk_skater.gif',
+  './wk_plank.gif',
+  './wk_legswall.gif',
+  './wk_glutebridge.gif',
+  './wk_catcow.gif',
+  './wk_kneehug.gif',
+  './wk_butterfly.gif'
 ];
 
 self.addEventListener('install', (e) => {
