@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calorie-pwa-v10';
+const CACHE_NAME = 'calorie-pwa-v11';
 const ASSETS = [
   './',
   './index.html',
@@ -25,7 +25,15 @@ const ASSETS = [
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then((cache) =>
+      Promise.all(
+        ASSETS.map((asset) =>
+          fetch(new Request(asset, { cache: 'reload' }))
+            .then((resp) => (resp.ok ? cache.put(asset, resp) : null))
+            .catch(() => null)
+        )
+      )
+    )
   );
   self.skipWaiting();
 });
@@ -46,6 +54,29 @@ self.addEventListener('fetch', (e) => {
   }
   if (e.request.method !== 'GET') return;
 
+  // Network-First for HTML navigation so updates show up immediately when online,
+  // with 100% offline fallback to cache when there is no internet!
+  const isHTML =
+    e.request.mode === 'navigate' ||
+    url.pathname.endsWith('/') ||
+    url.pathname.endsWith('/index.html');
+
+  if (isHTML) {
+    e.respondWith(
+      fetch(e.request, { cache: 'no-store' })
+        .then((networkResp) => {
+          if (networkResp && networkResp.status === 200) {
+            const copy = networkResp.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, copy));
+          }
+          return networkResp;
+        })
+        .catch(() => caches.match(e.request).then((c) => c || caches.match('./index.html')))
+    );
+    return;
+  }
+
+  // Cache-First for images & static assets for instant speed
   e.respondWith(
     caches.match(e.request).then((cached) => {
       const fetchPromise = fetch(e.request)
