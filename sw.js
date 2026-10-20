@@ -1,10 +1,12 @@
-const CACHE_NAME = 'calorie-pwa-v8';
+const CACHE_NAME = 'calorie-pwa-v9';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './logo_cinnamoroll_diet.jpg',
   './logo_pompompurin_fit.jpg',
+  './pompom_muscle_hero.jpg',
+  './pompom_muscle_avatar.jpg',
   './cinnamoroll_hero.jpg',
   './pompompurin_hero.jpg',
   './cinnamoroll_avatar.jpg',
