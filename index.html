@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Calorie</title>
   <script>
-    // 🛡️ Safari Self-Healing Bootstrapper (v30): clears any stale SW caches while preserving 100% of user data
+    // 🛡️ Safari Self-Healing Bootstrapper (v31): clears any stale SW caches while preserving 100% of user data
     (function() {
       try {
-        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v30") !== "1") {
-          localStorage.setItem("calorie_safari_healed_v30", "1");
+        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v31") !== "1") {
+          localStorage.setItem("calorie_safari_healed_v31", "1");
           caches.keys().then(function(keys) {
             keys.forEach(function(k) {
-              if (k !== "calorie-pwa-v30") caches.delete(k);
+              if (k !== "calorie-pwa-v31") caches.delete(k);
             });
           }).catch(function() {});
         }
@@ -2436,6 +2436,175 @@
       font-weight: 700;
       color: var(--ink);
     }
+
+    /* 💊 Realistic Pill Blister Pack (Yasmin & Multi-Brand) */
+    .blister-pack-foil {
+      position: relative;
+      background: linear-gradient(145deg, #F4F6F9 0%, #E2E7EE 42%, #EEF2F6 75%, #DCE2EA 100%);
+      border: 2px solid #CBD5E1;
+      border-radius: 22px;
+      padding: 11px 9px 12px;
+      box-shadow: inset 0 2px 5px rgba(255,255,255,0.9), inset 0 -2px 6px rgba(100,116,139,0.18), 0 6px 16px rgba(15,23,42,0.08);
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .blister-loop-frame {
+      position: relative;
+      border: 1.8px solid #334155;
+      border-radius: 14px;
+      padding: 8px 5px 7px;
+      background: rgba(255,255,255,0.22);
+      z-index: 2;
+    }
+    .blister-row-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 4px;
+      position: relative;
+      z-index: 2;
+    }
+    .blister-slot {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 1px 4px;
+      border-radius: 11px;
+      cursor: pointer;
+      transition: transform 0.12s ease, background 0.12s ease;
+      background: rgba(255,255,255,0.45);
+      border: 1px solid rgba(148,163,184,0.3);
+    }
+    .blister-slot:active {
+      transform: scale(0.94);
+    }
+    .blister-slot.is-today {
+      background: #FFF1F2;
+      border: 2px solid #E11D48;
+      box-shadow: 0 0 0 2px rgba(225,29,72,0.18);
+    }
+    .blister-slot.is-start-pill {
+      border-color: #D97706;
+    }
+    .blister-dow-en {
+      font-size: 8.5px;
+      font-weight: 900;
+      color: #1E293B;
+      letter-spacing: 0.2px;
+      line-height: 1.05;
+    }
+    .blister-dow-th {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #334155;
+      line-height: 1.1;
+      margin-bottom: 2px;
+    }
+    .blister-pill-well {
+      position: relative;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1px 0 2px;
+      box-shadow: inset 0 2px 4px rgba(15,23,42,0.22), 0 1px 2px rgba(255,255,255,0.9);
+      background: radial-gradient(circle at 35% 30%, #FFFFFF 0%, #CBD5E1 100%);
+    }
+    .blister-pill-tablet {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 900;
+      box-shadow: inset -2px -2px 4px rgba(0,0,0,0.18), inset 2px 2px 4px rgba(255,255,255,0.85), 0 2px 3px rgba(15,23,42,0.2);
+      transition: all 0.15s ease;
+    }
+    /* Punched-out foil cavity (เหมือนแกะฟอยล์ในรูป Yasmin จริง) */
+    .blister-pill-well.is-punched {
+      background: radial-gradient(circle at 40% 40%, #573B2E 0%, #291C14 68%, #1E130D 100%);
+      box-shadow: inset 0 3px 6px rgba(0,0,0,0.75), 0 1px 2px rgba(255,255,255,0.9);
+      border: 1.5px solid #94A3B8;
+    }
+    .blister-foil-flap {
+      position: absolute;
+      top: -1px;
+      right: -2px;
+      width: 14px;
+      height: 18px;
+      background: linear-gradient(135deg, #FFFFFF 0%, #CBD5E1 65%, #94A3B8 100%);
+      border-radius: 2px 12px 4px 10px;
+      border: 1px solid #64748B;
+      transform: rotate(18deg);
+      box-shadow: -2px 2px 3px rgba(0,0,0,0.32);
+      pointer-events: none;
+    }
+    .blister-punched-check {
+      position: relative;
+      z-index: 2;
+      color: #4ADE80;
+      font-size: 12px;
+      font-weight: 900;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.85);
+    }
+    .blister-real-date {
+      font-size: 8.5px;
+      font-weight: 800;
+      color: #0F172A;
+      background: rgba(255,255,255,0.88);
+      padding: 1px 3.5px;
+      border-radius: 5px;
+      line-height: 1.2;
+      white-space: nowrap;
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+    .blister-slot.is-today .blister-real-date {
+      background: #E11D48;
+      color: #FFFFFF;
+      border-color: #BE123C;
+    }
+    .blister-slot.is-taken .blister-real-date {
+      background: #DCFCE7;
+      color: #166534;
+      border-color: #86EFAC;
+    }
+    .blister-arrow-sep {
+      position: absolute;
+      right: -5px;
+      top: 13px;
+      font-size: 8px;
+      color: #0F172A;
+      font-weight: 900;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .blister-arrow-sep.left-dir {
+      right: auto;
+      left: -5px;
+    }
+    .brand-box-card {
+      border: 2px solid #E2E8F0;
+      border-radius: 15px;
+      padding: 9px;
+      background: #FFFFFF;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+    }
+    .brand-box-card.active {
+      border-color: #E11D48;
+      background: #FFF1F2;
+      box-shadow: 0 4px 12px rgba(225,29,72,0.14);
+    }
   </style>
 </head>
 <body>
@@ -2782,50 +2951,59 @@
         </div>
       </div>
 
-      <!-- 💊🌸 Birth Control Pill & Period Cycle Tracker Card (เหมือนแอปสุขภาพ iPhone + ซิงค์ได้) -->
-      <div class="card" id="home-cycle-card" style="padding:16px; border: 2px solid #FBCFE8;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+      <!-- 💊🌸 Birth Control Pill & Period Cycle Tracker Card (แผงยาคุมเสมือนจริง Yasmin + วันที่จริง + เว้น 7 วันมีเมน + เริ่มกล่องใหม่) -->
+      <div class="card" id="home-cycle-card" style="padding:15px 14px; border: 2px solid #FBCFE8; background:linear-gradient(180deg,#FFFBFD 0%,#FFFFFF 100%);">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; gap:6px; flex-wrap:wrap;">
           <div style="display:flex; align-items:center; gap:9px;">
             <img class="theme-mascot-buddy" src="mymelody_avatar.jpg" alt="Mascot" />
             <div>
-              <div style="font-size:15px; font-weight:800; color:#9D174D;">💊 ยาคุม & คาดการณ์ประจำเดือน 🌸</div>
-              <div id="cycle-sub-status" style="font-size:11.5px; color:#BE185D; font-weight:600;">ซิงค์รอบเดือนและการกินยาคุมเหมือนแอปสุขภาพ iPhone</div>
+              <div style="font-size:15px; font-weight:900; color:#9D174D; display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
+                <span>💊 แผงยาคุม & รอบประจำเดือน</span>
+                <span id="home-pill-brand-badge" style="background:#FCE7F3; color:#BE185D; border:1px solid #F9A8D4; font-size:10.5px; font-weight:900; padding:1.5px 7px; border-radius:99px;">Yasmin 21 เม็ด</span>
+              </div>
+              <div id="cycle-sub-status" style="font-size:11px; color:#BE185D; font-weight:700;">แตะที่เม็ดยาบนแผงเพื่อแกะเม็ดยา · มีวันที่จริงกำกับทุกเม็ด</div>
             </div>
           </div>
-          <div style="display:flex; gap:6px;">
-            <button class="meal-add-btn" style="background:#FCE7F3; color:#9D174D; border-color:#F9A8D4;" onclick="openModal('modal-cycle-settings')">⚙️ ตั้งค่า</button>
-            <button class="meal-add-btn" style="background:#FFE4E6; color:#E11D48; border-color:#FECDD3;" onclick="openModal('modal-apple-health')">🍎 วิธีเชื่อม</button>
+          <div style="display:flex; gap:5px;">
+            <button type="button" class="meal-add-btn" style="background:#FCE7F3; color:#9D174D; border-color:#F9A8D4; font-weight:800;" onclick="openCycleSettingsModal()">📦 เลือกกล่องยี่ห้อ / ตั้งค่า</button>
+            <button type="button" class="meal-add-btn" style="background:#FFE4E6; color:#E11D48; border-color:#FECDD3;" onclick="openModal('modal-apple-health')">🍎</button>
           </div>
         </div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:10px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
           <!-- Daily Birth Control Pill Check -->
-          <div onclick="toggleDailyPillTaken()" id="pill-today-box" style="background:#FFF1F2; border:1.5px solid #FECDD3; border-radius:15px; padding:10px 11px; cursor:pointer; transition:all 0.15s;">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div onclick="toggleDailyPillTaken()" id="pill-today-box" style="background:#FFF1F2; border:1.5px solid #FECDD3; border-radius:14px; padding:9px 10px; cursor:pointer; transition:all 0.15s;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:4px;">
               <span style="font-size:11px; font-weight:800; color:#9F1239;">💊 ยาคุมวันนี้</span>
-              <span id="pill-pack-day-badge" class="num" style="font-size:10px; font-weight:800; background:#FFE4E6; color:#E11D48; padding:2px 6px; border-radius:99px;">เม็ดที่ 1/28</span>
+              <span id="pill-pack-day-badge" class="num" style="font-size:10px; font-weight:800; background:#FFE4E6; color:#E11D48; padding:2px 6px; border-radius:99px;">เม็ดที่ 3/21</span>
             </div>
-            <div id="pill-status-main" style="font-size:14px; font-weight:800; color:#E11D48; margin-top:4px;">⏳ ยังไม่ได้กดกินยา</div>
-            <div id="pill-time-sub" style="font-size:10.5px; color:#BE123C; margin-top:2px;">แตะเพื่อบันทึกว่ากินแล้ว ✅</div>
+            <div id="pill-status-main" style="font-size:13.5px; font-weight:900; color:#E11D48; margin-top:3px;">⏳ ยังไม่ได้กดกินยา</div>
+            <div id="pill-time-sub" style="font-size:10px; color:#BE123C; margin-top:2px; font-weight:700;">แตะเพื่อบันทึกว่ากินแล้ว ✅</div>
           </div>
 
           <!-- Next Period Prediction -->
-          <div onclick="openModal('modal-cycle-settings')" style="background:#FDF4FF; border:1.5px solid #F5D0FE; border-radius:15px; padding:10px 11px; cursor:pointer;">
+          <div onclick="openCycleSettingsModal()" style="background:#FDF4FF; border:1.5px solid #F5D0FE; border-radius:14px; padding:9px 10px; cursor:pointer;">
             <div style="display:flex; align-items:center; justify-content:space-between;">
-              <span style="font-size:11px; font-weight:800; color:#86198F;">🩸 คาดการณ์รอบถัดไป</span>
+              <span style="font-size:11px; font-weight:800; color:#86198F;">🩸 ช่วงเว้นยา / มีเมน</span>
               <span style="font-size:11px;">🌸</span>
             </div>
-            <div id="next-period-countdown" class="num" style="font-size:14.5px; font-weight:800; color:#A21CAF; margin-top:4px;">อีก 14 วัน</div>
-            <div id="next-period-date-sub" style="font-size:10.5px; color:#701A75; margin-top:2px;">ประมาณวันที่ -</div>
+            <div id="next-period-countdown" class="num" style="font-size:13.5px; font-weight:900; color:#A21CAF; margin-top:3px;">อีก 18 วัน</div>
+            <div id="next-period-date-sub" style="font-size:10px; color:#701A75; margin-top:2px; font-weight:700;">ประมาณวันที่ -</div>
           </div>
         </div>
+
+        <!-- 💊 Realistic Interactive Blister Pack (เหมือนแผง Yasmin จริง + วันที่จริงทุกเม็ด) -->
+        <div id="home-blister-pack-mount" style="margin-bottom:10px;"></div>
+
+        <!-- 🩸 7-Day Period Break & Next Pack Continuation Strip -->
+        <div id="home-pill-break-mount" style="margin-bottom:9px;"></div>
 
         <!-- Cycle Phase & Ovulation Bar + Quick Period Start Button -->
         <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; background:#FDF2F8; border-radius:13px; padding:8px 11px; font-size:11.5px;">
           <div id="cycle-phase-text" style="color:#831843; font-weight:700; flex:1;">
-            🌷 ระยะปัจจุบัน: ช่วงปกติ · โอกาสตั้งครรภ์ต่ำ
+            🌷 ระยะปัจจุบัน: ช่วงฮอร์โมนคุมกำเนิด · โอกาสตั้งครรภ์ต่ำมาก
           </div>
-          <button onclick="logPeriodStartedToday()" style="border:none; background:#E11D48; color:#FFF; border-radius:9px; padding:5px 9px; font-size:11px; font-weight:800; cursor:pointer; white-space:nowrap;">🩸 ประจำเดือนมาวันนี้</button>
+          <button type="button" onclick="logPeriodStartedToday()" style="border:none; background:#E11D48; color:#FFF; border-radius:9px; padding:5px 9px; font-size:11px; font-weight:800; cursor:pointer; white-space:nowrap;">🩸 มีเมนวันนี้</button>
         </div>
       </div>
 
@@ -3345,7 +3523,7 @@
     <div id="view-profile" class="view">
       <div class="top-header">
         <div class="greeting-box">
-          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v30</span></div>
+          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v31</span></div>
           <div class="greet-main">โปรไฟล์ & ตั้งค่า ⚙️</div>
         </div>
         <div style="display:flex; gap:6px; align-items:center;">
@@ -4510,61 +4688,89 @@
 
   <!-- ==================== MODAL 13: BIRTH CONTROL PILL & PERIOD TRACKER SETTINGS ==================== -->
   <div id="modal-cycle-settings" class="modal-backdrop" onclick="if(event.target===this) closeModal('modal-cycle-settings')">
-    <div class="sheet">
+    <div class="sheet" style="max-height:90vh; overflow-y:auto;">
       <div class="sheet-handle"></div>
       <div class="sheet-head">
-        <h3>💊 ตั้งค่ายาคุม & คาดการณ์ประจำเดือน 🌸</h3>
+        <h3>💊 เลือกกล่องยาคุม & ตั้งค่ารอบเดือน 🌸</h3>
         <button class="close-btn" onclick="closeModal('modal-cycle-settings')">✕</button>
       </div>
       <div class="mascot-speech-bubble">
         <img class="theme-mascot-buddy" src="mymelody_avatar.jpg" alt="Mascot" />
-        <div style="font-size:12px;">บันทึกวันแรกของประจำเดือนและแผงยาคุมไว้ตรงนี้ แอปจะคำนวณวันตกไข่ วันคาดการณ์รอบถัดไป และซิงค์กับแอปสุขภาพ iPhone ให้เลยค่ะ 🌸</div>
+        <div style="font-size:12px;">เลือกกล่องยี่ห้อยาคุมที่ใช้ได้เลยค่ะ แอปจะจัดเรียงเม็ดยา ใส่วันที่จริงลงบนแผง เว้นวันมีประจำเดือน และให้กดเริ่มกล่องต่อไปได้ทันที 🌸</div>
+      </div>
+
+      <!-- 📦 1. Visual Brand / Box Picker -->
+      <div style="margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <label style="font-size:12.5px; font-weight:900; color:#831843; margin:0;">📦 1. เลือกกล่อง / ยี่ห้อยาคุมที่ใช้ (แตะเลือกกล่อง):</label>
+          <span style="font-size:10.5px; color:#BE185D; font-weight:700;">จำยี่ห้อไว้ให้คราวหน้าอัตโนมัติ</span>
+        </div>
+        <div id="cycle-brand-selector-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"></div>
+      </div>
+
+      <!-- Custom Brand Name Input (shown when custom brand selected or editable anytime) -->
+      <div id="cycle-custom-brand-row" style="display:none; background:#FFF1F2; border:1px solid #FECDD3; border-radius:12px; padding:9px 10px; margin-bottom:10px;">
+        <div class="form-row-2" style="margin-bottom:0;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="font-size:11px;">🏷️ ชื่อยี่ห้อยาคุม (พิมพ์เองได้)</label>
+            <input type="text" id="cycle-custom-brand-name" class="form-control" placeholder="เช่น Yasmin / Mercilon / ยี่ห้อที่ใช้" />
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="font-size:11px;">💊 รูปแบบจำนวนเม็ด</label>
+            <select id="cycle-pill-type-input" class="form-control" onchange="onChangeCustomPillType()">
+              <option value="21">แผง 21 เม็ด (ฮอร์โมน 21 + เว้น 7 วันมีเมน)</option>
+              <option value="28_24_4">แผง 28 เม็ด (ฮอร์โมน 24 + เม็ดแป้ง 4)</option>
+              <option value="28">แผง 28 เม็ด (ฮอร์โมน 21 + เม็ดแป้ง 7)</option>
+              <option value="0">ไม่ได้ทานยาคุม (ดูเฉพาะรอบเดือน)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 📅 2. Pack Start Date & Next Box Quick Actions -->
+      <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:15px; padding:10px 12px; margin-bottom:12px;">
+        <label style="font-size:12px; font-weight:900; color:#0F172A; display:block; margin-bottom:5px;">📅 2. วันที่เริ่มกินเม็ดที่ 1 ของแผงปัจจุบัน</label>
+        <div style="display:flex; gap:6px; align-items:center; margin-bottom:7px;">
+          <input type="date" id="cycle-pill-start-input" class="form-control num" style="flex:1;" onchange="previewCycleSettingsChange()" />
+          <button type="button" onclick="setPackStartDateQuick(getTodayStr())" style="border:1.5px solid #0284C7; background:#E0F2FE; color:#0369A1; border-radius:10px; padding:8px 10px; font-size:11px; font-weight:900; cursor:pointer; white-space:nowrap;">เริ่มวันนี้</button>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button type="button" onclick="startNextPillBoxAfterBreak()" style="flex:1; border:none; background:linear-gradient(135deg,#E11D48,#BE185D); color:#FFF; border-radius:10px; padding:8px 10px; font-size:11.5px; font-weight:900; cursor:pointer;">⏭️ เริ่มกินกล่องต่อไป (ต่อจากเว้นมีเมน)</button>
+          <button type="button" onclick="setPackStartDateQuick('2026-10-19')" style="border:1px solid #F9A8D4; background:#FDF2F8; color:#9D174D; border-radius:10px; padding:8px 10px; font-size:11px; font-weight:800; cursor:pointer;">📌 เริ่ม จ. 19 ต.ค. (ตามรูป)</button>
+        </div>
       </div>
 
       <div class="form-row-2">
-        <div class="form-group">
-          <label>🩸 วันแรกของประจำเดือนรอบล่าสุด</label>
-          <input type="date" id="cycle-last-period-input" class="form-control num" />
-        </div>
-        <div class="form-group">
-          <label>🔄 ระยะห่างรอบเดือนเฉลี่ย (วัน)</label>
-          <input type="number" id="cycle-length-input" class="form-control num" value="28" min="20" max="45" />
-        </div>
-      </div>
-
-      <div class="form-row-2">
-        <div class="form-group">
-          <label>💊 ชนิดแผงยาคุมกำเนิด</label>
-          <select id="cycle-pill-type-input" class="form-control">
-            <option value="28">แผง 28 เม็ด (กินต่อเนื่องทุกวัน)</option>
-            <option value="21">แผง 21 เม็ด (เว้น 7 วัน)</option>
-            <option value="0">ไม่ได้ทานยาคุม (ดูเฉพาะรอบเดือน)</option>
-          </select>
-        </div>
         <div class="form-group">
           <label>⏰ เวลาเตือนกินยาคุมทุกวัน</label>
           <input type="time" id="cycle-pill-time-input" class="form-control num" value="21:00" />
         </div>
-      </div>
-
-      <div class="form-group">
-        <label>📅 วันที่เริ่มกินยาคุมเม็ดแรกของแผงปัจจุบัน</label>
-        <input type="date" id="cycle-pill-start-input" class="form-control num" />
-      </div>
-
-      <!-- Visual 28-Pill Blister Pack Preview -->
-      <div style="background:#FFF1F2; border:1.5px solid #FECDD3; border-radius:16px; padding:10px 12px; margin-bottom:12px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <span style="font-size:12px; font-weight:800; color:#9F1239;">💊 แผงยาคุมเดือนนี้ (แตะเพื่อเช็กย้อนหลัง)</span>
-          <span id="modal-pill-progress-txt" class="num" style="font-size:11px; font-weight:800; color:#E11D48;">เม็ดที่ 1/28</span>
+        <div class="form-group">
+          <label>🩸 วันแรกที่มีประจำเดือนล่าสุด</label>
+          <input type="date" id="cycle-last-period-input" class="form-control num" />
         </div>
-        <div id="pill-blister-grid" style="display:grid; grid-template-columns:repeat(7, 1fr); gap:5px; text-align:center;"></div>
+      </div>
+      <input type="hidden" id="cycle-length-input" value="28" />
+
+      <!-- Visual Blister Pack Preview Inside Modal -->
+      <div style="background:#FFF1F2; border:1.5px solid #FECDD3; border-radius:16px; padding:10px 10px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-size:12px; font-weight:900; color:#9F1239;">💊 แผงยาคุมปัจจุบัน (แตะเม็ดยาเพื่อแกะ/เช็กย้อนหลัง)</span>
+          <span id="modal-pill-progress-txt" class="num" style="font-size:11px; font-weight:900; color:#E11D48;">กินแล้ว 3/21 เม็ด</span>
+        </div>
+        <div id="pill-blister-grid"></div>
+      </div>
+
+      <!-- Previous Boxes History -->
+      <div id="cycle-pack-history-wrap" style="display:none; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; padding:9px 11px; margin-bottom:12px;">
+        <div style="font-size:11.5px; font-weight:900; color:#334155; margin-bottom:5px;">🗂️ ประวัติกล่องยาคุมที่เริ่มกิน:</div>
+        <div id="cycle-pack-history-list" style="display:flex; flex-direction:column; gap:4px; font-size:11px; color:#475569;"></div>
       </div>
 
       <div style="display:flex; gap:8px; margin-bottom:8px;">
-        <button class="btn-primary" onclick="saveCycleSettings()">💾 บันทึกการตั้งค่ารอบเดือน & ยาคุม</button>
+        <button type="button" class="btn-primary" onclick="saveCycleSettings()">💾 บันทึกกล่องยาคุม & การตั้งค่า</button>
       </div>
-      <button class="btn-secondary" style="font-size:12px;" onclick="closeModal('modal-cycle-settings'); openModal('modal-apple-health');">🍎 วิธีซิงค์ข้อมูลรอบเดือนกับแอปสุขภาพ (Apple Health)</button>
+      <button type="button" class="btn-secondary" style="font-size:12px;" onclick="closeModal('modal-cycle-settings'); openModal('modal-apple-health');">🍎 วิธีซิงค์ข้อมูลรอบเดือนกับแอปสุขภาพ (Apple Health)</button>
     </div>
   </div>
 
@@ -4751,24 +4957,59 @@
     }
 
     function normalizeCycleDataObj(cd) {
-      const defStart = getOffsetDateStr(-14);
+      const defStart = "2026-10-19";
       const raw = cd || {};
       const takenMap = {};
       if (Array.isArray(raw.pillTakenDates)) {
         raw.pillTakenDates.forEach(d => { if (typeof d === "string") takenMap[d] = true; });
       } else if (raw.pillTakenDates && typeof raw.pillTakenDates === "object") {
         Object.keys(raw.pillTakenDates).forEach(k => {
-          if (raw.pillTakenDates[k]) takenMap[k] = true;
+          if (raw.pillTakenDates[k] === false) takenMap[k] = false;
+          else if (raw.pillTakenDates[k]) takenMap[k] = true;
         });
       }
+
+      const periodFlowDates = {};
+      if (raw.periodFlowDates && typeof raw.periodFlowDates === "object") {
+        Object.keys(raw.periodFlowDates).forEach(k => {
+          if (raw.periodFlowDates[k] === false) periodFlowDates[k] = false;
+          else if (raw.periodFlowDates[k]) periodFlowDates[k] = true;
+        });
+      }
+
+      let pillBrand = raw.pillBrand || "yasmin_21";
+      let pillPackType = Number(raw.pillPackType ?? raw.pillType ?? 21);
+      let pillBreakDays = Number(raw.pillBreakDays ?? (pillPackType === 21 ? 7 : 0));
+      let pillPackStartDate = raw.pillPackStartDate || raw.pillStartDate || raw.lastPeriodStart || raw.lastPeriodDate || defStart;
+      let pillBrandMigratedV33 = Boolean(raw.pillBrandMigratedV33);
+
+      // Migrate default unconfigured state to the user's real Yasmin 21 pack (started Mon 19 Oct 2026 with Mon/Tue/Wed taken)
+      if (!pillBrandMigratedV33) {
+        pillBrand = "yasmin_21";
+        pillPackType = 21;
+        pillBreakDays = 7;
+        pillPackStartDate = "2026-10-19";
+        takenMap["2026-10-19"] = true;
+        takenMap["2026-10-20"] = true;
+        takenMap["2026-10-21"] = true;
+        pillBrandMigratedV33 = true;
+      }
+
       return {
-        lastPeriodStart: raw.lastPeriodStart || raw.lastPeriodDate || defStart,
+        lastPeriodStart: raw.lastPeriodStart || raw.lastPeriodDate || pillPackStartDate || defStart,
         cycleLength: Number(raw.cycleLength) || 28,
         periodDuration: Number(raw.periodDuration) || 5,
-        pillPackType: Number(raw.pillPackType ?? raw.pillType ?? 28),
-        pillPackStartDate: raw.pillPackStartDate || raw.pillStartDate || raw.lastPeriodStart || raw.lastPeriodDate || defStart,
+        pillBrand,
+        customBrandName: raw.customBrandName || "",
+        pillPackType,
+        pillPlaceboCount: Number(raw.pillPlaceboCount ?? (pillPackType === 28 ? 4 : 0)),
+        pillBreakDays,
+        pillPackStartDate,
         pillReminderTime: raw.pillReminderTime || raw.pillTime || "21:00",
         pillTakenDates: takenMap,
+        periodFlowDates,
+        packHistory: Array.isArray(raw.packHistory) ? raw.packHistory : [],
+        pillBrandMigratedV33,
         periodLogs: Array.isArray(raw.periodLogs) ? raw.periodLogs : (Array.isArray(raw.periodDates) ? raw.periodDates : [defStart])
       };
     }
@@ -5508,13 +5749,25 @@
           ...(primary.beautyLogs?.daily || {})
         }
       };
+      const rawSecCycle = secondary.cycleData || {};
+      const rawPriCycle = primary.cycleData || {};
+      const sCycle = normalizeCycleDataObj(rawSecCycle);
+      const pCycle = normalizeCycleDataObj(rawPriCycle);
+      const preferSecCycle = Boolean(rawSecCycle.pillBrandMigratedV33 && !rawPriCycle.pillBrandMigratedV33);
+      const baseCycle = preferSecCycle ? { ...pCycle, ...sCycle } : { ...sCycle, ...pCycle };
       merged.cycleData = {
-        ...(secondary.cycleData || {}),
-        ...(primary.cycleData || {}),
+        ...baseCycle,
         pillTakenDates: {
-          ...(secondary.cycleData?.pillTakenDates || {}),
-          ...(primary.cycleData?.pillTakenDates || {})
-        }
+          ...(sCycle.pillTakenDates || {}),
+          ...(pCycle.pillTakenDates || {})
+        },
+        periodFlowDates: {
+          ...(sCycle.periodFlowDates || {}),
+          ...(pCycle.periodFlowDates || {})
+        },
+        packHistory: (pCycle.packHistory && pCycle.packHistory.length > 0)
+          ? pCycle.packHistory
+          : (sCycle.packHistory || [])
       };
 
       const pProfiles = { ...(primary.profilesMap || {}) };
@@ -7271,190 +7524,858 @@
       showToast(`🔥 บันทึก "${actName}" เผาผลาญเพิ่ม +${actCal} kcal เรียบร้อย!`);
     }
 
-    // ==================== BIRTH CONTROL PILL & PERIOD TRACKER (APPLE HEALTH STYLE) ====================
-    function renderCycleAndPillCard() {
-      if (!state.cycleData) {
-        state.cycleData = {
-          lastPeriodStart: getOffsetDateStr(-14),
-          cycleLength: 28,
-          periodDuration: 5,
-          pillPackType: 28,
-          pillPackStartDate: getOffsetDateStr(-14),
-          pillReminderTime: "21:00",
-          pillTakenDates: {},
-          periodLogs: []
+    // ==================== BIRTH CONTROL PILL & PERIOD TRACKER (YASMIN BLISTER + REAL DATES + 7-DAY BREAK + BRAND BOXES) ====================
+    const PILL_BRAND_CATALOG = [
+      {
+        id: "yasmin_21",
+        name: "Yasmin® (ยาสมิน)",
+        shortBadge: "Yasmin 21 เม็ด",
+        formula: "Drospirenone 3 mg / Ethinylestradiol 0.030 mg",
+        maker: "BAYER",
+        activePills: 21,
+        placeboPills: 0,
+        breakDays: 7,
+        layout: "snake_21",
+        pillColor: "radial-gradient(circle at 32% 30%, #FDE68A 0%, #D97706 72%, #92400E 100%)",
+        pillTextColor: "#451A03",
+        desc: "21 เม็ดฮอร์โมน (เรียงลูกศรวนเหมือนแผงจริง) · กินหมดเว้น 7 วันช่วงมีเมน แล้วเริ่มกล่องใหม่",
+        hasRealPhoto: true
+      },
+      {
+        id: "yaz_28",
+        name: "YAZ® (ยาซ)",
+        shortBadge: "YAZ 28 เม็ด (24+4)",
+        formula: "Drospirenone 3 mg / Ethinylestradiol 0.020 mg",
+        maker: "BAYER",
+        activePills: 24,
+        placeboPills: 4,
+        breakDays: 0,
+        layout: "grid_28",
+        pillColor: "radial-gradient(circle at 32% 30%, #FCE7F3 0%, #EC4899 75%, #BE185D 100%)",
+        pillTextColor: "#831843",
+        desc: "ฮอร์โมนชมพู 24 เม็ด + เม็ดแป้งขาว 4 เม็ด (ช่วงมีเมน) · กินต่อเนื่องทุกวัน"
+      },
+      {
+        id: "diane_21",
+        name: "Diane-35® (ไดแอน-35)",
+        shortBadge: "Diane-35 (21 เม็ด)",
+        formula: "Cyproterone 2 mg / Ethinylestradiol 0.035 mg",
+        maker: "BAYER",
+        activePills: 21,
+        placeboPills: 0,
+        breakDays: 7,
+        layout: "snake_21",
+        pillColor: "radial-gradient(circle at 32% 30%, #FEF3C7 0%, #F59E0B 78%, #B45309 100%)",
+        pillTextColor: "#78350F",
+        desc: "21 เม็ดฮอร์โมน · กินหมดเว้น 7 วันช่วงมีเมน แล้วเริ่มกล่องใหม่"
+      },
+      {
+        id: "mercilon_21",
+        name: "Mercilon® (เมอร์ซิลอน)",
+        shortBadge: "Mercilon 21 เม็ด",
+        formula: "Desogestrel 0.15 mg / EE 0.020 mg",
+        maker: "Organon",
+        activePills: 21,
+        placeboPills: 0,
+        breakDays: 7,
+        layout: "snake_21",
+        pillColor: "radial-gradient(circle at 32% 30%, #FFFFFF 0%, #E2E8F0 75%, #94A3B8 100%)",
+        pillTextColor: "#0F172A",
+        desc: "21 เม็ดสีขาว · กินหมดเว้น 7 วันช่วงมีเมน แล้วเริ่มกล่องใหม่"
+      },
+      {
+        id: "marvelon_28",
+        name: "Marvelon® 28 (มาร์วีลอน)",
+        shortBadge: "Marvelon 28 (21+7)",
+        formula: "Desogestrel 0.15 mg / EE 0.030 mg",
+        maker: "Organon",
+        activePills: 21,
+        placeboPills: 7,
+        breakDays: 0,
+        layout: "grid_28",
+        pillColor: "radial-gradient(circle at 32% 30%, #E0F2FE 0%, #38BDF8 75%, #0284C7 100%)",
+        pillTextColor: "#0C4A6E",
+        desc: "ฮอร์โมน 21 เม็ด + เม็ดแป้ง 7 เม็ดช่วงมีเมน · กินครบ 28 เม็ดเริ่มกล่องใหม่ทันที"
+      },
+      {
+        id: "synfonia_28",
+        name: "Synfonia® (ซินโฟเนีย)",
+        shortBadge: "Synfonia 28 (24+4)",
+        formula: "Drospirenone 3 mg / EE 0.020 mg",
+        maker: "Abbott",
+        activePills: 24,
+        placeboPills: 4,
+        breakDays: 0,
+        layout: "grid_28",
+        pillColor: "radial-gradient(circle at 32% 30%, #FDF2F8 0%, #F472B6 76%, #DB2777 100%)",
+        pillTextColor: "#831843",
+        desc: "ฮอร์โมนชมพู 24 เม็ด + เม็ดแป้งขาว 4 เม็ดช่วงมีเมน · กินต่อเนื่องทุกวัน"
+      },
+      {
+        id: "custom",
+        name: "✨ ยี่ห้ออื่นๆ / กำหนดเอง",
+        shortBadge: "กำหนดเอง",
+        formula: "ตั้งชื่อยี่ห้อและจำนวนเม็ดเองได้",
+        maker: "Custom",
+        activePills: 21,
+        placeboPills: 0,
+        breakDays: 7,
+        layout: "snake_21",
+        pillColor: "radial-gradient(circle at 32% 30%, #FDE68A 0%, #F59E0B 75%, #B45309 100%)",
+        pillTextColor: "#451A03",
+        desc: "เลือกแผง 21 เม็ด (เว้น 7 วัน) หรือ 28 เม็ด พร้อมตั้งชื่อยี่ห้อเอง"
+      }
+    ];
+
+    function getActivePillBrandSpec(cd) {
+      const brandId = cd?.pillBrand || "yasmin_21";
+      const found = PILL_BRAND_CATALOG.find(b => b.id === brandId) || PILL_BRAND_CATALOG[0];
+      if (brandId === "custom") {
+        const pType = Number(cd?.pillPackType ?? 21);
+        const pPlacebo = Number(cd?.pillPlaceboCount ?? (pType === 28 ? 4 : 0));
+        const activePills = pType === 0 ? 0 : (pType === 28 ? (28 - pPlacebo) : 21);
+        const breakDays = pType === 21 ? 7 : 0;
+        const cName = (cd?.customBrandName || "").trim() || "ยาคุมกำหนดเอง";
+        return {
+          ...found,
+          name: cName,
+          shortBadge: pType === 0 ? "ไม่ใช้ยาคุม" : `${cName} (${pType} เม็ด)`,
+          activePills,
+          placeboPills: pType === 28 ? pPlacebo : 0,
+          breakDays,
+          layout: pType === 21 ? "snake_21" : (pType === 28 ? "grid_28" : "none")
         };
       }
-      const cd = state.cycleData;
-      if (!cd.pillTakenDates) cd.pillTakenDates = {};
+      return found;
+    }
 
-      const lastStart = cd.lastPeriodStart || getOffsetDateStr(-14);
-      const cycleLen = Number(cd.cycleLength) || 28;
-      const lastDateObj = new Date(lastStart + "T00:00:00");
-      const todayObj = new Date(getTodayStr() + "T00:00:00");
+    function formatDateYMD(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
 
-      const nextPeriodObj = new Date(lastDateObj);
-      nextPeriodObj.setDate(nextPeriodObj.getDate() + cycleLen);
-      while (nextPeriodObj < todayObj) {
-        nextPeriodObj.setDate(nextPeriodObj.getDate() + cycleLen);
+    function formatShortThaiDate(d) {
+      const mNames = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+      return `${d.getDate()} ${mNames[d.getMonth()]}`;
+    }
+
+    const DOW_EN_ARR = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+    const DOW_TH_ARR = ["อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส."];
+
+    function buildBrandBoxVisualHtml(brand) {
+      if (brand.id === "yasmin_21") {
+        return `
+          <div style="display:flex; align-items:center; gap:7px; background:linear-gradient(135deg,#FFF7ED 0%,#FCE7F3 100%); border:1px solid #FBCFE8; border-radius:10px; padding:5px;">
+            <img src="yasmin_real_pack.jpg" alt="Yasmin" style="width:62px; height:42px; object-fit:cover; border-radius:7px; border:1px solid #CBD5E1; flex-shrink:0;" onerror="this.style.display='none'" />
+            <div style="min-width:0;">
+              <div style="font-family:Georgia,serif; font-size:13px; font-weight:900; color:#DB2777; font-style:italic; line-height:1.1;">Yasmin® <span style="font-style:normal; font-size:11px;">ยาสมิน</span></div>
+              <div style="font-size:9px; color:#64748B; font-weight:700; margin-top:1px;">21 เม็ด + เว้น 7 วัน · BAYER</div>
+            </div>
+          </div>
+        `;
+      }
+      if (brand.id === "yaz_28") {
+        return `
+          <div style="background:linear-gradient(135deg,#FDF2F8 0%,#E0F2FE 100%); border:1px solid #F9A8D4; border-radius:10px; padding:6px 8px; display:flex; align-items:center; justify-content:space-between;">
+            <div>
+              <div style="font-size:13px; font-weight:900; color:#BE185D; letter-spacing:0.5px;">YAZ® <span style="font-size:11px;">ยาซ</span></div>
+              <div style="font-size:9px; color:#475569; font-weight:700;">ชมพู 24 + ขาว 4 เม็ด · BAYER</div>
+            </div>
+            <div style="display:flex; gap:2px;">
+              <span style="width:9px;height:9px;border-radius:50%;background:#F472B6;display:inline-block;"></span>
+              <span style="width:9px;height:9px;border-radius:50%;background:#F472B6;display:inline-block;"></span>
+              <span style="width:9px;height:9px;border-radius:50%;background:#FFF;border:1px solid #94A3B8;display:inline-block;"></span>
+            </div>
+          </div>
+        `;
+      }
+      if (brand.id === "diane_21") {
+        return `
+          <div style="background:linear-gradient(135deg,#FEF3C7 0%,#FFFBEB 100%); border:1px solid #FCD34D; border-radius:10px; padding:6px 8px; display:flex; align-items:center; justify-content:space-between;">
+            <div>
+              <div style="font-size:12.5px; font-weight:900; color:#B45309;">Diane-35® <span style="font-size:10.5px;">ไดแอน</span></div>
+              <div style="font-size:9px; color:#78350F; font-weight:700;">21 เม็ด + เว้น 7 วัน · BAYER</div>
+            </div>
+            <span style="width:12px;height:12px;border-radius:50%;background:#F59E0B;display:inline-block;border:1px solid #B45309;"></span>
+          </div>
+        `;
+      }
+      if (brand.id === "mercilon_21") {
+        return `
+          <div style="background:linear-gradient(135deg,#F3E8FF 0%,#FCE7F3 100%); border:1px solid #D8B4FE; border-radius:10px; padding:6px 8px; display:flex; align-items:center; justify-content:space-between;">
+            <div>
+              <div style="font-size:12.5px; font-weight:900; color:#6B21A8;">Mercilon® <span style="font-size:10.5px;">เมอร์ซิลอน</span></div>
+              <div style="font-size:9px; color:#581C87; font-weight:700;">21 เม็ด + เว้น 7 วัน</div>
+            </div>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FFF;display:inline-block;border:1.5px solid #6B21A8;"></span>
+          </div>
+        `;
+      }
+      if (brand.id === "marvelon_28") {
+        return `
+          <div style="background:linear-gradient(135deg,#E0F2FE 0%,#F0FDF4 100%); border:1px solid #7DD3FC; border-radius:10px; padding:6px 8px; display:flex; align-items:center; justify-content:space-between;">
+            <div>
+              <div style="font-size:12px; font-weight:900; color:#0369A1;">Marvelon® 28 <span style="font-size:10px;">มาร์วีลอน</span></div>
+              <div style="font-size:9px; color:#0C4A6E; font-weight:700;">ฮอร์โมน 21 + แป้ง 7 เม็ด</div>
+            </div>
+            <span style="width:12px;height:12px;border-radius:50%;background:#38BDF8;display:inline-block;"></span>
+          </div>
+        `;
+      }
+      if (brand.id === "synfonia_28") {
+        return `
+          <div style="background:linear-gradient(135deg,#FCE7F3 0%,#F3E8FF 100%); border:1px solid #F9A8D4; border-radius:10px; padding:6px 8px; display:flex; align-items:center; justify-content:space-between;">
+            <div>
+              <div style="font-size:12.5px; font-weight:900; color:#9D174D;">Synfonia® <span style="font-size:10px;">ซินโฟเนีย</span></div>
+              <div style="font-size:9px; color:#831843; font-weight:700;">ชมพู 24 + ขาว 4 เม็ด</div>
+            </div>
+            <span style="width:12px;height:12px;border-radius:50%;background:#EC4899;display:inline-block;"></span>
+          </div>
+        `;
+      }
+      return `
+        <div style="background:#F8FAFC; border:1px dashed #94A3B8; border-radius:10px; padding:6px 8px;">
+          <div style="font-size:12px; font-weight:900; color:#334155;">✨ ตั้งค่ายี่ห้อ / จำนวนเม็ดเอง</div>
+          <div style="font-size:9px; color:#64748B; font-weight:700;">เลือก 21 เม็ด หรือ 28 เม็ดได้อิสระ</div>
+        </div>
+      `;
+    }
+
+    function buildRealisticBlisterPackHtml(cd, isModal = false) {
+      const brand = getActivePillBrandSpec(cd);
+      if (brand.layout === "none" || Number(cd.pillPackType) === 0) {
+        return `<div style="padding:10px; text-align:center; font-size:12px; color:#64748B; font-weight:700;">ขณะนี้ตั้งค่าเป็นโหมดดูเฉพาะรอบประจำเดือน (ไม่ได้ทานยาคุม)</div>`;
       }
 
-      const diffDays = Math.round((nextPeriodObj - todayObj) / 86400000);
-      const ovulationObj = new Date(nextPeriodObj);
-      ovulationObj.setDate(ovulationObj.getDate() - 14);
-      const ovDiff = Math.round((ovulationObj - todayObj) / 86400000);
+      const packStart = cd.pillPackStartDate || cd.lastPeriodStart || "2026-10-19";
+      const startObj = new Date(packStart + "T00:00:00");
+      const startDow = isNaN(startObj.getTime()) ? 1 : startObj.getDay(); // 0=SUN .. 6=SAT
 
-      const mNames = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-      const nextDateThai = `${nextPeriodObj.getDate()} ${mNames[nextPeriodObj.getMonth()]}`;
-      const ovDateThai = `${ovulationObj.getDate()} ${mNames[ovulationObj.getMonth()]}`;
-      const lastDateThai = `${lastDateObj.getDate()} ${mNames[lastDateObj.getMonth()]}`;
+      // Build 21-pill realistic Yasmin snake blister pack (Row 1 L->R, Row 2 R->L, Row 3 L->R + loop back to Row 1)
+      if (brand.layout === "snake_21") {
+        // Map each loop position (0..20) to its corresponding pill offset (0..20)
+        // Because Pill #1 (offset 0) starts at loopPos = startDow in Row 1,
+        // offset k (0..20) is located at loopPos = (startDow + k) % 21 !
+        const slotByLoopPos = new Array(21);
+        let takenCount = 0;
+        for (let k = 0; k < 21; k++) {
+          const loopPos = (startDow + k) % 21;
+          const d = new Date(startObj);
+          d.setDate(d.getDate() + k);
+          const dStr = formatDateYMD(d);
+          const isTaken = Boolean(cd.pillTakenDates && cd.pillTakenDates[dStr]);
+          if (isTaken) takenCount++;
+          slotByLoopPos[loopPos] = {
+            pillNum: k + 1,
+            d,
+            dStr,
+            dateLabel: formatShortThaiDate(d),
+            dowEn: DOW_EN_ARR[loopPos % 7],
+            dowTh: DOW_TH_ARR[loopPos % 7],
+            isTaken,
+            isToday: dStr === currentSelectedDate,
+            isFirstPill: k === 0,
+            isLastPill: k === 20
+          };
+        }
+
+        const renderSlotCell = (loopPos, arrowDir) => {
+          const slot = slotByLoopPos[loopPos];
+          if (!slot) return "";
+          const badgeHtml = slot.isFirstPill
+            ? `<span style="position:absolute; top:-5px; left:50%; transform:translateX(-50%); background:#D97706; color:#FFF; font-size:7.5px; font-weight:900; padding:0.5px 4px; border-radius:99px; white-space:nowrap; z-index:4; box-shadow:0 1px 2px rgba(0,0,0,0.2);">เริ่ม#1</span>`
+            : (slot.isLastPill
+                ? `<span style="position:absolute; top:-5px; left:50%; transform:translateX(-50%); background:#7C3AED; color:#FFF; font-size:7.5px; font-weight:900; padding:0.5px 4px; border-radius:99px; white-space:nowrap; z-index:4;">จบ#21</span>`
+                : (slot.isToday
+                    ? `<span style="position:absolute; top:-5px; left:50%; transform:translateX(-50%); background:#E11D48; color:#FFF; font-size:7.5px; font-weight:900; padding:0.5px 4px; border-radius:99px; white-space:nowrap; z-index:4;">วันนี้</span>`
+                    : ""));
+
+          const wellContent = slot.isTaken
+            ? `<div class="blister-pill-well is-punched" title="แกะเม็ดที่ ${slot.pillNum} แล้ว (${slot.dateLabel})">
+                 <div class="blister-foil-flap"></div>
+                 <span class="blister-punched-check">✓</span>
+               </div>`
+            : `<div class="blister-pill-well" title="แตะเพื่อแกะเม็ดที่ ${slot.pillNum} (${slot.dateLabel})">
+                 <div class="blister-pill-tablet" style="background:${brand.pillColor}; color:${brand.pillTextColor};">${slot.pillNum}</div>
+               </div>`;
+
+          const arrowHtml = arrowDir === "right"
+            ? `<span class="blister-arrow-sep">▶</span>`
+            : (arrowDir === "left" ? `<span class="blister-arrow-sep left-dir">◀</span>` : "");
+
+          return `
+            <div class="blister-slot ${slot.isToday ? 'is-today' : ''} ${slot.isTaken ? 'is-taken' : ''} ${slot.isFirstPill ? 'is-start-pill' : ''}" onclick="toggleBlisterPillDate('${slot.dStr}')">
+              ${badgeHtml}
+              <div class="blister-dow-en">${slot.dowEn}</div>
+              <div class="blister-dow-th">${slot.dowTh}</div>
+              ${wellContent}
+              <div class="blister-real-date">${slot.dateLabel}</div>
+              ${arrowHtml}
+            </div>
+          `;
+        };
+
+        // Row 1: loopPos 0 -> 6 (Left to Right: SUN -> SAT)
+        let row1Html = "";
+        for (let lp = 0; lp <= 6; lp++) {
+          row1Html += renderSlotCell(lp, lp < 6 ? "right" : "");
+        }
+
+        // Row 2: Visual Left-to-Right columns are loopPos 13 (SAT) <- 12 (FRI) <- 11 (THU) <- 10 (WED) <- 9 (TUE) <- 8 (MON) <- 7 (SUN)
+        let row2Html = "";
+        const row2LoopOrder = [13, 12, 11, 10, 9, 8, 7];
+        for (let c = 0; c < row2LoopOrder.length; c++) {
+          const lp = row2LoopOrder[c];
+          row2Html += renderSlotCell(lp, c > 0 ? "left" : "");
+        }
+
+        // Row 3: loopPos 14 -> 20 (Left to Right: SUN -> SAT)
+        let row3Html = "";
+        for (let lp = 14; lp <= 20; lp++) {
+          row3Html += renderSlotCell(lp, lp < 20 ? "right" : "");
+        }
+
+        const startDateThai = formatShortThaiDate(startObj);
+        const endObj = new Date(startObj);
+        endObj.setDate(endObj.getDate() + 20);
+        const endDateThai = formatShortThaiDate(endObj);
+
+        return `
+          <div class="blister-pack-foil">
+            <!-- Decorative Yasmin Orange-Gold Y Silhouette SVG Watermark -->
+            <svg viewBox="0 0 120 200" style="position:absolute; left:10px; top:18px; width:95px; height:175px; opacity:0.22; pointer-events:none; z-index:1;">
+              <path d="M12,10 C32,45 45,75 52,95 C62,65 80,32 98,8 L112,18 C88,52 68,88 58,125 C52,148 44,175 35,195 L18,188 C28,162 36,138 42,115 C32,82 18,48 2,20 Z" fill="#EA580C"/>
+              <path d="M45,55 C60,82 68,110 62,155 C58,175 48,190 40,198 L55,198 C68,175 78,140 76,105 C74,78 65,55 55,42 Z" fill="#F59E0B"/>
+            </svg>
+
+            <!-- Top Foil Embossed Header -->
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:9.5px; font-weight:800; color:#475569; margin-bottom:5px; padding:0 4px; position:relative; z-index:2;">
+              <span>LOT KT103AP · เริ่มแผง: <strong style="color:#0F172A;">${DOW_TH_ARR[startDow]} ${startDateThai}</strong></span>
+              <span style="background:#FFF1F2; color:#BE185D; border:1px solid #F9A8D4; padding:1px 7px; border-radius:99px; font-weight:900;">แกะแล้ว ${takenCount}/21 เม็ด</span>
+            </div>
+
+            <!-- Continuous Black Loop Frame (เหมือนเส้นลูกศรสีดำบนแผง Yasmin จริง) -->
+            <div class="blister-loop-frame">
+              <div style="display:flex; justify-content:space-between; align-items:center; font-size:8.5px; font-weight:900; color:#334155; margin-bottom:3px; padding:0 2px;">
+                <span>▼ วนกลับมาช่องแรก (กรณีไม่ได้เริ่มวันอาทิตย์)</span>
+                <span>เส้นวนจากเม็ดสุดท้าย ▲</span>
+              </div>
+
+              <!-- ROW 1 (SUN -> SAT) -->
+              <div class="blister-row-grid">${row1Html}</div>
+
+              <!-- Middle Branding Band 1 (Yasmin Logo + Downward Arrows on Right) -->
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:3px 6px; margin:1px 0;">
+                <div style="font-size:9px; font-weight:800; color:#9A3412;">แตะที่เม็ดยาเพื่อแกะฟอยล์</div>
+                <div style="font-family:Georgia, 'Times New Roman', serif; font-size:17px; font-weight:900; font-style:italic; color:#DB2777; letter-spacing:0.5px; text-shadow:0 1px 0 #FFF;">
+                  ${brand.id === 'yasmin_21' ? 'Yasmin<sup style="font-size:9px;">®</sup>' : brand.name}
+                </div>
+                <div style="font-size:10px; font-weight:900; color:#0F172A; line-height:0.9; text-align:center; padding-right:6px;">▼<br/>▼</div>
+              </div>
+
+              <!-- ROW 2 (SAT <- SUN : Right to Left!) -->
+              <div class="blister-row-grid">${row2Html}</div>
+
+              <!-- Middle Branding Band 2 (Downward Arrows on Left + Formula + ยาสมิน + BAYER) -->
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:3px 6px; margin:1px 0;">
+                <div style="font-size:10px; font-weight:900; color:#0F172A; line-height:0.9; text-align:center; padding-left:6px;">▼<br/>▼</div>
+                <div style="font-size:8px; font-weight:800; color:#1E293B; line-height:1.15;">
+                  ${brand.formula || 'Drospirenone 3 mg / EE 0.030 mg'}
+                </div>
+                <div style="font-family:Georgia, serif; font-size:14px; font-weight:900; color:#DB2777; text-shadow:0 1px 0 #FFF;">
+                  ${brand.id === 'yasmin_21' ? 'ยาสมิน<sup style="font-size:8px;">®</sup>' : ''}
+                </div>
+                <div style="width:22px; height:22px; border-radius:50%; border:1.5px solid #1E293B; display:flex; align-items:center; justify-content:center; font-size:5.5px; font-weight:900; color:#0F172A; background:rgba(255,255,255,0.7); line-height:1;">
+                  ${brand.maker || 'BAYER'}
+                </div>
+              </div>
+
+              <!-- ROW 3 (SUN -> SAT) -->
+              <div class="blister-row-grid">${row3Html}</div>
+
+              <div style="display:flex; justify-content:space-between; align-items:center; font-size:8.5px; font-weight:800; color:#475569; margin-top:4px; padding:0 2px;">
+                <span>🏁 เม็ดที่ 1: <strong style="color:#B45309;">${DOW_TH_ARR[startDow]} ${startDateThai}</strong></span>
+                <span>🏁 เม็ดที่ 21 (หมดแผง): <strong style="color:#6D28D9;">${DOW_TH_ARR[(startDow + 20) % 7]} ${endDateThai}</strong> ⤴</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Otherwise 28-pill grid (24+4 like YAZ/Synfonia, or 21+7 like Marvelon 28)
+      const total = 28;
+      const activeCount = brand.activePills || 24;
+      let takenCount = 0;
+      let cellsHtml = "";
+      for (let i = 0; i < total; i++) {
+        const d = new Date(startObj);
+        d.setDate(d.getDate() + i);
+        const dStr = formatDateYMD(d);
+        const dateLabel = formatShortThaiDate(d);
+        const dowEn = DOW_EN_ARR[d.getDay()];
+        const dowTh = DOW_TH_ARR[d.getDay()];
+        const isTaken = Boolean(cd.pillTakenDates && cd.pillTakenDates[dStr]);
+        if (isTaken) takenCount++;
+        const isPlacebo = i >= activeCount;
+        const isToday = dStr === currentSelectedDate;
+
+        const tabletBg = isPlacebo
+          ? "radial-gradient(circle at 32% 30%, #FFFFFF 0%, #E2E8F0 80%, #94A3B8 100%)"
+          : brand.pillColor;
+        const tabletCol = isPlacebo ? "#334155" : brand.pillTextColor;
+
+        const wellContent = isTaken
+          ? `<div class="blister-pill-well is-punched">
+               <div class="blister-foil-flap"></div>
+               <span class="blister-punched-check">✓</span>
+             </div>`
+          : `<div class="blister-pill-well">
+               <div class="blister-pill-tablet" style="background:${tabletBg}; color:${tabletCol};">${i + 1}</div>
+             </div>`;
+
+        cellsHtml += `
+          <div class="blister-slot ${isToday ? 'is-today' : ''} ${isTaken ? 'is-taken' : ''}" style="${isPlacebo ? 'background:rgba(254,226,226,0.45); border-color:#FDA4AF;' : ''}" onclick="toggleBlisterPillDate('${dStr}')">
+            ${isPlacebo ? `<span style="font-size:7px; font-weight:900; color:#E11D48;">เม็ดแป้ง/มีเมน</span>` : ''}
+            <div class="blister-dow-en">${dowEn}</div>
+            <div class="blister-dow-th">${dowTh}</div>
+            ${wellContent}
+            <div class="blister-real-date">${dateLabel}</div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="blister-pack-foil">
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:10px; font-weight:900; color:#334155; margin-bottom:6px;">
+            <span>💊 ${brand.name} (ฮอร์โมน ${activeCount} + เม็ดแป้ง ${28 - activeCount})</span>
+            <span style="background:#FFF1F2; color:#BE185D; padding:1px 7px; border-radius:99px;">แกะแล้ว ${takenCount}/28 เม็ด</span>
+          </div>
+          <div class="blister-row-grid">${cellsHtml}</div>
+        </div>
+      `;
+    }
+
+    function buildPeriodBreakAndNextBoxHtml(cd) {
+      const brand = getActivePillBrandSpec(cd);
+      if (brand.layout === "none" || Number(cd.pillPackType) === 0) return "";
+
+      const packStart = cd.pillPackStartDate || cd.lastPeriodStart || "2026-10-19";
+      const startObj = new Date(packStart + "T00:00:00");
+      if (isNaN(startObj.getTime())) return "";
+
+      const activePills = brand.activePills || 21;
+      const breakDays = brand.breakDays ?? (brand.layout === "snake_21" ? 7 : 0);
+      const totalCycleDays = activePills + (brand.placeboPills || 0) + breakDays; // 28 days
+
+      // Break / Period window starts after activePills (Day 22..28 for Yasmin 21, or Placebo days for 28-pill packs)
+      const breakStartObj = new Date(startObj);
+      breakStartObj.setDate(breakStartObj.getDate() + activePills);
+      const nextBoxStartObj = new Date(startObj);
+      nextBoxStartObj.setDate(nextBoxStartObj.getDate() + totalCycleDays);
+
+      const nextBoxDateYMD = formatDateYMD(nextBoxStartObj);
+      const nextBoxDateThai = `${DOW_TH_ARR[nextBoxStartObj.getDay()]} ${formatShortThaiDate(nextBoxStartObj)}`;
+
+      let breakSlotsHtml = "";
+      const periodWindowLen = breakDays > 0 ? breakDays : (brand.placeboPills || 4);
+      for (let b = 0; b < periodWindowLen; b++) {
+        const d = new Date(breakStartObj);
+        d.setDate(d.getDate() + b);
+        const dStr = formatDateYMD(d);
+        const dThai = formatShortThaiDate(d);
+        const dowTh = DOW_TH_ARR[d.getDay()];
+        const hasPeriodLogged = Boolean(cd.periodFlowDates && cd.periodFlowDates[dStr]);
+        const isToday = dStr === currentSelectedDate;
+
+        breakSlotsHtml += `
+          <div onclick="toggleBreakDayPeriod('${dStr}')" style="background:${hasPeriodLogged ? '#FFE4E6' : '#FFFFFF'}; border:${isToday ? '2px solid #E11D48' : (hasPeriodLogged ? '1.5px solid #F43F5E' : '1px dashed #FDA4AF')}; border-radius:10px; padding:4px 2px; text-align:center; cursor:pointer; transition:all 0.12s;">
+            <div style="font-size:8px; font-weight:900; color:#9F1239;">${breakDays > 0 ? `เว้นวันที่ ${b + 1}` : `แป้ง ${b + 1}`}</div>
+            <div style="font-size:12px; line-height:1.1; margin:2px 0;">${hasPeriodLogged ? '🩸' : '🌸'}</div>
+            <div style="font-size:8.5px; font-weight:900; color:#881337;">${dowTh}</div>
+            <div style="font-size:8px; font-weight:800; color:#BE123C;">${dThai}</div>
+          </div>
+        `;
+      }
+
+      const breakStartThai = formatShortThaiDate(breakStartObj);
+      const breakEndObj = new Date(breakStartObj);
+      breakEndObj.setDate(breakEndObj.getDate() + periodWindowLen - 1);
+      const breakEndThai = formatShortThaiDate(breakEndObj);
+
+      return `
+        <div style="background:linear-gradient(135deg,#FFF1F2 0%,#FDF2F8 100%); border:1.5px solid #FECDD3; border-radius:16px; padding:10px 11px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:6px;">
+            <div style="font-size:11.5px; font-weight:900; color:#9F1239;">
+              🩸 ${breakDays > 0 ? `ช่วงเว้นยา ${breakDays} วัน (ช่วงมีประจำเดือน: ${breakStartThai} – ${breakEndThai})` : `ช่วงเม็ดแป้ง ${periodWindowLen} วัน (ช่วงมีประจำเดือน: ${breakStartThai} – ${breakEndThai})`}
+            </div>
+            <span style="font-size:9.5px; font-weight:800; color:#BE185D;">แตะวันที่เมนมาเพื่อบันทึก 🩸</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(${periodWindowLen}, minmax(0, 1fr)); gap:4px; margin-bottom:9px;">
+            ${breakSlotsHtml}
+          </div>
+
+          <!-- Next Box Continuation Bar -->
+          <div style="background:#FFFFFF; border:1.5px solid #F9A8D4; border-radius:12px; padding:8px 10px; display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+            <div>
+              <div style="font-size:11px; font-weight:900; color:#831843;">📦 เริ่มกินกล่องต่อไป (${brand.shortBadge}):</div>
+              <div style="font-size:12px; font-weight:900; color:#E11D48;">วัน${nextBoxDateThai} <span style="font-size:10px; font-weight:700; color:#64748B;">(หลังเว้นครบ ${periodWindowLen} วัน)</span></div>
+            </div>
+            <div style="display:flex; gap:5px; flex-wrap:wrap;">
+              <button type="button" onclick="startNextPillBoxOnDate('${nextBoxDateYMD}')" style="border:none; background:linear-gradient(135deg,#E11D48,#BE185D); color:#FFF; border-radius:9px; padding:6px 10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 6px rgba(225,29,72,0.25);">
+                ⏭️ กดเริ่มกล่องต่อไป (${formatShortThaiDate(nextBoxStartObj)})
+              </button>
+              <button type="button" onclick="openCycleSettingsModal()" style="border:1px solid #F9A8D4; background:#FDF2F8; color:#9D174D; border-radius:9px; padding:6px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">
+                📦 เลือกกล่อง/ยี่ห้อ
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderBrandSelectorCardsInModal() {
+      const grid = document.getElementById("cycle-brand-selector-grid");
+      if (!grid) return;
+      const cd = state.cycleData || {};
+      const activeBrandId = cd.pillBrand || "yasmin_21";
+
+      grid.innerHTML = PILL_BRAND_CATALOG.map(b => {
+        const isSelected = b.id === activeBrandId;
+        return `
+          <div class="brand-box-card ${isSelected ? 'active' : ''}" onclick="selectPillBrandInModal('${b.id}')">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:10px; font-weight:900; color:${isSelected ? '#E11D48' : '#64748B'};">
+                ${isSelected ? '✅ เลือกกล่องนี้อยู่' : '📦 แตะเพื่อเลือก'}
+              </span>
+              <span style="font-size:9.5px; font-weight:800; background:${isSelected ? '#FFE4E6' : '#F1F5F9'}; color:${isSelected ? '#BE123C' : '#475569'}; padding:1px 6px; border-radius:99px;">
+                ${b.activePills}${b.placeboPills ? `+${b.placeboPills}` : ''} เม็ด
+              </span>
+            </div>
+            ${buildBrandBoxVisualHtml(b)}
+            <div style="font-size:9.5px; color:#475569; font-weight:700; line-height:1.3;">${b.desc}</div>
+          </div>
+        `;
+      }).join("");
+
+      const customRow = document.getElementById("cycle-custom-brand-row");
+      if (customRow) {
+        customRow.style.display = activeBrandId === "custom" ? "block" : "none";
+      }
+    }
+
+    function selectPillBrandInModal(brandId) {
+      if (!state.cycleData) state.cycleData = normalizeCycleDataObj({});
+      const cd = state.cycleData;
+      cd.pillBrand = brandId;
+      const spec = PILL_BRAND_CATALOG.find(b => b.id === brandId) || PILL_BRAND_CATALOG[0];
+      if (brandId !== "custom") {
+        cd.pillPackType = spec.activePills + (spec.placeboPills || 0);
+        cd.pillPlaceboCount = spec.placeboPills || 0;
+        cd.pillBreakDays = spec.breakDays || 0;
+      }
+      saveState();
+      renderBrandSelectorCardsInModal();
+      renderCycleAndPillCard();
+      showToast(`📦 เลือกกล่องยี่ห้อ "${spec.name}" เรียบร้อย!`);
+    }
+
+    function onChangeCustomPillType() {
+      if (!state.cycleData) return;
+      const val = document.getElementById("cycle-pill-type-input")?.value || "21";
+      if (val === "0") {
+        state.cycleData.pillPackType = 0;
+        state.cycleData.pillPlaceboCount = 0;
+        state.cycleData.pillBreakDays = 0;
+      } else if (val === "28_24_4") {
+        state.cycleData.pillPackType = 28;
+        state.cycleData.pillPlaceboCount = 4;
+        state.cycleData.pillBreakDays = 0;
+      } else if (val === "28") {
+        state.cycleData.pillPackType = 28;
+        state.cycleData.pillPlaceboCount = 7;
+        state.cycleData.pillBreakDays = 0;
+      } else {
+        state.cycleData.pillPackType = 21;
+        state.cycleData.pillPlaceboCount = 0;
+        state.cycleData.pillBreakDays = 7;
+      }
+      renderCycleAndPillCard();
+    }
+
+    function setPackStartDateQuick(dStr) {
+      if (!state.cycleData) state.cycleData = normalizeCycleDataObj({});
+      state.cycleData.pillPackStartDate = dStr;
+      const startIn = document.getElementById("cycle-pill-start-input");
+      if (startIn) startIn.value = dStr;
+      saveState();
+      renderCycleAndPillCard();
+      showToast(`📅 ตั้งวันเริ่มกินเม็ดแรกของแผงเป็น ${dStr} แล้ว`);
+    }
+
+    function previewCycleSettingsChange() {
+      const startIn = document.getElementById("cycle-pill-start-input");
+      if (startIn && startIn.value && state.cycleData) {
+        state.cycleData.pillPackStartDate = startIn.value;
+        saveState();
+        renderCycleAndPillCard();
+      }
+    }
+
+    function startNextPillBoxOnDate(nextStartDateStr) {
+      if (!state.cycleData) state.cycleData = normalizeCycleDataObj({});
+      const cd = state.cycleData;
+      const brand = getActivePillBrandSpec(cd);
+      if (!Array.isArray(cd.packHistory)) cd.packHistory = [];
+      cd.packHistory.unshift({
+        brandId: cd.pillBrand || "yasmin_21",
+        brandName: brand.name,
+        startDate: cd.pillPackStartDate,
+        archivedAt: getTodayStr()
+      });
+      cd.packHistory = cd.packHistory.slice(0, 12);
+      cd.pillPackStartDate = nextStartDateStr;
+      const startIn = document.getElementById("cycle-pill-start-input");
+      if (startIn) startIn.value = nextStartDateStr;
+      saveState();
+      renderCycleAndPillCard();
+      showToast(`📦 เริ่มแผงใหม่ (${brand.shortBadge}) ตั้งแต่วันที่ ${nextStartDateStr} เรียบร้อย!`);
+    }
+
+    function startNextPillBoxAfterBreak() {
+      const cd = state.cycleData || normalizeCycleDataObj({});
+      const brand = getActivePillBrandSpec(cd);
+      const packStart = cd.pillPackStartDate || getTodayStr();
+      const startObj = new Date(packStart + "T00:00:00");
+      const totalCycleDays = (brand.activePills || 21) + (brand.placeboPills || 0) + (brand.breakDays ?? 7);
+      startObj.setDate(startObj.getDate() + totalCycleDays);
+      startNextPillBoxOnDate(formatDateYMD(startObj));
+    }
+
+    function toggleBreakDayPeriod(dStr) {
+      if (!state.cycleData) state.cycleData = normalizeCycleDataObj({});
+      if (!state.cycleData.periodFlowDates) state.cycleData.periodFlowDates = {};
+      const nextVal = !state.cycleData.periodFlowDates[dStr];
+      state.cycleData.periodFlowDates[dStr] = nextVal;
+      if (nextVal) {
+        state.cycleData.lastPeriodStart = dStr;
+      }
+      saveState();
+      renderCycleAndPillCard();
+      showToast(nextVal ? `🩸 บันทึกวันมีประจำเดือน (${dStr}) บนตารางเว้นยาแล้ว` : `ยกเลิกบันทึกวันมีประจำเดือน (${dStr})`);
+    }
+
+    function renderCycleAndPillCard() {
+      state.cycleData = normalizeCycleDataObj(state.cycleData);
+      const cd = state.cycleData;
+      const brand = getActivePillBrandSpec(cd);
+
+      const brandBadgeEl = document.getElementById("home-pill-brand-badge");
+      if (brandBadgeEl) brandBadgeEl.textContent = brand.shortBadge;
+
+      const packStart = cd.pillPackStartDate || cd.lastPeriodStart || "2026-10-19";
+      const startObj = new Date(packStart + "T00:00:00");
+      const curSelectedObj = new Date(currentSelectedDate + "T00:00:00");
+      const todayObj = new Date(getTodayStr() + "T00:00:00");
+
+      const activePills = brand.activePills || 21;
+      const breakDays = brand.breakDays ?? (brand.layout === "snake_21" ? 7 : 0);
+      const periodWindowLen = breakDays > 0 ? breakDays : (brand.placeboPills || 4);
+
+      // Next period break starts right after activePills (Day 22 of current pack)
+      const breakStartObj = new Date(startObj);
+      breakStartObj.setDate(breakStartObj.getDate() + activePills);
+      const breakEndObj = new Date(breakStartObj);
+      breakEndObj.setDate(breakEndObj.getDate() + periodWindowLen - 1);
+      const nextBoxObj = new Date(startObj);
+      nextBoxObj.setDate(nextBoxObj.getDate() + activePills + (brand.placeboPills || 0) + breakDays);
+
+      const diffToBreak = Math.round((breakStartObj - todayObj) / 86400000);
+      const breakRangeThai = `${formatShortThaiDate(breakStartObj)} – ${formatShortThaiDate(breakEndObj)}`;
+      const nextBoxThai = `${DOW_TH_ARR[nextBoxObj.getDay()]} ${formatShortThaiDate(nextBoxObj)}`;
 
       const subStatusEl = document.getElementById("cycle-sub-status");
       if (subStatusEl) {
-        if (cd.lastPeriodStart) {
-          subStatusEl.style.color = "#059669";
-          subStatusEl.style.fontWeight = "800";
-          subStatusEl.textContent = `✅ ซิงค์ข้อมูลรอบเดือนแล้ว (เริ่มรอบล่าสุด: ${lastDateThai})`;
-        } else {
-          subStatusEl.style.color = "#BE185D";
-          subStatusEl.textContent = "ซิงค์รอบเดือนและการกินยาคุมเหมือนแอปสุขภาพ iPhone";
-        }
+        subStatusEl.style.color = "#BE185D";
+        subStatusEl.style.fontWeight = "800";
+        subStatusEl.textContent = `${brand.name} · เริ่มแผง ${DOW_TH_ARR[startObj.getDay()]} ${formatShortThaiDate(startObj)} · แตะเม็ดยาเพื่อแกะฟอยล์`;
       }
 
       const nextCdEl = document.getElementById("next-period-countdown");
       if (nextCdEl) {
-        nextCdEl.textContent = diffDays === 0 ? "มาวันนี้! 🌸" : `อีก ${diffDays} วัน`;
+        if (diffToBreak > 0) {
+          nextCdEl.textContent = `เว้นมีเมน ${breakRangeThai}`;
+        } else if (diffToBreak >= -(periodWindowLen - 1)) {
+          nextCdEl.textContent = `🩸 ช่วงเว้นยามีเมน (วันที่ ${Math.abs(diffToBreak) + 1}/${periodWindowLen})`;
+        } else {
+          nextCdEl.textContent = `ถึงเวลาเริ่มกล่องใหม่! 📦`;
+        }
       }
       const nextSubEl = document.getElementById("next-period-date-sub");
       if (nextSubEl) {
-        nextSubEl.textContent = `คาดว่ามา ${nextDateThai} · ตกไข่ ${ovDateThai}`;
+        nextSubEl.textContent = `เริ่มกล่องต่อไป: ${nextBoxThai}`;
       }
 
-      const phaseEl = document.getElementById("cycle-phase-text");
-      if (phaseEl) {
-        if (diffDays <= 4) phaseEl.textContent = "🌸 ช่วงก่อนประจำเดือน (PMS) ดื่มน้ำอุ่นเยอะๆ นะคะ";
-        else if (Math.abs(ovDiff) <= 2) phaseEl.textContent = "🥚 ช่วงตกไข่ ฮอร์โมนดี ผิวเปล่งปลั่งออร่าพุ่ง ✨";
-        else phaseEl.textContent = `✨ รอบเดือนปกติ (${cycleLen} วัน) · ซิงค์ Apple Health ได้`;
-      }
-
-      const packTotal = Number(cd.pillPackType) || 28;
-      const packStart = cd.pillPackStartDate || lastStart;
-      const startObj = new Date(packStart + "T00:00:00");
-      const curSelectedObj = new Date(currentSelectedDate + "T00:00:00");
-      const dayOfPack = Math.max(1, Math.min(packTotal || 28, Math.round((curSelectedObj - startObj) / 86400000) + 1));
-
-      const takenToday = !!cd.pillTakenDates[currentSelectedDate];
+      const diffFromStart = Math.round((curSelectedObj - startObj) / 86400000) + 1;
+      const inBreakWindow = diffFromStart > activePills && diffFromStart <= (activePills + periodWindowLen);
       const pillBadgeEl = document.getElementById("pill-pack-day-badge");
-      if (pillBadgeEl) pillBadgeEl.textContent = packTotal === 0 ? "ไม่ใช้ยาคุม" : `เม็ดที่ ${dayOfPack}/${packTotal}`;
+      if (pillBadgeEl) {
+        if (Number(cd.pillPackType) === 0) pillBadgeEl.textContent = "ไม่ใช้ยาคุม";
+        else if (inBreakWindow) pillBadgeEl.textContent = `เว้นยาวันที่ ${diffFromStart - activePills}/${periodWindowLen}`;
+        else pillBadgeEl.textContent = `เม็ดที่ ${Math.max(1, Math.min(activePills, diffFromStart))}/${activePills} (${formatShortThaiDate(curSelectedObj)})`;
+      }
 
+      const takenToday = Boolean(cd.pillTakenDates && cd.pillTakenDates[currentSelectedDate]);
       const pillStatusEl = document.getElementById("pill-status-main");
       if (pillStatusEl) {
-        pillStatusEl.textContent = takenToday ? "✅ กินยาคุมวันนี้แล้ว" : "⭕ แตะเพื่อเช็กอินกินยา";
-        pillStatusEl.style.color = takenToday ? "#15803D" : "#E11D48";
+        if (inBreakWindow && breakDays > 0) {
+          pillStatusEl.textContent = "🩸 ช่วงเว้นยา 7 วัน (ไม่ต้องกินเม็ดยา)";
+          pillStatusEl.style.color = "#9F1239";
+        } else {
+          pillStatusEl.textContent = takenToday
+            ? `✅ แกะเม็ดยาวันนี้แล้ว (${formatShortThaiDate(curSelectedObj)})`
+            : `⭕ แตะเพื่อแกะเม็ดยาวันนี้ (${formatShortThaiDate(curSelectedObj)})`;
+          pillStatusEl.style.color = takenToday ? "#15803D" : "#E11D48";
+        }
       }
       const pillBoxEl = document.getElementById("pill-today-box");
       if (pillBoxEl) {
         pillBoxEl.style.borderColor = takenToday ? "#86EFAC" : "#FECDD3";
-        pillBoxEl.style.background = takenToday ? "#F0FDF4" : "#FFFFFF";
+        pillBoxEl.style.background = takenToday ? "#F0FDF4" : "#FFF1F2";
       }
       const pillTimeSub = document.getElementById("pill-time-sub");
       if (pillTimeSub) {
-        pillTimeSub.textContent = `เตือนเวลา ${cd.pillReminderTime || "21:00"} น. · แผง ${packTotal || 28} เม็ด`;
+        pillTimeSub.textContent = `เตือนเวลา ${cd.pillReminderTime || "21:00"} น. · ${brand.shortBadge}`;
       }
 
-      // Render blister pack inside modal
-      const modalProgEl = document.getElementById("modal-pill-progress-txt");
-      const grid = document.getElementById("pill-blister-grid");
-      if (grid) {
-        let html = "";
-        let takenCount = 0;
-        const total = packTotal || 28;
-        for (let i = 0; i < total; i++) {
-          const d = new Date(startObj);
-          d.setDate(d.getDate() + i);
-          const y = d.getFullYear();
-          const m = String(d.getMonth() + 1).padStart(2, "0");
-          const day = String(d.getDate()).padStart(2, "0");
-          const dStr = `${y}-${m}-${day}`;
-          const isTaken = !!cd.pillTakenDates[dStr];
-          if (isTaken) takenCount++;
-          const isPlacebo = total === 28 && i >= 21;
-          const isToday = dStr === currentSelectedDate;
-
-          const bg = isTaken
-            ? (isPlacebo ? "#F59E0B" : "#EC4899")
-            : (isPlacebo ? "#FEF3C7" : "#FCE7F3");
-          const col = isTaken ? "#FFF" : (isPlacebo ? "#B45309" : "#9D174D");
-          const border = isToday ? "2.5px solid #1E293B" : "1px solid rgba(236,72,153,0.25)";
-
-          html += `
-            <button onclick="toggleBlisterPillDate('${dStr}')" title="เม็ดที่ ${i + 1} (${dStr})" style="height:28px; border-radius:99px; border:${border}; background:${bg}; color:${col}; font-size:10.5px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center;">
-              ${isTaken ? '✓' : (i + 1)}
-            </button>
-          `;
+      const phaseEl = document.getElementById("cycle-phase-text");
+      if (phaseEl) {
+        if (inBreakWindow) {
+          phaseEl.textContent = `🩸 ช่วงเว้นยา (${breakRangeThai}) รอประจำเดือนมา · เริ่มกล่องใหม่วัน${nextBoxThai}`;
+        } else {
+          phaseEl.textContent = `💊 กินครบเม็ดที่ ${activePills} (${formatShortThaiDate(new Date(startObj.getTime() + (activePills - 1) * 86400000))}) แล้วเว้นมีเมน ${periodWindowLen} วัน · เริ่มกล่องใหม่ ${nextBoxThai}`;
         }
-        grid.innerHTML = html;
-        if (modalProgEl) {
-          modalProgEl.textContent = `กินแล้ว ${takenCount}/${total} เม็ด`;
+      }
+
+      // Mount interactive realistic blister pack on Home Card AND inside Modal
+      const blisterHtml = buildRealisticBlisterPackHtml(cd, false);
+      const homeMount = document.getElementById("home-blister-pack-mount");
+      if (homeMount) homeMount.innerHTML = blisterHtml;
+
+      const breakHtml = buildPeriodBreakAndNextBoxHtml(cd);
+      const homeBreakMount = document.getElementById("home-pill-break-mount");
+      if (homeBreakMount) homeBreakMount.innerHTML = breakHtml;
+
+      const modalGrid = document.getElementById("pill-blister-grid");
+      if (modalGrid) {
+        modalGrid.innerHTML = blisterHtml + `<div style="margin-top:8px;">${breakHtml}</div>`;
+      }
+
+      let takenCount = 0;
+      for (let i = 0; i < activePills; i++) {
+        const d = new Date(startObj);
+        d.setDate(d.getDate() + i);
+        if (cd.pillTakenDates[formatDateYMD(d)]) takenCount++;
+      }
+      const modalProgEl = document.getElementById("modal-pill-progress-txt");
+      if (modalProgEl) {
+        modalProgEl.textContent = `แกะแล้ว ${takenCount}/${activePills} เม็ด`;
+      }
+
+      // Render pack history if available
+      const histWrap = document.getElementById("cycle-pack-history-wrap");
+      const histList = document.getElementById("cycle-pack-history-list");
+      if (histWrap && histList) {
+        const hist = Array.isArray(cd.packHistory) ? cd.packHistory : [];
+        if (hist.length > 0) {
+          histWrap.style.display = "block";
+          histList.innerHTML = hist.map((h, idx) => `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#FFF; padding:5px 8px; border-radius:8px; border:1px solid #E2E8F0;">
+              <span>📦 กล่องก่อนหน้า #${hist.length - idx}: <strong>${escapeHtml(h.brandName || 'Yasmin')}</strong> (เริ่ม ${h.startDate})</span>
+              <button type="button" onclick="setPackStartDateQuick('${h.startDate}')" style="border:none; background:#F1F5F9; color:#334155; border-radius:6px; padding:2px 6px; font-size:10px; font-weight:800; cursor:pointer;">เรียกดู</button>
+            </div>
+          `).join("");
+        } else {
+          histWrap.style.display = "none";
         }
       }
     }
 
     function toggleDailyPillTaken() {
-      if (!state.cycleData) return;
+      if (!state.cycleData) state.cycleData = normalizeCycleDataObj({});
       if (!state.cycleData.pillTakenDates) state.cycleData.pillTakenDates = {};
-      const cur = !!state.cycleData.pillTakenDates[currentSelectedDate];
+      const cur = Boolean(state.cycleData.pillTakenDates[currentSelectedDate]);
       state.cycleData.pillTakenDates[currentSelectedDate] = !cur;
       saveState();
       renderCycleAndPillCard();
-      showToast(!cur ? "💊 บันทึกการกินยาคุมวันนี้เรียบร้อย เก่งมากค่ะ! ✨" : "ยกเลิกการติ๊กยาคุมวันนี้");
+      showToast(!cur ? `💊 แกะเม็ดยาคุมวันนี้ (${currentSelectedDate}) เรียบร้อย เก่งมากค่ะ! ✨` : "ยกเลิกการแกะเม็ดยาคุมวันนี้");
     }
 
     function toggleBlisterPillDate(dStr) {
-      if (!state.cycleData) return;
+      if (!state.cycleData) state.cycleData = normalizeCycleDataObj({});
       if (!state.cycleData.pillTakenDates) state.cycleData.pillTakenDates = {};
-      state.cycleData.pillTakenDates[dStr] = !state.cycleData.pillTakenDates[dStr];
+      const nextVal = !state.cycleData.pillTakenDates[dStr];
+      state.cycleData.pillTakenDates[dStr] = nextVal;
       saveState();
       renderCycleAndPillCard();
-      showToast(`💊 อัพเดทแผงยาคุมวันที่ ${dStr} แล้ว`);
+      const dObj = new Date(dStr + "T00:00:00");
+      const label = isNaN(dObj.getTime()) ? dStr : `${DOW_TH_ARR[dObj.getDay()]} ${formatShortThaiDate(dObj)}`;
+      showToast(nextVal ? `💊 แกะเม็ดยาคุมวัน${label} เรียบร้อย ✅` : `↩️ คืนเม็ดยาคุมวัน${label} เข้าแผงแล้ว`);
     }
 
     function logPeriodStartedToday() {
-      if (!state.cycleData) return;
+      if (!state.cycleData) state.cycleData = normalizeCycleDataObj({});
+      if (!state.cycleData.periodFlowDates) state.cycleData.periodFlowDates = {};
       state.cycleData.lastPeriodStart = currentSelectedDate;
-      state.cycleData.pillPackStartDate = currentSelectedDate;
+      state.cycleData.periodFlowDates[currentSelectedDate] = true;
       saveState();
       renderCycleAndPillCard();
-      showToast(`🩸 บันทึกวันเริ่มประจำเดือน (${currentSelectedDate}) และคำนวณรอบเดือนใหม่แล้วค่ะ 🌸`);
+      showToast(`🩸 บันทึกว่ามีประจำเดือนวันนี้ (${currentSelectedDate}) เรียบร้อยค่ะ 🌸`);
     }
 
     function openCycleSettingsModal() {
-      const cd = state.cycleData || {};
+      state.cycleData = normalizeCycleDataObj(state.cycleData);
+      const cd = state.cycleData;
       const lIn = document.getElementById("cycle-last-period-input");
       const lenIn = document.getElementById("cycle-length-input");
       const typeIn = document.getElementById("cycle-pill-type-input");
       const timeIn = document.getElementById("cycle-pill-time-input");
       const startIn = document.getElementById("cycle-pill-start-input");
-      if (lIn) lIn.value = cd.lastPeriodStart || getOffsetDateStr(-14);
+      const customNameIn = document.getElementById("cycle-custom-brand-name");
+      if (lIn) lIn.value = cd.lastPeriodStart || "2026-10-19";
       if (lenIn) lenIn.value = cd.cycleLength || 28;
-      if (typeIn) typeIn.value = String(cd.pillPackType ?? 28);
+      if (typeIn) {
+        if (cd.pillPackType === 0) typeIn.value = "0";
+        else if (cd.pillPackType === 28 && cd.pillPlaceboCount === 4) typeIn.value = "28_24_4";
+        else if (cd.pillPackType === 28) typeIn.value = "28";
+        else typeIn.value = "21";
+      }
       if (timeIn) timeIn.value = cd.pillReminderTime || "21:00";
-      if (startIn) startIn.value = cd.pillPackStartDate || cd.lastPeriodStart || getOffsetDateStr(-14);
+      if (startIn) startIn.value = cd.pillPackStartDate || "2026-10-19";
+      if (customNameIn) customNameIn.value = cd.customBrandName || "";
+      renderBrandSelectorCardsInModal();
       renderCycleAndPillCard();
       openModal("modal-cycle-settings");
     }
 
     function saveCycleSettings() {
-      if (!state.cycleData) state.cycleData = {};
-      state.cycleData.lastPeriodStart = document.getElementById("cycle-last-period-input")?.value || getTodayStr();
-      state.cycleData.cycleLength = Math.max(20, Math.min(45, Number(document.getElementById("cycle-length-input")?.value) || 28));
-      state.cycleData.pillPackType = Number(document.getElementById("cycle-pill-type-input")?.value ?? 28);
-      state.cycleData.pillReminderTime = document.getElementById("cycle-pill-time-input")?.value || "21:00";
-      state.cycleData.pillPackStartDate = document.getElementById("cycle-pill-start-input")?.value || state.cycleData.lastPeriodStart;
+      if (!state.cycleData) state.cycleData = normalizeCycleDataObj({});
+      const cd = state.cycleData;
+      cd.lastPeriodStart = document.getElementById("cycle-last-period-input")?.value || cd.lastPeriodStart || getTodayStr();
+      cd.cycleLength = Math.max(20, Math.min(45, Number(document.getElementById("cycle-length-input")?.value) || 28));
+      cd.pillReminderTime = document.getElementById("cycle-pill-time-input")?.value || "21:00";
+      cd.pillPackStartDate = document.getElementById("cycle-pill-start-input")?.value || cd.pillPackStartDate || "2026-10-19";
+      cd.customBrandName = (document.getElementById("cycle-custom-brand-name")?.value || "").trim();
+      if (cd.pillBrand === "custom") {
+        onChangeCustomPillType();
+      }
       saveState();
       renderCycleAndPillCard();
       closeModal("modal-cycle-settings");
-      showToast("💊 บันทึกการตั้งค่ารอบเดือนและยาคุมเรียบร้อย!");
+      const brand = getActivePillBrandSpec(cd);
+      showToast(`💊 บันทึกแผงยาคุม "${brand.name}" เรียบร้อย!`);
     }
 
     // ==================== SCHEDULE & APPOINTMENT CALENDAR TAB (ปฏิทินกำหนดการ + หมวดหมู่อิสระ) ====================

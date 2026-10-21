@@ -1,8 +1,9 @@
-const CACHE_NAME = 'calorie-pwa-v30';
+const CACHE_NAME = 'calorie-pwa-v31';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './yasmin_real_pack.jpg',
   './logo_cleanfit_blue.jpg',
   './logo_cinnamoroll_diet.jpg',
   './logo_pompompurin_fit.jpg',
