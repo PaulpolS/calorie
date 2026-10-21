@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Calorie</title>
   <script>
-    // 🛡️ Safari Self-Healing Bootstrapper (v29): clears any stale SW caches while preserving 100% of user data
+    // 🛡️ Safari Self-Healing Bootstrapper (v30): clears any stale SW caches while preserving 100% of user data
     (function() {
       try {
-        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v29") !== "1") {
-          localStorage.setItem("calorie_safari_healed_v29", "1");
+        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v30") !== "1") {
+          localStorage.setItem("calorie_safari_healed_v30", "1");
           caches.keys().then(function(keys) {
             keys.forEach(function(k) {
-              if (k !== "calorie-pwa-v29") caches.delete(k);
+              if (k !== "calorie-pwa-v30") caches.delete(k);
             });
           }).catch(function() {});
         }
@@ -3345,7 +3345,7 @@
     <div id="view-profile" class="view">
       <div class="top-header">
         <div class="greeting-box">
-          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v29</span></div>
+          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v30</span></div>
           <div class="greet-main">โปรไฟล์ & ตั้งค่า ⚙️</div>
         </div>
         <div style="display:flex; gap:6px; align-items:center;">
@@ -4294,48 +4294,53 @@
         </div>
       </div>
 
-      <!-- 📍 GOOGLE MAPS PIN & LOCATION BOX (รองรับทั้งก๊อปลิงก์มาวาง และค้นหาปักหมุดในแอป!) -->
+      <!-- 📍 GOOGLE MAPS PIN IN APP + MANUAL LINK BOX -->
       <div style="background:linear-gradient(135deg,#F0F9FF 0%,#F8FAFC 100%); border:1.5px solid #7DD3FC; border-radius:16px; padding:12px; margin-bottom:12px;">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px;">
-          <div style="font-size:13px; font-weight:800; color:#0369A1;">📍 ปักหมุดสถานที่ / ลิงก์ Google Maps</div>
+          <div style="font-size:13px; font-weight:800; color:#0369A1;">📍 ปักหมุดสถานที่ในแอป & ลิงก์ Google Maps</div>
           <div style="display:flex; gap:5px;">
-            <button type="button" onclick="pasteGoogleMapsFromClipboard()" style="border:1px solid #0284C7; background:#0EA5E9; color:#FFFFFF; border-radius:99px; padding:4px 10px; font-size:10.5px; font-weight:800; cursor:pointer; white-space:nowrap;">📋 วางลิงก์ที่ก๊อปมา</button>
             <button type="button" onclick="pinCurrentGpsToSchedule()" style="border:1px solid #0284C7; background:#FFFFFF; color:#0369A1; border-radius:99px; padding:4px 9px; font-size:10.5px; font-weight:800; cursor:pointer; white-space:nowrap;">🎯 พิกัดปัจจุบัน</button>
+            <button type="button" onclick="saveCurrentSchedulePlaceAsFavorite()" title="บันทึกสถานที่นี้ไว้ใช้บ่อย" style="border:1px solid #0284C7; background:#FEF9C3; color:#854D0E; border-radius:99px; padding:4px 9px; font-size:10.5px; font-weight:800; cursor:pointer; white-space:nowrap;">⭐ เก็บหมุดนี้ไว้ใช้บ่อย</button>
           </div>
         </div>
-        <div style="font-size:11px; color:#475569; margin-bottom:8px; line-height:1.4;">
-          💡 <b>ทำได้ 2 แบบเลยครับ:</b> (1) ก๊อปลิงก์จากแอป Google Maps มาวางช่องล่าง หรือ (2) พิมพ์แค่ชื่อร้าน/คลินิกช่องบนแล้วกด <b>"🔍 ดูหมุดแผนที่"</b> ระบบจะปักหมุดให้ทันที!
-        </div>
 
+        <!-- PART 1: Type Place Name & Pin Directly in App -->
         <div class="form-group" style="margin-bottom:8px;">
-          <label style="color:#0369A1; font-size:11.5px;">🏢 ชื่อสถานที่ / ชื่อคลินิก / ชื่อร้าน (พิมพ์ค้นหาหมุดได้เลย)</label>
+          <label style="color:#0369A1; font-size:11.5px; font-weight:800;">🔍 1. พิมพ์ชื่อสถานที่ แล้วกดปักหมุดในแอป (ไม่ต้องสลับแอป)</label>
           <div style="display:flex; gap:6px;">
-            <input type="text" id="sched-input-loc-name" class="form-control" style="flex:1; background:#FFF;" placeholder="เช่น สยามพารากอน, คลินิกทันตกรรม..., เซ็นทรัลลาดพร้าว" oninput="onScheduleLocationInputChanged()" onkeydown="if(event.key==='Enter'){event.preventDefault();previewScheduleGoogleMap(true);}" />
-            <button type="button" onclick="previewScheduleGoogleMap(true)" style="border:1.5px solid #0284C7; background:#E0F2FE; color:#0369A1; border-radius:12px; padding:0 11px; font-size:11.5px; font-weight:800; cursor:pointer; white-space:nowrap;">🔍 ดูหมุดแผนที่</button>
+            <input type="text" id="sched-input-loc-name" class="form-control" style="flex:1; background:#FFF;" placeholder="พิมพ์ชื่อร้าน / คลินิก / ห้าง เช่น สยามพารากอน, เซ็นทรัลลาดพร้าว..." oninput="onScheduleLocationInputChanged()" onkeydown="if(event.key==='Enter'){event.preventDefault();pinTypedPlaceInApp();}" />
+            <button type="button" onclick="pinTypedPlaceInApp()" style="border:none; background:linear-gradient(135deg,#0EA5E9,#0284C7); color:#FFFFFF; border-radius:12px; padding:0 13px; font-size:11.5px; font-weight:800; cursor:pointer; white-space:nowrap; box-shadow:0 3px 8px rgba(2,132,199,0.25);">📍 ปักหมุดในแอป</button>
           </div>
+          <!-- Smart Place Search Suggestions (Optional 1-tap exact branch selector) -->
+          <div id="sched-place-search-results" style="display:none; margin-top:6px; background:#FFFFFF; border:1.5px solid #BAE6FD; border-radius:12px; max-height:145px; overflow-y:auto; padding:4px;"></div>
         </div>
 
-        <div class="form-group" style="margin-bottom:6px;">
-          <label style="color:#0369A1; font-size:11.5px;">🔗 ลิงก์ Google Maps (วางลิงก์ maps.app.goo.gl หรือ google.com/maps ได้เลย)</label>
+        <!-- Interactive Google Maps Embed Preview Right Inside the App -->
+        <div id="sched-map-preview-wrap" style="display:none; margin-bottom:9px; border-radius:12px; overflow:hidden; border:1.5px solid #38BDF8; background:#FFF; box-shadow:0 4px 12px rgba(2,132,199,0.10);">
+          <div style="background:#E0F2FE; padding:5px 10px; font-size:10.5px; font-weight:800; color:#0369A1; display:flex; align-items:center; justify-content:space-between;">
+            <span id="sched-map-preview-title">🗺️ แผนที่หมุดที่ปักในแอป</span>
+            <button type="button" onclick="document.getElementById('sched-map-preview-wrap').style.display='none'" style="border:none; background:transparent; color:#0369A1; font-size:10.5px; font-weight:800; cursor:pointer;">ซ่อนแผนที่ ▲</button>
+          </div>
+          <iframe id="sched-map-preview-iframe" src="about:blank" style="width:100%; height:175px; border:0; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <!-- PART 2: Manual Google Maps Link Input -->
+        <div class="form-group" style="margin-bottom:4px;">
+          <label style="color:#0369A1; font-size:11.5px; font-weight:800;">🔗 2. ช่องใส่ Link Google Maps เอง (วางลิงก์เองได้ หรือให้ระบบสร้างให้อัตโนมัติ)</label>
           <div style="display:flex; gap:6px;">
-            <input type="url" id="sched-input-map-url" class="form-control" style="flex:1; background:#FFF; font-size:12px;" placeholder="วางลิงก์ Google Maps ที่ก๊อปมาตรงนี้ได้เลย..." oninput="onScheduleMapUrlInputChanged(this.value)" />
-            <button type="button" onclick="saveCurrentSchedulePlaceAsFavorite()" title="บันทึกสถานที่นี้ไว้ใช้บ่อย" style="border:1.5px solid #0284C7; background:#FFFFFF; color:#0369A1; border-radius:12px; padding:0 10px; font-size:11px; font-weight:800; cursor:pointer; white-space:nowrap;">⭐ เก็บหมุดนี้</button>
+            <input type="url" id="sched-input-map-url" class="form-control" style="flex:1; background:#FFF; font-size:12px;" placeholder="วางลิงก์ https://maps.app.goo.gl/... หรือ google.com/maps ตรงนี้ได้เลย" oninput="onScheduleMapUrlInputChanged(this.value)" />
+            <button type="button" onclick="pasteGoogleMapsFromClipboard()" style="border:1.5px solid #0284C7; background:#E0F2FE; color:#0369A1; border-radius:12px; padding:0 10px; font-size:11px; font-weight:800; cursor:pointer; white-space:nowrap;">📋 วางลิงก์</button>
           </div>
         </div>
 
         <div id="sched-map-status-bar" style="display:none; align-items:center; justify-content:space-between; gap:8px; background:#E0F2FE; border:1px solid #7DD3FC; border-radius:10px; padding:6px 10px; margin-top:6px; font-size:11px; font-weight:700; color:#0369A1;">
-          <span id="sched-map-status-txt">✅ พร้อมเปิดนำทางใน Google Maps</span>
+          <span id="sched-map-status-txt">✅ ปักหมุดเรียบร้อย พร้อมเปิดนำทาง</span>
           <a id="sched-map-test-link" href="#" target="_blank" rel="noopener" style="background:#0284C7; color:#FFF; text-decoration:none; padding:3px 9px; border-radius:99px; font-size:10.5px; font-weight:800; white-space:nowrap;">🗺️ ทดสอบเปิดแมพ ↗</a>
-        </div>
-
-        <!-- Interactive Google Maps Embed Preview -->
-        <div id="sched-map-preview-wrap" style="display:none; margin-top:8px; border-radius:12px; overflow:hidden; border:1.5px solid #7DD3FC; background:#FFF;">
-          <iframe id="sched-map-preview-iframe" src="about:blank" style="width:100%; height:165px; border:0; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
 
         <!-- Saved Favorite Places Chips -->
         <div id="modal-sched-saved-places-wrap" style="margin-top:8px; display:none;">
-          <div style="font-size:10.5px; font-weight:800; color:#0369A1; margin-bottom:4px;">⭐ สถานที่ที่เคยปักหมุดไว้ (แตะเพื่อเลือกด่วน):</div>
+          <div style="font-size:10.5px; font-weight:800; color:#0369A1; margin-bottom:4px;">⭐ หมุดสถานที่ที่ใช้บ่อย (แตะเพื่อเลือกด่วน):</div>
           <div id="modal-sched-saved-places-chips" style="display:flex; gap:5px; flex-wrap:wrap;"></div>
         </div>
       </div>
@@ -7799,8 +7804,94 @@
       return "";
     }
 
+    let __lastSearchedPlaceCandidates = [];
+
     function onScheduleLocationInputChanged() {
       previewScheduleGoogleMap(false);
+    }
+
+    async function pinTypedPlaceInApp() {
+      const locInp = document.getElementById("sched-input-loc-name");
+      const urlInp = document.getElementById("sched-input-map-url");
+      const resultsBox = document.getElementById("sched-place-search-results");
+      const rawLoc = (locInp?.value || "").trim();
+
+      if (!rawLoc) {
+        showToast("✍️ พิมพ์ชื่อสถานที่/คลินิก/ร้าน ในช่องที่ 1 ก่อนกดปักหมุดนะครับ");
+        if (locInp) locInp.focus();
+        return;
+      }
+
+      // Immediately generate Google Maps link if URL box is empty or was an auto-generated search link
+      const curUrl = (urlInp?.value || "").trim();
+      if (!curUrl || curUrl.includes("google.com/maps/search/?api=1&query=")) {
+        if (urlInp) {
+          urlInp.value = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(rawLoc)}`;
+        }
+      }
+
+      // Show embedded Google Map pin right inside the app immediately!
+      previewScheduleGoogleMap(true);
+      showToast(`📍 ปักหมุด "${rawLoc}" บนแผนที่ในแอปแล้ว!`);
+
+      // Also search matching branches/places in Thailand so user can tap an exact branch if desired
+      try {
+        if (resultsBox) {
+          resultsBox.style.display = "block";
+          resultsBox.innerHTML = `<div style="font-size:11px; color:#0369A1; padding:6px 8px; font-weight:700;">🔎 กำลังค้นหาสาขา/พิกัดใกล้เคียงของ "${rawLoc}"...</div>`;
+        }
+        const resp = await fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=th&limit=5&accept-language=th&q=${encodeURIComponent(rawLoc)}`);
+        if (!resp.ok) throw new Error("search failed");
+        const items = await resp.json();
+        __lastSearchedPlaceCandidates = Array.isArray(items) ? items : [];
+        if (__lastSearchedPlaceCandidates.length > 0 && resultsBox) {
+          resultsBox.innerHTML = `
+            <div style="font-size:10px; font-weight:800; color:#64748B; padding:2px 6px 4px; display:flex; justify-content:space-between;">
+              <span>🎯 แตะเลือกพิกัดสาขาที่ต้องการปักหมุดให้แม่นยำขึ้น (ไม่บังคับ):</span>
+              <button type="button" onclick="document.getElementById('sched-place-search-results').style.display='none'" style="border:none;background:transparent;color:#94A3B8;font-weight:800;cursor:pointer;">✕ ปิด</button>
+            </div>
+            ${__lastSearchedPlaceCandidates.map((it, idx) => {
+              const title = (it.name || it.display_name.split(",")[0] || rawLoc).trim();
+              const sub = it.display_name || "";
+              return `
+                <div onclick="selectSearchedPlaceCandidate(${idx})" style="padding:6px 8px; border-radius:8px; cursor:pointer; border-bottom:1px solid #F1F5F9; display:flex; align-items:flex-start; gap:6px; background:#FFF;">
+                  <span style="font-size:13px;">📍</span>
+                  <div style="flex:1; min-width:0;">
+                    <div style="font-size:11.5px; font-weight:800; color:#0F172A;">${title}</div>
+                    <div style="font-size:10px; color:#64748B; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${sub}</div>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          `;
+        } else if (resultsBox) {
+          resultsBox.style.display = "none";
+        }
+      } catch (_) {
+        if (resultsBox) resultsBox.style.display = "none";
+      }
+    }
+
+    function selectSearchedPlaceCandidate(idx) {
+      const cand = __lastSearchedPlaceCandidates[idx];
+      if (!cand) return;
+      const locInp = document.getElementById("sched-input-loc-name");
+      const urlInp = document.getElementById("sched-input-map-url");
+      const resultsBox = document.getElementById("sched-place-search-results");
+      const shortName = (cand.name || cand.display_name.split(",")[0] || "").trim();
+      const lat = Number(cand.lat).toFixed(6);
+      const lon = Number(cand.lon).toFixed(6);
+      if (locInp && shortName) {
+        locInp.value = shortName;
+      }
+      if (urlInp) {
+        urlInp.value = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+      }
+      if (resultsBox) {
+        resultsBox.style.display = "none";
+      }
+      previewScheduleGoogleMap(true);
+      showToast(`📍 ปักหมุดพิกัด "${shortName}" เรียบร้อย!`);
     }
 
     function onScheduleMapUrlInputChanged(rawVal, showPreviewIframe = false) {
@@ -7824,6 +7915,7 @@
       const statusTxt = document.getElementById("sched-map-status-txt");
       const testLink = document.getElementById("sched-map-test-link");
       const previewWrap = document.getElementById("sched-map-preview-wrap");
+      const previewTitle = document.getElementById("sched-map-preview-title");
       const iframe = document.getElementById("sched-map-preview-iframe");
 
       const navUrl = buildScheduleNavigationUrl(locName, mapUrl);
@@ -7840,14 +7932,17 @@
       if (statusTxt) {
         if (mapUrl && /^https?:\/\//i.test(mapUrl)) {
           statusTxt.textContent = locName
-            ? `✅ ผูกลิงก์ Google Maps กับ "${locName}" แล้ว`
-            : `✅ เชื่อมต่อลิงก์ Google Maps เรียบร้อย! (พิมพ์ชื่อสถานที่ช่องบนเพิ่มได้นะครับ)`;
+            ? `✅ ปักหมุด "${locName}" + ผูกลิงก์ Google Maps แล้ว`
+            : `✅ เชื่อมต่อลิงก์ Google Maps เรียบร้อย!`;
         } else {
-          statusTxt.textContent = `📍 ปักหมุดค้นหา "${locName}" บน Google Maps พร้อมนำทาง`;
+          statusTxt.textContent = `📍 ปักหมุด "${locName}" พร้อมเปิดนำทางใน Google Maps`;
         }
       }
 
       if (forceShowIframe && embedQuery && previewWrap && iframe) {
+        if (previewTitle) {
+          previewTitle.textContent = `🗺️ แผนที่หมุดในแอป: ${locName || embedQuery}`;
+        }
         const nextSrc = `https://maps.google.com/maps?q=${encodeURIComponent(embedQuery)}&hl=th&z=15&output=embed`;
         if (iframe.getAttribute("data-last-q") !== embedQuery) {
           iframe.setAttribute("data-last-q", embedQuery);
@@ -7855,7 +7950,7 @@
         }
         previewWrap.style.display = "block";
       } else if (forceShowIframe && !embedQuery && mapUrl) {
-        showToast("🔗 ลิงก์สั้น Google Maps บันทึกแล้ว! (ถ้าอยากดูพรีวิวแผนที่ในแอป พิมพ์ชื่อสถานที่ช่องบนได้เลยครับ)");
+        showToast("🔗 ลิงก์ Google Maps บันทึกแล้ว! (ถ้าอยากกางแผนที่ดูในแอป พิมพ์ชื่อสถานที่ช่องบนได้เลยครับ)");
       }
     }
 
@@ -8010,10 +8105,12 @@
       const urlInp = document.getElementById("sched-input-map-url");
       const prevWrap = document.getElementById("sched-map-preview-wrap");
       const statusBar = document.getElementById("sched-map-status-bar");
+      const resultsBox = document.getElementById("sched-place-search-results");
       if (locInp) locInp.value = "";
       if (urlInp) urlInp.value = "";
       if (prevWrap) prevWrap.style.display = "none";
       if (statusBar) statusBar.style.display = "none";
+      if (resultsBox) resultsBox.style.display = "none";
       renderSavedScheduleCategoryChips();
       renderSavedSchedulePlacesChips();
       openModal("modal-schedule-add");
@@ -8034,8 +8131,10 @@
       document.getElementById("sched-input-note").value = item.note || "";
       const locInp = document.getElementById("sched-input-loc-name");
       const urlInp = document.getElementById("sched-input-map-url");
+      const resultsBox = document.getElementById("sched-place-search-results");
       if (locInp) locInp.value = item.locationName || "";
       if (urlInp) urlInp.value = item.mapUrl || "";
+      if (resultsBox) resultsBox.style.display = "none";
       renderSavedScheduleCategoryChips();
       renderSavedSchedulePlacesChips();
       previewScheduleGoogleMap(Boolean(item.locationName || item.mapUrl));
