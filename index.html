@@ -4,6 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Calorie</title>
+  <script>
+    // 🛡️ Safari Self-Healing Bootstrapper (v28): clears any stale SW caches while preserving 100% of user data
+    (function() {
+      try {
+        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v28") !== "1") {
+          localStorage.setItem("calorie_safari_healed_v28", "1");
+          caches.keys().then(function(keys) {
+            keys.forEach(function(k) {
+              if (k !== "calorie-pwa-v28") caches.delete(k);
+            });
+          }).catch(function() {});
+        }
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- PWA & iOS Standalone Meta -->
   <link id="app-manifest" rel="manifest" href="manifest.json" />
@@ -2509,15 +2524,15 @@
 
       <!-- 👥 Multi-Profile Switcher Bar (สลับโปรไฟล์ คุณพอล & แฟน ข้อมูลแยกของใครของมัน) -->
       <div class="profile-switcher-bar" id="home-profile-switcher">
-        <button id="btn-prof-paul" class="prof-switch-btn active" onclick="switchActiveUserProfile('paul')">
+        <button type="button" id="btn-prof-paul" class="prof-switch-btn active" data-prof-switch="paul" onclick="switchActiveUserProfile('paul')">
           <img id="sw-av-paul" src="pompom_muscle_avatar.jpg" alt="" />
           <span id="sw-name-paul">คุณพอล 💪</span>
         </button>
-        <button id="btn-prof-partner" class="prof-switch-btn" onclick="switchActiveUserProfile('partner')">
+        <button type="button" id="btn-prof-partner" class="prof-switch-btn" data-prof-switch="partner" onclick="switchActiveUserProfile('partner')">
           <img id="sw-av-partner" src="cinnamoroll_avatar.jpg" alt="" />
           <span id="sw-name-partner">คุณแฟน 🌸</span>
         </button>
-        <button onclick="openRenameProfileModal()" style="border:1.5px solid var(--line); background:var(--green-soft); color:var(--green-dark); border-radius:11px; padding:7px 10px; font-size:11.5px; font-weight:800; cursor:pointer; white-space:nowrap;" title="เปลี่ยนชื่อโปรไฟล์">✏️ แก้ชื่อ</button>
+        <button type="button" onclick="openRenameProfileModal()" style="border:1.5px solid var(--line); background:var(--green-soft); color:var(--green-dark); border-radius:11px; padding:7px 10px; font-size:11.5px; font-weight:800; cursor:pointer; white-space:nowrap;" title="เปลี่ยนชื่อโปรไฟล์">✏️ แก้ชื่อ</button>
       </div>
 
       <!-- Sanrio Mascot Cute Hero Banner (Shown on Sanrio themes) -->
@@ -3330,10 +3345,13 @@
     <div id="view-profile" class="view">
       <div class="top-header">
         <div class="greeting-box">
-          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v27</span></div>
+          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v28</span></div>
           <div class="greet-main">โปรไฟล์ & ตั้งค่า ⚙️</div>
         </div>
-        <button type="button" class="meal-add-btn" style="padding:8px 14px; font-size:13px;" onclick="switchTab('home')">← กลับหน้าแรก</button>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <button type="button" class="meal-add-btn" style="padding:8px 10px; font-size:11.5px; background:#FEF3C7; color:#92400E; border-color:#F59E0B;" onclick="forceHealSafariCache()">🔧 รีเซ็ตแคช Safari</button>
+          <button type="button" class="meal-add-btn" style="padding:8px 12px; font-size:12.5px;" onclick="switchTab('home')">← หน้าแรก</button>
+        </div>
       </div>
 
       <!-- 👥 Multi-Profile Manager Card (สลับโปรไฟล์ คุณพอล & แฟน แยกข้อมูลของใครของมัน) -->
@@ -3349,11 +3367,11 @@
         </div>
 
         <div class="profile-switcher-bar" style="margin-bottom:8px;">
-          <button type="button" id="prof-tab-btn-paul" class="prof-switch-btn active" onclick="switchActiveUserProfile('paul')">
+          <button type="button" id="prof-tab-btn-paul" class="prof-switch-btn active" data-prof-switch="paul" onclick="switchActiveUserProfile('paul')">
             <img src="pompom_muscle_avatar.jpg" alt="" />
             <span id="prof-tab-name-paul">คุณพอล 💪</span>
           </button>
-          <button type="button" id="prof-tab-btn-partner" class="prof-switch-btn" onclick="switchActiveUserProfile('partner')">
+          <button type="button" id="prof-tab-btn-partner" class="prof-switch-btn" data-prof-switch="partner" onclick="switchActiveUserProfile('partner')">
             <img src="cinnamoroll_avatar.jpg" alt="" />
             <span id="prof-tab-name-partner">คุณแฟน 🌸</span>
           </button>
@@ -5077,7 +5095,7 @@
 
       let chosen = def;
       if (local && embedded) {
-        chosen = (Number(local.updatedAt) || 0) >= (Number(embedded.updatedAt) || 0) ? local : embedded;
+        chosen = sanitizeSyncTimestamp(local.updatedAt) >= sanitizeSyncTimestamp(embedded.updatedAt) ? local : embedded;
       } else if (local) {
         chosen = local;
       } else if (embedded) {
@@ -5120,10 +5138,15 @@
             if (getReq.result) {
               try {
                 const idbState = JSON.parse(getReq.result);
-                if ((Number(idbState.updatedAt) || 0) > (Number(state.updatedAt) || 0)) {
+                const idbNormTs = sanitizeSyncTimestamp(idbState.updatedAt);
+                const curNormTs = sanitizeSyncTimestamp(state.updatedAt);
+                if (idbNormTs > curNormTs) {
                   state = normalizeFullState(idbState);
                   safeLocalSet(STORAGE_KEY, JSON.stringify(state));
+                  saveToIndexedDB(state);
                   renderAll();
+                } else if (Number(idbState.updatedAt) !== idbNormTs) {
+                  saveToIndexedDB(state);
                 }
               } catch (err) {}
             }
@@ -9882,25 +9905,50 @@
     }
 
     function renderAll() {
-      renderProfileSwitcherUI();
-      loadProfileForm();
-      applyAppTheme();
-      applyAppLogo();
-      updateGreeting();
-      updateStreak();
-      renderCalendarStrip();
-      renderMacrosAndCalories();
-      renderBeautyQuestsAndGlow();
-      renderCycleAndPillCard();
-      renderStepsAndHealthCard();
-      renderWeightCard();
-      renderWaterCard();
-      renderBookmarks();
-      renderMeals();
-      renderInsights();
-      renderWorkoutStudio();
-      renderScheduleTab();
-      updateSyncStatusUI();
+      const steps = [
+        renderProfileSwitcherUI,
+        loadProfileForm,
+        applyAppTheme,
+        applyAppLogo,
+        updateGreeting,
+        updateStreak,
+        renderCalendarStrip,
+        renderMacrosAndCalories,
+        renderBeautyQuestsAndGlow,
+        renderCycleAndPillCard,
+        renderStepsAndHealthCard,
+        renderWeightCard,
+        renderWaterCard,
+        renderBookmarks,
+        renderMeals,
+        renderInsights,
+        renderWorkoutStudio,
+        renderScheduleTab,
+        updateSyncStatusUI
+      ];
+      steps.forEach((fn) => {
+        try {
+          if (typeof fn === "function") fn();
+        } catch (err) {
+          console.error("renderAll step error:", err);
+        }
+      });
+    }
+
+    async function forceHealSafariCache() {
+      try {
+        showToast("🔧 กำลังล้างแคชเก่าของ Safari (ข้อมูลของคุณปลอดภัย 100%)...");
+        if ("serviceWorker" in navigator) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map((r) => r.unregister()));
+        }
+        if ("caches" in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map((k) => caches.delete(k)));
+        }
+      } catch (e) {}
+      const cleanUrl = window.location.pathname + "?v=" + Date.now();
+      window.location.replace(cleanUrl);
     }
 
     // ==================== NATIVE PIN LOCK OVERLAY & BULLETPROOF TOUCH DELEGATION ====================
@@ -9976,58 +10024,60 @@
       if (window.__profileInteractiveBound) return;
       window.__profileInteractiveBound = true;
 
-      const attachFastTap = (btn, callback) => {
-        if (!btn || btn.__fastTapAttached) return;
-        btn.__fastTapAttached = true;
-        let startX = 0;
-        let startY = 0;
-        let lastFireTs = 0;
+      let gStartX = 0;
+      let gStartY = 0;
+      let lastGlobalTapTs = 0;
 
-        const fireOnce = (ev) => {
-          const now = Date.now();
-          if (now - lastFireTs < 320) return;
-          lastFireTs = now;
-          callback(ev);
-        };
+      const handleActionNode = (node) => {
+        if (!node) return false;
+        const now = Date.now();
+        if (now - lastGlobalTapTs < 260) return true;
+        lastGlobalTapTs = now;
 
-        btn.addEventListener("touchstart", (e) => {
-          const t = e.touches && e.touches[0];
-          if (t) {
-            startX = t.clientX;
-            startY = t.clientY;
-          }
-        }, { passive: true });
-
-        btn.addEventListener("touchend", (e) => {
-          const t = e.changedTouches && e.changedTouches[0];
-          if (!t) return;
-          const dx = Math.abs(t.clientX - startX);
-          const dy = Math.abs(t.clientY - startY);
-          // Trigger immediately if finger moved less than 18px (real tap, not scroll pan)
-          if (dx < 18 && dy < 18) {
-            if (e.cancelable) e.preventDefault();
-            fireOnce(e);
-          }
-        }, { passive: false });
-
-        btn.addEventListener("click", (e) => {
-          fireOnce(e);
-        });
+        const logoVal = node.getAttribute("data-logo-val");
+        if (logoVal) {
+          setAppLogo(logoVal);
+          return true;
+        }
+        const themeVal = node.getAttribute("data-theme-val");
+        if (themeVal) {
+          setAppTheme(themeVal);
+          return true;
+        }
+        const profVal = node.getAttribute("data-prof-switch");
+        if (profVal) {
+          switchActiveUserProfile(profVal);
+          return true;
+        }
+        return false;
       };
 
-      document.querySelectorAll("[data-logo-val]").forEach((btn) => {
-        const logoVal = btn.getAttribute("data-logo-val");
-        if (logoVal) {
-          attachFastTap(btn, () => setAppLogo(logoVal));
+      document.addEventListener("touchstart", (e) => {
+        const t = e.touches && e.touches[0];
+        if (t) {
+          gStartX = t.clientX;
+          gStartY = t.clientY;
         }
-      });
+      }, { passive: true, capture: true });
 
-      document.querySelectorAll("[data-theme-val]").forEach((btn) => {
-        const themeVal = btn.getAttribute("data-theme-val");
-        if (themeVal) {
-          attachFastTap(btn, () => setAppTheme(themeVal));
+      document.addEventListener("touchend", (e) => {
+        const target = e.target && e.target.closest ? e.target.closest("[data-logo-val], [data-theme-val], [data-prof-switch]") : null;
+        if (!target) return;
+        const t = e.changedTouches && e.changedTouches[0];
+        if (!t) return;
+        const dx = Math.abs(t.clientX - gStartX);
+        const dy = Math.abs(t.clientY - gStartY);
+        if (dx < 22 && dy < 22) {
+          if (e.cancelable) e.preventDefault();
+          handleActionNode(target);
         }
-      });
+      }, { passive: false, capture: true });
+
+      document.addEventListener("click", (e) => {
+        const target = e.target && e.target.closest ? e.target.closest("[data-logo-val], [data-theme-val], [data-prof-switch]") : null;
+        if (!target) return;
+        handleActionNode(target);
+      }, { capture: true });
     }
 
     function bootCalorieApp() {
@@ -10076,6 +10126,7 @@
     window.lockCalorieApp = lockCalorieApp;
     window.switchActiveUserProfile = switchActiveUserProfile;
     window.downloadCurrentAppLogo = downloadCurrentAppLogo;
+    window.forceHealSafariCache = forceHealSafariCache;
 
     try {
       bootCalorieApp();
