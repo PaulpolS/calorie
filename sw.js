@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calorie-pwa-v14';
+const CACHE_NAME = 'calorie-pwa-v15';
 const ASSETS = [
   './',
   './index.html',
@@ -69,7 +69,7 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
-  if (url.pathname.startsWith('/api/')) {
+  if (url.origin !== self.location.origin || url.pathname.startsWith('/api/')) {
     return;
   }
   if (e.request.method !== 'GET') return;

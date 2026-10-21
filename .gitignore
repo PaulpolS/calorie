@@ -4,3 +4,4 @@ server.py
 server.log
 Calorie-Offline.html
 .DS_Store
+.cloud_sync_config.json
