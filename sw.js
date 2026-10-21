@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calorie-pwa-v25';
+const CACHE_NAME = 'calorie-pwa-v26';
 const ASSETS = [
   './',
   './index.html',
@@ -84,11 +84,14 @@ self.addEventListener('fetch', (e) => {
 
   if (isHTML) {
     e.respondWith(
-      fetch(e.request, { cache: 'no-store' })
+      fetch(e.request.url, { cache: 'no-store' })
         .then((networkResp) => {
           if (networkResp && networkResp.status === 200) {
             const copy = networkResp.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, copy));
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(e.request, copy.clone());
+              cache.put('./index.html', copy);
+            });
           }
           return networkResp;
         })
