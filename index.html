@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Calorie</title>
   <script>
-    // 🛡️ Safari Self-Healing Bootstrapper (v28): clears any stale SW caches while preserving 100% of user data
+    // 🛡️ Safari Self-Healing Bootstrapper (v29): clears any stale SW caches while preserving 100% of user data
     (function() {
       try {
-        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v28") !== "1") {
-          localStorage.setItem("calorie_safari_healed_v28", "1");
+        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v29") !== "1") {
+          localStorage.setItem("calorie_safari_healed_v29", "1");
           caches.keys().then(function(keys) {
             keys.forEach(function(k) {
-              if (k !== "calorie-pwa-v28") caches.delete(k);
+              if (k !== "calorie-pwa-v29") caches.delete(k);
             });
           }).catch(function() {});
         }
@@ -3345,7 +3345,7 @@
     <div id="view-profile" class="view">
       <div class="top-header">
         <div class="greeting-box">
-          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v28</span></div>
+          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v29</span></div>
           <div class="greet-main">โปรไฟล์ & ตั้งค่า ⚙️</div>
         </div>
         <div style="display:flex; gap:6px; align-items:center;">
@@ -4265,9 +4265,9 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL 12: ADD SCHEDULE / APPOINTMENT (เขียนหมวดหมู่เองได้อิสระ + บันทึกหมวดหมู่ใช้บ่อย) ==================== -->
+  <!-- ==================== MODAL 12: ADD SCHEDULE / APPOINTMENT (เขียนหมวดหมู่เองได้อิสระ + ปักหมุด Google Maps) ==================== -->
   <div id="modal-schedule-add" class="modal-backdrop" onclick="if(event.target===this) closeModal('modal-schedule-add')">
-    <div class="sheet">
+    <div class="sheet" style="max-height:90vh; overflow-y:auto;">
       <div class="sheet-handle"></div>
       <div class="sheet-head">
         <h3 id="modal-sched-head-title">🗓️ เพิ่มกำหนดการ / นัดหมายใหม่</h3>
@@ -4290,9 +4290,56 @@
         </label>
         <div style="margin-top:8px;">
           <div style="font-size:11px; font-weight:800; color:var(--sub); margin-bottom:5px;">⚡ หรือแตะเลือกจากหมวดหมู่ที่คุณบันทึกไว้ (กด ✕ เพื่อลบอันที่ไม่ใช้):</div>
-          <div id="modal-sched-cat-chips" style="display:flex; gap:5px; flex-wrap:wrap; max-height:115px; overflow-y:auto; padding:2px;"></div>
+          <div id="modal-sched-cat-chips" style="display:flex; gap:5px; flex-wrap:wrap; max-height:105px; overflow-y:auto; padding:2px;"></div>
         </div>
       </div>
+
+      <!-- 📍 GOOGLE MAPS PIN & LOCATION BOX (รองรับทั้งก๊อปลิงก์มาวาง และค้นหาปักหมุดในแอป!) -->
+      <div style="background:linear-gradient(135deg,#F0F9FF 0%,#F8FAFC 100%); border:1.5px solid #7DD3FC; border-radius:16px; padding:12px; margin-bottom:12px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px;">
+          <div style="font-size:13px; font-weight:800; color:#0369A1;">📍 ปักหมุดสถานที่ / ลิงก์ Google Maps</div>
+          <div style="display:flex; gap:5px;">
+            <button type="button" onclick="pasteGoogleMapsFromClipboard()" style="border:1px solid #0284C7; background:#0EA5E9; color:#FFFFFF; border-radius:99px; padding:4px 10px; font-size:10.5px; font-weight:800; cursor:pointer; white-space:nowrap;">📋 วางลิงก์ที่ก๊อปมา</button>
+            <button type="button" onclick="pinCurrentGpsToSchedule()" style="border:1px solid #0284C7; background:#FFFFFF; color:#0369A1; border-radius:99px; padding:4px 9px; font-size:10.5px; font-weight:800; cursor:pointer; white-space:nowrap;">🎯 พิกัดปัจจุบัน</button>
+          </div>
+        </div>
+        <div style="font-size:11px; color:#475569; margin-bottom:8px; line-height:1.4;">
+          💡 <b>ทำได้ 2 แบบเลยครับ:</b> (1) ก๊อปลิงก์จากแอป Google Maps มาวางช่องล่าง หรือ (2) พิมพ์แค่ชื่อร้าน/คลินิกช่องบนแล้วกด <b>"🔍 ดูหมุดแผนที่"</b> ระบบจะปักหมุดให้ทันที!
+        </div>
+
+        <div class="form-group" style="margin-bottom:8px;">
+          <label style="color:#0369A1; font-size:11.5px;">🏢 ชื่อสถานที่ / ชื่อคลินิก / ชื่อร้าน (พิมพ์ค้นหาหมุดได้เลย)</label>
+          <div style="display:flex; gap:6px;">
+            <input type="text" id="sched-input-loc-name" class="form-control" style="flex:1; background:#FFF;" placeholder="เช่น สยามพารากอน, คลินิกทันตกรรม..., เซ็นทรัลลาดพร้าว" oninput="onScheduleLocationInputChanged()" onkeydown="if(event.key==='Enter'){event.preventDefault();previewScheduleGoogleMap(true);}" />
+            <button type="button" onclick="previewScheduleGoogleMap(true)" style="border:1.5px solid #0284C7; background:#E0F2FE; color:#0369A1; border-radius:12px; padding:0 11px; font-size:11.5px; font-weight:800; cursor:pointer; white-space:nowrap;">🔍 ดูหมุดแผนที่</button>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:6px;">
+          <label style="color:#0369A1; font-size:11.5px;">🔗 ลิงก์ Google Maps (วางลิงก์ maps.app.goo.gl หรือ google.com/maps ได้เลย)</label>
+          <div style="display:flex; gap:6px;">
+            <input type="url" id="sched-input-map-url" class="form-control" style="flex:1; background:#FFF; font-size:12px;" placeholder="วางลิงก์ Google Maps ที่ก๊อปมาตรงนี้ได้เลย..." oninput="onScheduleMapUrlInputChanged(this.value)" />
+            <button type="button" onclick="saveCurrentSchedulePlaceAsFavorite()" title="บันทึกสถานที่นี้ไว้ใช้บ่อย" style="border:1.5px solid #0284C7; background:#FFFFFF; color:#0369A1; border-radius:12px; padding:0 10px; font-size:11px; font-weight:800; cursor:pointer; white-space:nowrap;">⭐ เก็บหมุดนี้</button>
+          </div>
+        </div>
+
+        <div id="sched-map-status-bar" style="display:none; align-items:center; justify-content:space-between; gap:8px; background:#E0F2FE; border:1px solid #7DD3FC; border-radius:10px; padding:6px 10px; margin-top:6px; font-size:11px; font-weight:700; color:#0369A1;">
+          <span id="sched-map-status-txt">✅ พร้อมเปิดนำทางใน Google Maps</span>
+          <a id="sched-map-test-link" href="#" target="_blank" rel="noopener" style="background:#0284C7; color:#FFF; text-decoration:none; padding:3px 9px; border-radius:99px; font-size:10.5px; font-weight:800; white-space:nowrap;">🗺️ ทดสอบเปิดแมพ ↗</a>
+        </div>
+
+        <!-- Interactive Google Maps Embed Preview -->
+        <div id="sched-map-preview-wrap" style="display:none; margin-top:8px; border-radius:12px; overflow:hidden; border:1.5px solid #7DD3FC; background:#FFF;">
+          <iframe id="sched-map-preview-iframe" src="about:blank" style="width:100%; height:165px; border:0; display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <!-- Saved Favorite Places Chips -->
+        <div id="modal-sched-saved-places-wrap" style="margin-top:8px; display:none;">
+          <div style="font-size:10.5px; font-weight:800; color:#0369A1; margin-bottom:4px;">⭐ สถานที่ที่เคยปักหมุดไว้ (แตะเพื่อเลือกด่วน):</div>
+          <div id="modal-sched-saved-places-chips" style="display:flex; gap:5px; flex-wrap:wrap;"></div>
+        </div>
+      </div>
+
       <div class="form-row-2">
         <div class="form-group">
           <label>👥 ของใคร</label>
@@ -4313,8 +4360,8 @@
           <input type="time" id="sched-input-time" class="form-control num" value="10:30" />
         </div>
         <div class="form-group">
-          <label>📝 สถานที่ / โน้ตเพิ่มเติม (ถ้ามี)</label>
-          <input type="text" id="sched-input-note" class="form-control" placeholder="เช่น คลินิกสยาม / เตรียมฟิล์มเอ็กซเรย์" />
+          <label>📝 โน้ตเพิ่มเติม (ถ้ามี)</label>
+          <input type="text" id="sched-input-note" class="form-control" placeholder="เช่น เตรียมฟิล์มเอ็กซเรย์ / จองคิวชื่อคุณพอล" />
         </div>
       </div>
       <button class="btn-primary" onclick="saveNewScheduleItem()">✅ บันทึกกำหนดการลงปฏิทิน</button>
@@ -4944,10 +4991,14 @@
           partner: buildDefaultPartnerSlot()
         },
         schedules: [
-          { id: 901, title: "🦷 นัดไปขูดหินปูน / ตรวจฟัน", cat: "🦷 ทำฟัน / ขูดหินปูน", who: "both", date: getOffsetDateStr(5), time: "14:00", note: "คลินิกทันตกรรม" },
-          { id: 902, title: "🧂 วันขัดเกลือสครับผิว + มาส์กหน้า", cat: "🧂 ขัดเกลือสครับผิว", who: "partner", date: getOffsetDateStr(2), time: "20:00", note: "สครับผิวใส" }
+          { id: 901, title: "🦷 นัดไปขูดหินปูน / ตรวจฟัน", cat: "🦷 ทำฟัน / ขูดหินปูน", who: "both", date: getOffsetDateStr(5), time: "14:00", locationName: "สยามพารากอน (Siam Paragon)", mapUrl: "https://www.google.com/maps/search/?api=1&query=Siam+Paragon", note: "คลินิกทันตกรรมชั้น 4" },
+          { id: 902, title: "🧂 วันขัดเกลือสครับผิว + มาส์กหน้า", cat: "🧂 ขัดเกลือสครับผิว", who: "partner", date: getOffsetDateStr(2), time: "20:00", locationName: "", mapUrl: "", note: "สครับผิวใส" }
         ],
         customScheduleCategories: [...DEFAULT_SCHEDULE_CATEGORIES],
+        savedSchedulePlaces: [
+          { name: "สยามพารากอน (Siam Paragon)", mapUrl: "https://www.google.com/maps/search/?api=1&query=Siam+Paragon" },
+          { name: "เซ็นทรัลเวิลด์ (centralwOrld)", mapUrl: "https://www.google.com/maps/search/?api=1&query=CentralWorld" }
+        ],
         aiConfig: {
           provider: "google",
           kieModel: "gemini-3.5-flash-lite",
@@ -5015,6 +5066,9 @@
         customScheduleCategories: (Array.isArray(chosen.customScheduleCategories) && chosen.customScheduleCategories.length > 0)
           ? chosen.customScheduleCategories
           : [...DEFAULT_SCHEDULE_CATEGORIES],
+        savedSchedulePlaces: Array.isArray(chosen.savedSchedulePlaces)
+          ? chosen.savedSchedulePlaces
+          : (def.savedSchedulePlaces || []),
         aiConfig: { ...def.aiConfig, ...(chosen.aiConfig || {}) },
         chatHistory: Array.isArray(chosen.chatHistory) ? chosen.chatHistory : def.chatHistory,
         activeProfileId: chosen.activeProfileId || "paul",
@@ -5433,6 +5487,13 @@
         ...DEFAULT_SCHEDULE_CATEGORIES
       ].filter(Boolean));
       merged.customScheduleCategories = Array.from(catSet);
+      const placeMap = new Map();
+      [...(secondary.savedSchedulePlaces || []), ...(primary.savedSchedulePlaces || [])].forEach(pl => {
+        if (pl && (pl.name || pl.mapUrl)) {
+          placeMap.set((pl.name || pl.mapUrl).trim(), pl);
+        }
+      });
+      merged.savedSchedulePlaces = Array.from(placeMap.values());
       merged.beautyLogs = {
         ...(secondary.beautyLogs || {}),
         ...(primary.beautyLogs || {}),
@@ -7610,9 +7671,10 @@
       if (speechEl) {
         if (upcoming.length > 0) {
           const nextEv = upcoming[0];
-          speechEl.innerHTML = `📌 นัดหมายถัดไปของ <b>${state.profile.name}</b> คือ <b>"${nextEv.title}"</b> วันที่ <b>${nextEv.date}</b> เวลา ${nextEv.time || '09:00'} น. ห้ามลืมนะคะ! 🗓️✨`;
+          const locSuffix = (nextEv.locationName || nextEv.mapUrl) ? ` ที่ <b>📍 ${nextEv.locationName || 'พิกัด Google Maps'}</b>` : "";
+          speechEl.innerHTML = `📌 นัดหมายถัดไปของ <b>${state.profile.name}</b> คือ <b>"${nextEv.title}"</b>${locSuffix} วันที่ <b>${nextEv.date}</b> เวลา ${nextEv.time || '09:00'} น. ห้ามลืมนะคะ! 🗓️✨`;
         } else {
-          speechEl.innerHTML = `ยังไม่มีนัดหมายเร็วๆ นี้เลย กดปุ่ม <b>+ เพิ่มนัด</b> เพื่อพิมพ์นัดหมายเองแบบอิสระ หรือตั้งวันมาส์กหน้า/ขัดผิวได้เลยนะ! 🗓️`;
+          speechEl.innerHTML = `ยังไม่มีนัดหมายเร็วๆ นี้เลย กดปุ่ม <b>+ เพิ่มนัด</b> เพื่อพิมพ์นัดหมาย ปักหมุด Google Maps หรือตั้งวันมาส์กหน้า/ขัดผิวได้เลยนะ! 🗓️`;
         }
       }
 
@@ -7627,29 +7689,305 @@
         const catDisplay = formatScheduleCategoryDisplay(item.cat);
         const ic = extractScheduleCategoryIcon(item.cat, item.title);
         const whoTxt = whoLabels[item.who] || item.who || "ทั้งคู่";
+        const navUrl = buildScheduleNavigationUrl(item.locationName, item.mapUrl);
+        const embedQuery = getScheduleEmbedQuery(item.locationName, item.mapUrl);
+        const locLabel = (item.locationName || "").trim() || (item.mapUrl ? "หมุดแผนที่ Google Maps" : "");
+
         return `
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 14px; border-radius:16px; background:${isSelectedDate ? '#FEF9C3' : (isPast ? '#F8FAFC' : '#FFFFFF')}; border:1.5px solid ${isSelectedDate ? '#FACC15' : 'var(--line)'}; opacity:${isPast ? '0.65' : '1'};">
-            <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;" onclick="editScheduleItem(${item.id})">
-              <div style="width:42px; height:42px; flex-shrink:0; border-radius:12px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; font-size:20px;">
-                ${ic}
-              </div>
-              <div style="flex:1; min-width:0;">
-                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                  <span style="font-size:14px; font-weight:800; color:var(--ink);">${item.title}</span>
-                  ${catDisplay ? `<span style="font-size:10px; font-weight:800; background:var(--green-bg); color:var(--green-dark); padding:2px 8px; border-radius:99px;">${catDisplay}</span>` : ''}
+          <div style="display:flex; flex-direction:column; gap:8px; padding:12px 14px; border-radius:16px; background:${isSelectedDate ? '#FEF9C3' : (isPast ? '#F8FAFC' : '#FFFFFF')}; border:1.5px solid ${isSelectedDate ? '#FACC15' : 'var(--line)'}; opacity:${isPast ? '0.65' : '1'};">
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">
+              <div style="display:flex; align-items:flex-start; gap:10px; flex:1; min-width:0; cursor:pointer;" onclick="editScheduleItem(${item.id})">
+                <div style="width:42px; height:42px; flex-shrink:0; border-radius:12px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; font-size:20px;">
+                  ${ic}
                 </div>
-                <div style="font-size:11.5px; color:var(--sub); font-weight:600; margin-top:2px;">📅 ${item.date} · ⏰ ${item.time || '10:00'} น. · ${whoTxt}</div>
-                ${item.note ? `<div style="font-size:11px; color:var(--green-dark); margin-top:2px;">📝 ${item.note}</div>` : ''}
+                <div style="flex:1; min-width:0;">
+                  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                    <span style="font-size:14px; font-weight:800; color:var(--ink);">${item.title}</span>
+                    ${catDisplay ? `<span style="font-size:10px; font-weight:800; background:var(--green-bg); color:var(--green-dark); padding:2px 8px; border-radius:99px;">${catDisplay}</span>` : ''}
+                  </div>
+                  <div style="font-size:11.5px; color:var(--sub); font-weight:600; margin-top:2px;">📅 ${item.date} · ⏰ ${item.time || '10:00'} น. · ${whoTxt}</div>
+                  ${item.note ? `<div style="font-size:11px; color:var(--green-dark); margin-top:2px;">📝 ${item.note}</div>` : ''}
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
+                <button type="button" onclick="saveScheduleItemCatToFavorites(${item.id})" title="บันทึกเป็นหมวดหมู่ที่ใช้บ่อย" style="border:1px solid var(--line); background:#FFF; color:var(--green-dark); border-radius:8px; padding:5px 7px; font-size:10.5px; font-weight:800; cursor:pointer;">⭐ หมวด</button>
+                <button type="button" onclick="editScheduleItem(${item.id})" title="แก้ไขนัดหมาย" style="border:1px solid var(--line); background:#FFF; color:var(--sub); border-radius:8px; padding:5px 7px; font-size:11px; cursor:pointer;">✏️</button>
+                <button class="food-del-btn" onclick="deleteScheduleItem(${item.id})" title="ลบนัดหมาย">✕</button>
               </div>
             </div>
-            <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
-              <button type="button" onclick="saveScheduleItemCatToFavorites(${item.id})" title="บันทึกเป็นหมวดหมู่ที่ใช้บ่อย" style="border:1px solid var(--line); background:#FFF; color:var(--green-dark); border-radius:8px; padding:5px 7px; font-size:11px; font-weight:800; cursor:pointer;">⭐ เก็บหมวดนี้</button>
-              <button type="button" onclick="editScheduleItem(${item.id})" title="แก้ไขนัดหมาย" style="border:1px solid var(--line); background:#FFF; color:var(--sub); border-radius:8px; padding:5px 7px; font-size:11px; cursor:pointer;">✏️</button>
-              <button class="food-del-btn" onclick="deleteScheduleItem(${item.id})" title="ลบนัดหมาย">✕</button>
-            </div>
+            ${navUrl ? `
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; background:#F0F9FF; border:1px solid #BAE6FD; border-radius:12px; padding:7px 10px;">
+                <div style="font-size:11.5px; font-weight:800; color:#0369A1; flex:1; min-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                  📍 ${locLabel}
+                </div>
+                <div style="display:flex; align-items:center; gap:5px;">
+                  ${embedQuery ? `<button type="button" onclick="toggleScheduleCardMapPreview(${item.id})" style="border:1px solid #38BDF8; background:#FFFFFF; color:#0284C7; border-radius:99px; padding:4px 9px; font-size:10.5px; font-weight:800; cursor:pointer;">👁️ ดูแผนที่</button>` : ''}
+                  <a href="${navUrl}" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#0EA5E9,#0284C7); color:#FFFFFF; text-decoration:none; padding:4px 10px; border-radius:99px; font-size:10.5px; font-weight:800; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(2,132,199,0.25);">
+                    🗺️ เปิด Google Maps ↗
+                  </a>
+                </div>
+              </div>
+              <div id="sched-card-map-box-${item.id}" style="display:none; border-radius:12px; overflow:hidden; border:1.5px solid #7DD3FC; background:#FFF;"></div>
+            ` : ''}
           </div>
         `;
       }).join("");
+    }
+
+    // ==================== GOOGLE MAPS PIN & SMART LINK HELPERS ====================
+    function parseSharedGoogleMapsText(rawStr) {
+      const s = String(rawStr || "").trim();
+      if (!s) return { url: "", name: "", coords: "" };
+
+      const urlMatch = s.match(/https?:\/\/[^\s"'<>]+/i);
+      const url = urlMatch ? urlMatch[0].trim() : "";
+      let name = "";
+      if (urlMatch) {
+        name = s.replace(urlMatch[0], "").replace(/^[\s\-–—·•:,|]+|[\s\-–—·•:,|]+$/g, "").trim();
+      }
+
+      let coords = "";
+      const targetForCoord = url || s;
+      const atCoord = targetForCoord.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+      const qCoord = targetForCoord.match(/[?&](?:q|query|ll)=(-?\d+\.\d+)(?:,|%2C)(-?\d+\.\d+)/i);
+      const bangCoord = targetForCoord.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/);
+      const plainCoord = !url ? s.match(/^(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)$/) : null;
+
+      if (atCoord) coords = `${atCoord[1]},${atCoord[2]}`;
+      else if (qCoord) coords = `${qCoord[1]},${qCoord[2]}`;
+      else if (bangCoord) coords = `${bangCoord[1]},${bangCoord[2]}`;
+      else if (plainCoord) coords = `${plainCoord[1]},${plainCoord[2]}`;
+
+      if (!name && url) {
+        const placeMatch = url.match(/\/maps\/place\/([^\/?&]+)/i);
+        if (placeMatch && placeMatch[1]) {
+          try {
+            name = decodeURIComponent(placeMatch[1].replace(/\+/g, " ")).trim();
+          } catch (_) {}
+        }
+        if (!name) {
+          const qParam = url.match(/[?&](?:q|query)=([^&]+)/i);
+          if (qParam && qParam[1]) {
+            try {
+              const decoded = decodeURIComponent(qParam[1].replace(/\+/g, " ")).trim();
+              if (!/^-?\d+\.\d+,-?\d+\.\d+$/.test(decoded)) name = decoded;
+            } catch (_) {}
+          }
+        }
+      }
+
+      return { url, name, coords };
+    }
+
+    function buildScheduleNavigationUrl(locName, mapUrl) {
+      const cleanUrl = String(mapUrl || "").trim();
+      const cleanName = String(locName || "").trim();
+      if (cleanUrl && /^https?:\/\//i.test(cleanUrl)) {
+        return cleanUrl;
+      }
+      const query = cleanName || cleanUrl;
+      if (!query) return "";
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    }
+
+    function getScheduleEmbedQuery(locName, mapUrl) {
+      const parsed = parseSharedGoogleMapsText(mapUrl || "");
+      if (parsed.coords) return parsed.coords;
+      if (parsed.name) return parsed.name;
+      const cleanName = String(locName || "").trim();
+      if (cleanName) return cleanName;
+      return "";
+    }
+
+    function onScheduleLocationInputChanged() {
+      previewScheduleGoogleMap(false);
+    }
+
+    function onScheduleMapUrlInputChanged(rawVal, showPreviewIframe = false) {
+      const locInp = document.getElementById("sched-input-loc-name");
+      const urlInp = document.getElementById("sched-input-map-url");
+      const parsed = parseSharedGoogleMapsText(rawVal);
+
+      if (parsed.url && urlInp && rawVal.trim() !== parsed.url) {
+        urlInp.value = parsed.url;
+      }
+      if (parsed.name && locInp && !locInp.value.trim()) {
+        locInp.value = parsed.name;
+      }
+      previewScheduleGoogleMap(showPreviewIframe || Boolean(parsed.coords || parsed.name));
+    }
+
+    function previewScheduleGoogleMap(forceShowIframe = false) {
+      const locName = (document.getElementById("sched-input-loc-name")?.value || "").trim();
+      const mapUrl = (document.getElementById("sched-input-map-url")?.value || "").trim();
+      const statusBar = document.getElementById("sched-map-status-bar");
+      const statusTxt = document.getElementById("sched-map-status-txt");
+      const testLink = document.getElementById("sched-map-test-link");
+      const previewWrap = document.getElementById("sched-map-preview-wrap");
+      const iframe = document.getElementById("sched-map-preview-iframe");
+
+      const navUrl = buildScheduleNavigationUrl(locName, mapUrl);
+      const embedQuery = getScheduleEmbedQuery(locName, mapUrl);
+
+      if (!navUrl) {
+        if (statusBar) statusBar.style.display = "none";
+        if (previewWrap) previewWrap.style.display = "none";
+        return;
+      }
+
+      if (statusBar) statusBar.style.display = "flex";
+      if (testLink) testLink.href = navUrl;
+      if (statusTxt) {
+        if (mapUrl && /^https?:\/\//i.test(mapUrl)) {
+          statusTxt.textContent = locName
+            ? `✅ ผูกลิงก์ Google Maps กับ "${locName}" แล้ว`
+            : `✅ เชื่อมต่อลิงก์ Google Maps เรียบร้อย! (พิมพ์ชื่อสถานที่ช่องบนเพิ่มได้นะครับ)`;
+        } else {
+          statusTxt.textContent = `📍 ปักหมุดค้นหา "${locName}" บน Google Maps พร้อมนำทาง`;
+        }
+      }
+
+      if (forceShowIframe && embedQuery && previewWrap && iframe) {
+        const nextSrc = `https://maps.google.com/maps?q=${encodeURIComponent(embedQuery)}&hl=th&z=15&output=embed`;
+        if (iframe.getAttribute("data-last-q") !== embedQuery) {
+          iframe.setAttribute("data-last-q", embedQuery);
+          iframe.src = nextSrc;
+        }
+        previewWrap.style.display = "block";
+      } else if (forceShowIframe && !embedQuery && mapUrl) {
+        showToast("🔗 ลิงก์สั้น Google Maps บันทึกแล้ว! (ถ้าอยากดูพรีวิวแผนที่ในแอป พิมพ์ชื่อสถานที่ช่องบนได้เลยครับ)");
+      }
+    }
+
+    async function pasteGoogleMapsFromClipboard() {
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          const clipTxt = (await navigator.clipboard.readText()).trim();
+          if (clipTxt) {
+            const urlInp = document.getElementById("sched-input-map-url");
+            if (urlInp) urlInp.value = clipTxt;
+            onScheduleMapUrlInputChanged(clipTxt, true);
+            showToast("📋 วางลิงก์ Google Maps จากคลิปบอร์ดเรียบร้อย!");
+            return;
+          }
+        }
+      } catch (_) {}
+      const manual = window.prompt("📋 กดวาง (Paste) ลิงก์ Google Maps หรือชื่อสถานที่ที่ก๊อปมาตรงนี้ได้เลยครับ:");
+      if (manual && manual.trim()) {
+        const urlInp = document.getElementById("sched-input-map-url");
+        if (urlInp) urlInp.value = manual.trim();
+        onScheduleMapUrlInputChanged(manual.trim(), true);
+        showToast("📋 เชื่อมต่อลิงก์ Google Maps เรียบร้อย!");
+      }
+    }
+
+    function pinCurrentGpsToSchedule() {
+      if (!navigator.geolocation) {
+        showToast("เบราว์เซอร์นี้ไม่รองรับการดึงพิกัด GPS ครับ");
+        return;
+      }
+      showToast("🎯 กำลังดึงพิกัดปัจจุบันของคุณ...");
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude.toFixed(6);
+          const lng = pos.coords.longitude.toFixed(6);
+          const gUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+          const urlInp = document.getElementById("sched-input-map-url");
+          const locInp = document.getElementById("sched-input-loc-name");
+          if (urlInp) urlInp.value = gUrl;
+          if (locInp && !locInp.value.trim()) {
+            locInp.value = `หมุดพิกัดปัจจุบัน (${lat}, ${lng})`;
+          }
+          previewScheduleGoogleMap(true);
+          showToast("📍 ปักหมุดพิกัดปัจจุบันลงในนัดหมายเรียบร้อย!");
+        },
+        () => {
+          showToast("⚠️ ไม่สามารถดึง GPS ได้ กรุณาพิมพ์ชื่อสถานที่หรือวางลิงก์แทนนะครับ");
+        },
+        { enableHighAccuracy: true, timeout: 7000 }
+      );
+    }
+
+    function ensureSavedSchedulePlaces() {
+      if (!Array.isArray(state.savedSchedulePlaces)) {
+        state.savedSchedulePlaces = [];
+      }
+      return state.savedSchedulePlaces;
+    }
+
+    function renderSavedSchedulePlacesChips() {
+      const places = ensureSavedSchedulePlaces();
+      const wrap = document.getElementById("modal-sched-saved-places-wrap");
+      const chipsEl = document.getElementById("modal-sched-saved-places-chips");
+      if (!wrap || !chipsEl) return;
+      if (places.length === 0) {
+        wrap.style.display = "none";
+        return;
+      }
+      wrap.style.display = "block";
+      chipsEl.innerHTML = places.map((pl, idx) => `
+        <div style="display:inline-flex; align-items:center; background:#FFFFFF; border:1.5px solid #BAE6FD; border-radius:99px; overflow:hidden;">
+          <button type="button" onclick="selectSavedSchedulePlace(${idx})" style="border:none; background:transparent; color:#0369A1; padding:4px 9px 4px 10px; font-size:11px; font-weight:800; cursor:pointer;">
+            📍 ${pl.name || "หมุดที่บันทึกไว้"}
+          </button>
+          <button type="button" onclick="deleteSavedSchedulePlace(${idx}, event)" style="border:none; border-left:1px solid #E0F2FE; background:transparent; color:#94A3B8; padding:4px 7px; font-size:9.5px; font-weight:800; cursor:pointer;">✕</button>
+        </div>
+      `).join("");
+    }
+
+    function saveCurrentSchedulePlaceAsFavorite() {
+      const locName = (document.getElementById("sched-input-loc-name")?.value || "").trim();
+      const mapUrl = (document.getElementById("sched-input-map-url")?.value || "").trim();
+      if (!locName && !mapUrl) {
+        showToast("📍 พิมพ์ชื่อสถานที่ หรือวางลิงก์ Google Maps ก่อนกดเก็บหมุดนะครับ");
+        return;
+      }
+      const places = ensureSavedSchedulePlaces();
+      const displayName = locName || parseSharedGoogleMapsText(mapUrl).name || "หมุดประจำ";
+      const finalUrl = buildScheduleNavigationUrl(displayName, mapUrl);
+      const existsIdx = places.findIndex(p => p.name === displayName || (mapUrl && p.mapUrl === finalUrl));
+      if (existsIdx !== -1) {
+        places[existsIdx] = { name: displayName, mapUrl: finalUrl };
+      } else {
+        places.unshift({ name: displayName, mapUrl: finalUrl });
+      }
+      saveState();
+      renderSavedSchedulePlacesChips();
+      showToast(`⭐ บันทึก "${displayName}" ไว้ในสถานที่ประจำแล้ว!`);
+    }
+
+    function selectSavedSchedulePlace(idx) {
+      const places = ensureSavedSchedulePlaces();
+      const chosen = places[idx];
+      if (!chosen) return;
+      const locInp = document.getElementById("sched-input-loc-name");
+      const urlInp = document.getElementById("sched-input-map-url");
+      if (locInp) locInp.value = chosen.name || "";
+      if (urlInp) urlInp.value = chosen.mapUrl || "";
+      previewScheduleGoogleMap(true);
+    }
+
+    function deleteSavedSchedulePlace(idx, ev) {
+      if (ev) ev.stopPropagation();
+      const places = ensureSavedSchedulePlaces();
+      state.savedSchedulePlaces = places.filter((_, i) => i !== idx);
+      saveState();
+      renderSavedSchedulePlacesChips();
+      showToast("🗑️ ลบสถานที่ประจำแล้ว");
+    }
+
+    function toggleScheduleCardMapPreview(id) {
+      const item = (state.schedules || []).find(s => s.id === id);
+      const box = document.getElementById(`sched-card-map-box-${id}`);
+      if (!item || !box) return;
+      if (box.style.display === "block") {
+        box.style.display = "none";
+        return;
+      }
+      const embedQuery = getScheduleEmbedQuery(item.locationName, item.mapUrl);
+      if (!embedQuery) return;
+      box.innerHTML = `<iframe src="https://maps.google.com/maps?q=${encodeURIComponent(embedQuery)}&hl=th&z=15&output=embed" style="width:100%; height:175px; border:0; display:block;" loading="lazy"></iframe>`;
+      box.style.display = "block";
     }
 
     function selectScheduleDate(dStr) {
@@ -7668,7 +8006,16 @@
       document.getElementById("sched-input-time").value = "10:30";
       document.getElementById("sched-input-who").value = state.activeProfileId === "partner" ? "partner" : "paul";
       document.getElementById("sched-input-note").value = "";
+      const locInp = document.getElementById("sched-input-loc-name");
+      const urlInp = document.getElementById("sched-input-map-url");
+      const prevWrap = document.getElementById("sched-map-preview-wrap");
+      const statusBar = document.getElementById("sched-map-status-bar");
+      if (locInp) locInp.value = "";
+      if (urlInp) urlInp.value = "";
+      if (prevWrap) prevWrap.style.display = "none";
+      if (statusBar) statusBar.style.display = "none";
       renderSavedScheduleCategoryChips();
+      renderSavedSchedulePlacesChips();
       openModal("modal-schedule-add");
     }
 
@@ -7685,7 +8032,13 @@
       document.getElementById("sched-input-time").value = item.time || "10:30";
       document.getElementById("sched-input-who").value = item.who || "both";
       document.getElementById("sched-input-note").value = item.note || "";
+      const locInp = document.getElementById("sched-input-loc-name");
+      const urlInp = document.getElementById("sched-input-map-url");
+      if (locInp) locInp.value = item.locationName || "";
+      if (urlInp) urlInp.value = item.mapUrl || "";
       renderSavedScheduleCategoryChips();
+      renderSavedSchedulePlacesChips();
+      previewScheduleGoogleMap(Boolean(item.locationName || item.mapUrl));
       openModal("modal-schedule-add");
     }
 
@@ -7699,6 +8052,17 @@
       const time = document.getElementById("sched-input-time").value || "10:00";
       const who = document.getElementById("sched-input-who").value || "both";
       const note = document.getElementById("sched-input-note").value.trim();
+      let locationName = (document.getElementById("sched-input-loc-name")?.value || "").trim();
+      let mapUrl = (document.getElementById("sched-input-map-url")?.value || "").trim();
+
+      if (mapUrl) {
+        const parsed = parseSharedGoogleMapsText(mapUrl);
+        if (parsed.url) mapUrl = parsed.url;
+        if (parsed.name && !locationName) locationName = parsed.name;
+      }
+      if (locationName && !mapUrl) {
+        mapUrl = buildScheduleNavigationUrl(locationName, "");
+      }
 
       const autoSaveCat = document.getElementById("sched-save-cat-checkbox")?.checked;
       if (autoSaveCat && cat) {
@@ -7709,18 +8073,18 @@
       if (editId) {
         const idx = state.schedules.findIndex(s => s.id === editId);
         if (idx !== -1) {
-          state.schedules[idx] = { ...state.schedules[idx], title, cat, date, time, who, note };
+          state.schedules[idx] = { ...state.schedules[idx], title, cat, date, time, who, note, locationName, mapUrl };
         } else {
-          state.schedules.push({ id: Date.now(), title, cat, date, time, who, note });
+          state.schedules.push({ id: Date.now(), title, cat, date, time, who, note, locationName, mapUrl });
         }
       } else {
-        state.schedules.push({ id: Date.now(), title, cat, date, time, who, note });
+        state.schedules.push({ id: Date.now(), title, cat, date, time, who, note, locationName, mapUrl });
       }
       currentSchedSelectedDate = date;
       saveState();
       renderScheduleTab();
       closeModal("modal-schedule-add");
-      showToast(`🗓️ บันทึกนัดหมาย "${title}" วันที่ ${date} เรียบร้อย!`);
+      showToast(`🗓️ บันทึกนัดหมาย "${title}" ${locationName || mapUrl ? 'พร้อมหมุด Google Maps ' : ''}เรียบร้อย!`);
     }
 
     function deleteScheduleItem(id) {
