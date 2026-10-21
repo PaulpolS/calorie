@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Calorie</title>
   <script>
-    // 🛡️ Safari Self-Healing Bootstrapper (v31): clears any stale SW caches while preserving 100% of user data
+    // 🛡️ Safari Self-Healing Bootstrapper (v32): clears any stale SW caches while preserving 100% of user data
     (function() {
       try {
-        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v31") !== "1") {
-          localStorage.setItem("calorie_safari_healed_v31", "1");
+        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v32") !== "1") {
+          localStorage.setItem("calorie_safari_healed_v32", "1");
           caches.keys().then(function(keys) {
             keys.forEach(function(k) {
-              if (k !== "calorie-pwa-v31") caches.delete(k);
+              if (k !== "calorie-pwa-v32") caches.delete(k);
             });
           }).catch(function() {});
         }
@@ -3523,7 +3523,7 @@
     <div id="view-profile" class="view">
       <div class="top-header">
         <div class="greeting-box">
-          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v31</span></div>
+          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v32</span></div>
           <div class="greet-main">โปรไฟล์ & ตั้งค่า ⚙️</div>
         </div>
         <div style="display:flex; gap:6px; align-items:center;">
@@ -4400,35 +4400,38 @@
 
   <!-- ==================== MODAL 11: APPLE HEALTH SHORTCUT SYNC GUIDE ==================== -->
   <div id="modal-apple-health" class="modal-backdrop" onclick="if(event.target===this) closeModal('modal-apple-health')">
-    <div class="sheet">
+    <div class="sheet" style="max-height:90vh; overflow-y:auto;">
       <div class="sheet-handle"></div>
       <div class="sheet-head">
         <h3>🍎 วิธีเชื่อมก้าวเดิน & รอบเดือน (Apple สุขภาพ)</h3>
         <button class="close-btn" onclick="closeModal('modal-apple-health')">✕</button>
       </div>
-      <div style="font-size:12.5px; line-height:1.6; color:var(--ink);">
-        <div style="background:linear-gradient(135deg,#FDF2F8 0%,#EFF6FF 100%); border:2px solid #F472B6; border-radius:16px; padding:12px; margin-bottom:12px; text-align:center;">
-          <div style="font-size:13.5px; font-weight:800; color:#9D174D; margin-bottom:4px;">🎁 ไฟล์คำสั่งลัดสำเร็จรูป (ไม่ต้องตั้งค่าเอง!)</div>
-          <div style="font-size:11.5px; color:var(--sub); margin-bottom:8px;">ตั้งค่าดึงทั้ง <b>ก้าวเดินวันนี้ (Steps)</b> + <b>รอบประจำเดือน (Menstruation)</b> แบบรวมในกล่องข้อความให้เสร็จเรียบร้อย กดปุ่มด้านล่างเพื่อเพิ่มเข้าแอปคำสั่งลัดบน iPhone ได้เลยครับ:</div>
-          <a href="CalorieHealthSync.shortcut" download="CalorieHealthSync.shortcut" onclick="window.open('https://paulpols.github.io/calorie/CalorieHealthSync.shortcut','_blank')" style="display:block; text-decoration:none; background:linear-gradient(135deg,#E11D48 0%,#DB2777 100%); color:#FFF; font-weight:800; font-size:13.5px; padding:11px 14px; border-radius:12px; box-shadow:0 6px 16px rgba(225,29,72,0.28);">
-            📲 กดติดตั้งคำสั่งลัดสำเร็จรูป (.shortcut)
-          </a>
+      <div style="font-size:12.5px; line-height:1.55; color:var(--ink);">
+        <!-- 💊 Note that Blister Pack works 100% in-app without needing Shortcuts -->
+        <div style="background:#FFF1F2; border:1.5px solid #FECDD3; border-radius:14px; padding:9px 11px; margin-bottom:10px; font-size:11.5px; color:#9F1239; font-weight:700;">
+          💊 <b>หมายเหตุสำหรับแผงยาคุม Yasmin & รอบประจำเดือน:</b> คุณแฟนสามารถ<b>กดแกะเม็ดยาบนแผงและบันทึกวันมีเมนในแอปได้โดยตรง 100%</b> เลยครับ (ไม่ต้องลงคำสั่งลัดก็ใช้งานแผงยาคุมได้ครบทุกฟีเจอร์!)
+        </div>
+
+        <div style="background:linear-gradient(135deg,#FDF2F8 0%,#EFF6FF 100%); border:2px solid #F472B6; border-radius:16px; padding:12px; margin-bottom:12px;">
+          <div style="font-size:13.5px; font-weight:900; color:#9D174D; margin-bottom:4px; text-align:center;">🎁 ติดตั้งไฟล์คำสั่งลัดสำเร็จรูป (ดึงก้าวเดิน + รอบเดือน)</div>
+          <div style="font-size:11.5px; color:#334155; margin-bottom:9px; background:rgba(255,255,255,0.85); border-radius:10px; padding:8px 10px; border:1px solid #FBCFE8;">
+            <div style="font-weight:900; color:#BE185D; margin-bottom:3px;">📱 วิธีลงบน iPhone ไม่ให้ติดหน้าจอภาษาต่างดาว (AEA1...):</div>
+            <div><b>ขั้นที่ 1:</b> กดปุ่มสีชมพูด้านล่าง ➔ หน้าต่างแชร์ของ iPhone จะเด้งขึ้นมา ให้เลือก <b>"บันทึกไปยังแอปไฟล์ (Save to Files)"</b></div>
+            <div><b>ขั้นที่ 2:</b> เปิดแอป <b>"ไฟล์ (Files)"</b> บน iPhone ➔ แตะไฟล์ชื่อ <b><code>CalorieHealthSync</code></b> 1 ครั้ง ➔ iPhone จะเด้งปุ่ม <b>"เพิ่มคำสั่งลัด (Add Shortcut)"</b> เข้าแอปคำสั่งลัดให้ทันทีครับ!</div>
+          </div>
+          <button type="button" id="btn-install-shortcut-safe" onclick="installAppleHealthShortcut()" style="width:100%; border:none; cursor:pointer; background:linear-gradient(135deg,#E11D48 0%,#DB2777 100%); color:#FFF; font-weight:900; font-size:13.5px; padding:11px 14px; border-radius:12px; box-shadow:0 6px 16px rgba(225,29,72,0.28); margin-bottom:7px;">
+            📲 1. กดส่งไฟล์คำสั่งลัดเข้าแอปไฟล์ iPhone (.shortcut)
+          </button>
+          <button type="button" onclick="openIosShortcutsApp()" style="width:100%; border:1.5px solid #1D4ED8; cursor:pointer; background:#EFF6FF; color:#1E40AF; font-weight:800; font-size:12px; padding:8px 12px; border-radius:10px;">
+            ⚡ หรือกดเปิดแอป "คำสั่งลัด (Shortcuts)" บน iPhone ทันที
+          </button>
         </div>
         <div style="background:#EFF6FF; border:1.5px solid #BFDBFE; border-radius:14px; padding:11px 12px; margin-bottom:10px;">
-          <div style="font-weight:800; color:#1E40AF; margin-bottom:4px;">👟 ส่วนที่ 1: ดึงก้าวเดินวันนี้ (Steps)</div>
+          <div style="font-weight:800; color:#1E40AF; margin-bottom:4px;">👟 ตั้งค่าเองในแอปคำสั่งลัด (กรณีสร้างเอง 1 นาทีเสร็จ):</div>
           <div>1. เพิ่มการทำงาน <b>"ค้นหาตัวอย่างสุขภาพ (Find Health Samples)"</b></div>
           <div>2. ตั้งค่า <b>ประเภท คือ Steps (ก้าว)</b> · <b>วันที่เริ่มต้น คือวันนี้</b></div>
           <div>3. เพิ่มการทำงาน <b>"คำนวณ (Calculate Statistics)"</b> ➔ เลือก <b>ผลรวม (Sum)</b> ของตัวอย่างสุขภาพ</div>
-        </div>
-
-        <div style="background:#FDF2F8; border:1.5px solid #FBCFE8; border-radius:14px; padding:11px 12px; margin-bottom:10px;">
-          <div style="font-weight:800; color:#9D174D; margin-bottom:4px;">🩸 ส่วนที่ 2: ดึงรอบเดือนล่าสุด (ใส่ต่อในคำสั่งลัดเดียวกันได้เลย!)</div>
-          <div>1. กดค้นหาเพิ่ม <b>"ค้นหาตัวอย่างสุขภาพ (Find Health Samples)"</b> อีก 1 กล่อง (วางต่อใต้กล่องคำนวณผลรวม)</div>
-          <div>2. ตั้งค่า <b>ประเภท คือ ประจำเดือน (Menstruation)</b></div>
-          <div>3. ตั้งค่า <b>เรียงตาม: วันที่เริ่มต้น (Start Date)</b> ➔ ลำดับ: <b>ล่าสุดก่อน (Latest First)</b></div>
-          <div>4. เปิดสวิตช์ <b>จำกัด (Limit)</b> ➔ ตั้งเป็น <b>1 รายการ</b></div>
-          <div>5. ในกล่อง <b>"เปิด URL"</b> ด้านล่างสุด ให้พิมพ์ต่อท้ายลิงก์ว่า <code>&amp;period_date=</code> แล้วเลือกตัวแปร <b>ตัวอย่างสุขภาพ (ของกล่องประจำเดือน)</b> ➔ แตะที่ตัวแปรแล้วเลือก <b>"วันที่เริ่มต้น (Start Date)"</b></div>
-          <div style="margin-top:4px; font-size:11.5px; color:#BE185D; font-weight:700;">💡 หรือถ้าไม่ใช้คำสั่งลัด สามารถกดปุ่ม <b>"⚙️ ตั้งค่า"</b> หรือ <b>"🩸 ประจำเดือนมาวันนี้"</b> บนการ์ดรอบเดือนในแอปได้โดยตรงเลยครับ!</div>
+          <div>4. เพิ่มการทำงาน <b>"เปิด URL (Open URLs)"</b> วางลิงก์ด้านล่างแล้วต่อท้ายด้วยตัวแปร <b>ผลรวม (Sum)</b></div>
         </div>
 
         <div class="form-group" style="margin-bottom:8px;">
@@ -4436,8 +4439,8 @@
           <input type="text" id="shortcut-url-box" class="form-control num" readonly onclick="this.select()" style="font-size:11.5px;" />
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <button class="btn-primary" style="font-size:12px; padding:11px 8px;" onclick="copyShortcutSyncUrl(false)">📋 คัดลอกลิงก์ก้าวเดิน</button>
-          <button class="btn-primary" style="font-size:12px; padding:11px 8px; background:linear-gradient(135deg,#EC4899,#DB2777);" onclick="copyShortcutSyncUrl(true)">🌸 คัดลอกลิงก์ก้าว+รอบเดือน</button>
+          <button type="button" class="btn-primary" style="font-size:12px; padding:11px 8px;" onclick="copyShortcutSyncUrl(false)">📋 คัดลอกลิงก์ก้าวเดิน</button>
+          <button type="button" class="btn-primary" style="font-size:12px; padding:11px 8px; background:linear-gradient(135deg,#EC4899,#DB2777);" onclick="copyShortcutSyncUrl(true)">🌸 คัดลอกลิงก์ก้าว+รอบเดือน</button>
         </div>
       </div>
     </div>
@@ -9754,6 +9757,54 @@
       renderAll();
       closeModal("modal-steps");
       showToast(`👟 บันทึก ${stepsVal.toLocaleString()} ก้าว (เผาผลาญ ${burnedVal} kcal) 🔥`);
+    }
+
+    async function installAppleHealthShortcut() {
+      const btn = document.getElementById("btn-install-shortcut-safe");
+      const origTxt = btn ? btn.textContent : "";
+      try {
+        if (btn) btn.textContent = "⏳ กำลังเตรียมไฟล์คำสั่งลัด...";
+        const res = await fetch("CalorieHealthSync.shortcut?dl=" + Date.now(), { cache: "no-store" });
+        if (!res.ok) throw new Error("fetch_failed");
+        const blob = await res.blob();
+        const file = new File([blob], "CalorieHealthSync.shortcut", { type: "application/octet-stream" });
+
+        // Use native iOS Share Sheet so Safari/PWA never navigates to the raw binary AEA1 text page!
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: "CalorieHealthSync.shortcut",
+            text: "เลือก 'บันทึกไปยังแอปไฟล์ (Save to Files)' แล้วแตะไฟล์ในแอปไฟล์เพื่อเพิ่มเข้าคำสั่งลัดครับ"
+          });
+          showToast("✅ เลือก 'บันทึกไปยังแอปไฟล์' แล้วแตะไฟล์ในแอปไฟล์ได้เลยครับ!");
+        } else {
+          // Safe Blob object URL download fallback (never navigates main window)
+          const objUrl = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = objUrl;
+          a.download = "CalorieHealthSync.shortcut";
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            a.remove();
+            URL.revokeObjectURL(objUrl);
+          }, 1500);
+          showToast("📥 ดาวน์โหลด CalorieHealthSync.shortcut แล้ว เปิดจากแอปไฟล์ได้เลยครับ!");
+        }
+      } catch (e) {
+        if (e && e.name === "AbortError") {
+          // User closed share sheet
+        } else {
+          showToast("💡 กดคัดลอกลิงก์ด้านล่าง แล้วกดปุ่มเปิดแอปคำสั่งลัดได้เลยครับ");
+        }
+      } finally {
+        if (btn && origTxt) btn.textContent = origTxt;
+      }
+    }
+
+    function openIosShortcutsApp() {
+      copyShortcutSyncUrl(true);
+      window.location.href = "shortcuts://";
     }
 
     function copyShortcutSyncUrl(includePeriod = false) {

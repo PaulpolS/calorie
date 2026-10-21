@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calorie-pwa-v31';
+const CACHE_NAME = 'calorie-pwa-v32';
 const ASSETS = [
   './',
   './index.html',
@@ -76,12 +76,19 @@ self.addEventListener('fetch', (e) => {
   }
   if (e.request.method !== 'GET') return;
 
+  // Prevent iOS Standalone PWA from getting stuck on raw binary .shortcut text if navigated directly
+  if (url.pathname.endsWith('.shortcut') && e.request.mode === 'navigate') {
+    e.respondWith(Response.redirect('./index.html', 302));
+    return;
+  }
+
   // Network-First for HTML navigation so updates show up immediately when online,
   // with 100% offline fallback to cache when there is no internet!
   const isHTML =
-    e.request.mode === 'navigate' ||
-    url.pathname.endsWith('/') ||
-    url.pathname.endsWith('/index.html');
+    !url.pathname.endsWith('.shortcut') &&
+    (e.request.mode === 'navigate' ||
+      url.pathname.endsWith('/') ||
+      url.pathname.endsWith('/index.html'));
 
   if (isHTML) {
     e.respondWith(
