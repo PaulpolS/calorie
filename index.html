@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Calorie</title>
   <script>
-    // 🛡️ Safari Self-Healing Bootstrapper (v34): clears any stale SW caches while preserving 100% of user data
+    // 🛡️ Safari Self-Healing Bootstrapper (v35): clears any stale SW caches while preserving 100% of user data
     (function() {
       try {
-        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v34") !== "1") {
-          localStorage.setItem("calorie_safari_healed_v34", "1");
+        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v35") !== "1") {
+          localStorage.setItem("calorie_safari_healed_v35", "1");
           caches.keys().then(function(keys) {
             keys.forEach(function(k) {
-              if (k !== "calorie-pwa-v34") caches.delete(k);
+              if (k !== "calorie-pwa-v35") caches.delete(k);
             });
           }).catch(function() {});
         }
@@ -3533,7 +3533,7 @@
     <div id="view-profile" class="view">
       <div class="top-header">
         <div class="greeting-box">
-          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v34</span></div>
+          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v35</span></div>
           <div class="greet-main">โปรไฟล์ & ตั้งค่า ⚙️</div>
         </div>
         <div style="display:flex; gap:6px; align-items:center;">
@@ -4433,8 +4433,11 @@
           <button type="button" id="btn-install-shortcut-safe" onclick="installAppleHealthShortcut()" style="width:100%; border:none; cursor:pointer; background:linear-gradient(135deg,#E11D48 0%,#DB2777 100%); color:#FFF; font-weight:900; font-size:13.5px; padding:11px 14px; border-radius:12px; box-shadow:0 6px 16px rgba(225,29,72,0.28); margin-bottom:7px;">
             📲 1. กดส่งไฟล์คำสั่งลัด (ดึงประจำเดือน+ก้าวเดิน) เข้าแอปไฟล์
           </button>
-          <button type="button" onclick="openIosShortcutsApp()" style="width:100%; border:1.5px solid #1D4ED8; cursor:pointer; background:#EFF6FF; color:#1E40AF; font-weight:800; font-size:12px; padding:8px 12px; border-radius:10px;">
-            ⚡ หรือกดเปิดแอป "คำสั่งลัด (Shortcuts)" บน iPhone ทันที
+          <button type="button" onclick="runAppleHealthShortcutNow()" style="width:100%; border:none; cursor:pointer; background:linear-gradient(135deg,#059669 0%,#10B981 100%); color:#FFF; font-weight:900; font-size:13px; padding:10px 12px; border-radius:10px; box-shadow:0 4px 12px rgba(5,150,105,0.24); margin-bottom:6px;">
+            ▶️ 2. ติดตั้งเสร็จแล้ว กดปุ่มนี้เพื่อ "รันดึงประจำเดือน+ก้าวเดิน" ทันที!
+          </button>
+          <button type="button" onclick="openIosShortcutsApp()" style="width:100%; border:1.5px solid #1D4ED8; cursor:pointer; background:#EFF6FF; color:#1E40AF; font-weight:800; font-size:11.5px; padding:7px 12px; border-radius:10px;">
+            ⚡ หรือเปิดหน้าหลักแอป "คำสั่งลัด (Shortcuts)"
           </button>
         </div>
 
@@ -5771,6 +5774,8 @@
       const pCycle = normalizeCycleDataObj(rawPriCycle);
       const preferSecCycle = Boolean(rawSecCycle.pillBrandMigratedV33 && !rawPriCycle.pillBrandMigratedV33);
       const baseCycle = preferSecCycle ? { ...pCycle, ...sCycle } : { ...sCycle, ...pCycle };
+      const mergedAhDates = Array.from(new Set([...(sCycle.appleHealthPeriodDates || []), ...(pCycle.appleHealthPeriodDates || [])])).sort();
+      const mergedAhSyncedAt = Math.max(Number(sCycle.appleHealthPeriodSyncedAt || 0), Number(pCycle.appleHealthPeriodSyncedAt || 0));
       merged.cycleData = {
         ...baseCycle,
         pillTakenDates: {
@@ -5781,6 +5786,8 @@
           ...(sCycle.periodFlowDates || {}),
           ...(pCycle.periodFlowDates || {})
         },
+        appleHealthPeriodDates: mergedAhDates,
+        appleHealthPeriodSyncedAt: mergedAhSyncedAt,
         packHistory: (pCycle.packHistory && pCycle.packHistory.length > 0)
           ? pCycle.packHistory
           : (sCycle.packHistory || [])
@@ -5790,10 +5797,20 @@
       const sProfiles = { ...(secondary.profilesMap || {}) };
       ["paul", "partner"].forEach(pid => {
         if (pProfiles[pid] && sProfiles[pid]) {
+          const sSlotC = normalizeCycleDataObj(sProfiles[pid].cycleData);
+          const pSlotC = normalizeCycleDataObj(pProfiles[pid].cycleData);
           pProfiles[pid] = {
             ...sProfiles[pid],
             ...pProfiles[pid],
-            days: mergeDaysDict(sProfiles[pid].days, pProfiles[pid].days, sTime, cTime)
+            days: mergeDaysDict(sProfiles[pid].days, pProfiles[pid].days, sTime, cTime),
+            cycleData: {
+              ...sSlotC,
+              ...pSlotC,
+              pillTakenDates: { ...(sSlotC.pillTakenDates || {}), ...(pSlotC.pillTakenDates || {}) },
+              periodFlowDates: { ...(sSlotC.periodFlowDates || {}), ...(pSlotC.periodFlowDates || {}) },
+              appleHealthPeriodDates: Array.from(new Set([...(sSlotC.appleHealthPeriodDates || []), ...(pSlotC.appleHealthPeriodDates || []), ...mergedAhDates])).sort(),
+              appleHealthPeriodSyncedAt: Math.max(Number(sSlotC.appleHealthPeriodSyncedAt || 0), Number(pSlotC.appleHealthPeriodSyncedAt || 0), mergedAhSyncedAt)
+            }
           };
         } else if (!pProfiles[pid] && sProfiles[pid]) {
           pProfiles[pid] = sProfiles[pid];
@@ -8294,28 +8311,39 @@
         const syncTimeStr = cd.appleHealthPeriodSyncedAt
           ? new Date(cd.appleHealthPeriodSyncedAt).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })
           : "";
+        const isAhSynced = Boolean(cd.appleHealthPeriodSyncedAt && Number(cd.appleHealthPeriodSyncedAt) > 0);
 
         const dateChipsHtml = recentDates.length > 0
           ? recentDates.map(dStr => {
               const dObj = new Date(dStr + "T00:00:00");
               const lbl = isNaN(dObj.getTime()) ? dStr : `${DOW_TH_ARR[dObj.getDay()]} ${formatShortThaiDate(dObj)}`;
-              return `<span style="background:#FFE4E6; color:#BE123C; border:1px solid #FDA4AF; font-size:10px; font-weight:900; padding:2px 7px; border-radius:99px; display:inline-flex; align-items:center; gap:3px;">🩸 ${lbl}</span>`;
+              const fromAh = ahDates.includes(dStr);
+              return `<span style="background:${fromAh ? '#DCFCE7' : '#FFE4E6'}; color:${fromAh ? '#166534' : '#BE123C'}; border:1px solid ${fromAh ? '#86EFAC' : '#FDA4AF'}; font-size:10px; font-weight:900; padding:2px 7px; border-radius:99px; display:inline-flex; align-items:center; gap:3px;">${fromAh ? '🍎🩸' : '🩸'} ${lbl}</span>`;
             }).join("")
           : `<span style="font-size:10.5px; color:#64748B;">ยังไม่มีประวัติวันประจำเดือนที่ซิงค์เข้ามา</span>`;
 
         ahPeriodBox.innerHTML = `
           <div style="background:#FFF5F7; border:1.5px solid #FBCFE8; border-radius:14px; padding:9px 11px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:5px;">
-              <div style="font-size:11.5px; font-weight:900; color:#9D174D; display:flex; align-items:center; gap:5px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:6px;">
+              <div style="font-size:11.5px; font-weight:900; color:#9D174D; display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
                 <span>🍎 ซิงค์ประจำเดือนจากแอปสุขภาพ (Apple Health)</span>
-                ${syncTimeStr ? `<span style="background:#DCFCE7; color:#166534; font-size:9.5px; padding:1px 6px; border-radius:99px;">ซิงค์ล่าสุด ${syncTimeStr} น.</span>` : ''}
+                ${isAhSynced
+                  ? `<span style="background:#DCFCE7; color:#166534; border:1px solid #86EFAC; font-size:9.5px; padding:1.5px 7px; border-radius:99px;">✅ เชื่อมสุขภาพแล้ว (ล่าสุด ${syncTimeStr} น.)</span>`
+                  : `<span style="background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; font-size:9.5px; padding:1.5px 7px; border-radius:99px;">⏳ รอกดปุ่ม "ดึงจากสุขภาพ" ด้านล่าง</span>`}
               </div>
-              <button type="button" onclick="openModal('modal-apple-health')" style="border:1px solid #F43F5E; background:#FFE4E6; color:#BE123C; border-radius:8px; padding:4px 8px; font-size:10.5px; font-weight:900; cursor:pointer;">
-                🍎 เชื่อมคำสั่งลัดดึงประจำเดือน
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:7px;">
+              <button type="button" onclick="runAppleHealthShortcutNow()" style="flex:1; min-width:155px; border:none; background:linear-gradient(135deg,#059669,#10B981); color:#FFF; border-radius:9px; padding:6px 10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 3px 8px rgba(5,150,105,0.22);">
+                ▶️ กดดึงประจำเดือนจากสุขภาพตอนนี้
+              </button>
+              <button type="button" onclick="openModal('modal-apple-health')" style="border:1px solid #F43F5E; background:#FFE4E6; color:#BE123C; border-radius:9px; padding:6px 9px; font-size:10.5px; font-weight:900; cursor:pointer;">
+                📲 ติดตั้งคำสั่งลัด
               </button>
             </div>
             <div style="font-size:10.5px; color:#831843; font-weight:700; margin-bottom:5px;">
-              วันที่มีประจำเดือนล่าสุด (ดึงจาก Apple สุขภาพ + ที่บันทึกในแอป):
+              ${isAhSynced
+                ? `✅ ดึงข้อมูลประจำเดือนจาก Apple สุขภาพสำเร็จ (${ahDates.length > 0 ? `${ahDates.length} วัน` : 'เชื่อมต่อแล้ว'}):`
+                : `📌 ตอนนี้แสดงวันที่บันทึกในแอป (${recentDates.length} วัน) · ถ้าติดตั้งคำสั่งลัดแล้ว กดปุ่มสีเขียวด้านบนเพื่อดึงจากแอปสุขภาพได้เลย:`}
             </div>
             <div style="display:flex; gap:5px; flex-wrap:wrap;">
               ${dateChipsHtml}
@@ -10011,6 +10039,11 @@
       }
     }
 
+    function runAppleHealthShortcutNow() {
+      showToast("▶️ กำลังรันคำสั่งลัด CalorieHealthSync เพื่อดึงประจำเดือน+ก้าวเดิน...");
+      window.location.href = "shortcuts://run-shortcut?name=CalorieHealthSync";
+    }
+
     function openIosShortcutsApp() {
       copyShortcutSyncUrl(true);
       window.location.href = "shortcuts://";
@@ -10218,6 +10251,20 @@
 
             synced.push(`🩸 ประจำเดือนจากสุขภาพ (${parsedDates.length} วัน · เริ่ม ${latestCycleStart})`);
           }
+        } else if (params.has("period_date") || params.has("period")) {
+          // Shortcut ran with &period_date= (even if Apple Health returned empty because permission wasn't toggled yet)
+          state.cycleData = normalizeCycleDataObj(state.cycleData);
+          state.cycleData.appleHealthPeriodSyncedAt = nowTs;
+          if (state.profilesMap) {
+            ["paul", "partner"].forEach(pid => {
+              if (state.profilesMap[pid]) {
+                const pSlotCd = normalizeCycleDataObj(state.profilesMap[pid].cycleData);
+                pSlotCd.appleHealthPeriodSyncedAt = nowTs;
+                state.profilesMap[pid].cycleData = pSlotCd;
+              }
+            });
+          }
+          synced.push("🩸 เชื่อมคำสั่งลัดรอบเดือนแล้ว");
         }
 
         if (synced.length > 0) {
