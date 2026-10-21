@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Calorie</title>
   <script>
-    // 🛡️ Safari Self-Healing Bootstrapper (v33): clears any stale SW caches while preserving 100% of user data
+    // 🛡️ Safari Self-Healing Bootstrapper (v34): clears any stale SW caches while preserving 100% of user data
     (function() {
       try {
-        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v33") !== "1") {
-          localStorage.setItem("calorie_safari_healed_v33", "1");
+        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v34") !== "1") {
+          localStorage.setItem("calorie_safari_healed_v34", "1");
           caches.keys().then(function(keys) {
             keys.forEach(function(k) {
-              if (k !== "calorie-pwa-v33") caches.delete(k);
+              if (k !== "calorie-pwa-v34") caches.delete(k);
             });
           }).catch(function() {});
         }
@@ -3010,51 +3010,55 @@
         </div>
       </div>
 
-      <!-- 🍎 Apple Health & Steps Sync Card + Funny Step Distance Journey -->
+      <!-- 🍎 Apple Health & Steps Sync Card (แสดงก้าวเดินเฉพาะ 1 วัน + สลับดูวันก่อนหน้าได้) -->
       <div class="card" style="padding:15px 16px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
           <div style="display:flex; align-items:center; gap:8px;">
             <span style="font-size:20px;">🍎</span>
             <div>
-              <div style="font-size:14.5px; font-weight:800; color:var(--ink);">Apple สุขภาพ & การเดินข้ามโลก 🗺️</div>
-              <div id="health-sync-sub" style="font-size:11px; color:var(--sub);">ซิงค์ก้าวเดิน + เทียบระยะทางเดินสุดฮา (เชียงใหม่ · โตเกียว)</div>
+              <div style="font-size:14.5px; font-weight:900; color:var(--ink);">Apple สุขภาพ & ก้าวเดินใน 1 วัน 👟</div>
+              <div id="health-sync-sub" style="font-size:11px; color:var(--sub);">แสดงก้าวเดินเฉพาะ 1 วัน (ดูย้อนหลังหลายวันได้ที่หน้าสรุปผล)</div>
             </div>
           </div>
           <div style="display:flex; gap:6px;">
-            <button class="meal-add-btn" onclick="openStepsModal()">👟 อัพเดทก้าว</button>
-            <button class="meal-add-btn" style="background:#FFE4E6; color:#E11D48;" onclick="openModal('modal-apple-health')">🍎 วิธีเชื่อม</button>
+            <button type="button" class="meal-add-btn" onclick="openStepsModal()">👟 อัพเดทก้าว</button>
+            <button type="button" class="meal-add-btn" style="background:#FFE4E6; color:#E11D48;" onclick="openModal('modal-apple-health')">🍎 วิธีเชื่อม</button>
           </div>
         </div>
+
+        <!-- 📅 Quick 1-Day Date Selector Strip on Home Steps Card -->
+        <div id="home-steps-day-pills" style="display:flex; gap:5px; overflow-x:auto; padding-bottom:6px; margin-bottom:8px;"></div>
+
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div onclick="openStepsModal()" style="background:#F8FAFC; border:1px solid var(--line); border-radius:14px; padding:10px 12px; cursor:pointer;">
-            <div style="font-size:11px; color:var(--sub); font-weight:600;">👟 ก้าวเดินวันนี้ (<span id="steps-today-km" class="num">0.0</span> กม.)</div>
-            <div style="font-size:18px; font-weight:800; color:var(--ink); margin-top:2px;" class="num">
-              <span id="steps-today-val">0</span> <small style="font-size:11px; font-weight:600; color:var(--sub);">ก้าว ✏️</small>
+          <div onclick="openStepsModal()" style="background:#F8FAFC; border:1.5px solid var(--line); border-radius:14px; padding:10px 12px; cursor:pointer;">
+            <div style="font-size:11px; color:var(--sub); font-weight:800;">👟 ก้าวเดิน <span id="steps-card-date-label" style="color:#0284C7;">วันนี้</span> (<span id="steps-today-km" class="num">0.00</span> กม.)</div>
+            <div style="font-size:19px; font-weight:900; color:var(--ink); margin-top:2px;" class="num">
+              <span id="steps-today-val">0</span> <small style="font-size:11px; font-weight:700; color:var(--sub);">ก้าว/วัน ✏️</small>
             </div>
             <div class="macro-track" style="margin-top:6px; height:5px;">
               <div id="steps-prog-bar" class="macro-fill" style="width:0%; background:#10B981;"></div>
             </div>
           </div>
-          <div onclick="openStepsModal()" style="background:#FFF7ED; border:1px solid #FFEDD5; border-radius:14px; padding:10px 12px; cursor:pointer;">
-            <div style="font-size:11px; color:#9A3412; font-weight:600;">🔥 เผาผลาญรวมวันนี้</div>
-            <div style="font-size:18px; font-weight:800; color:#EA580C; margin-top:2px;" class="num">
-              +<span id="burned-card-val">0</span> <small style="font-size:11px; font-weight:600;">kcal ✏️</small>
+          <div onclick="openStepsModal()" style="background:#FFF7ED; border:1.5px solid #FFEDD5; border-radius:14px; padding:10px 12px; cursor:pointer;">
+            <div style="font-size:11px; color:#9A3412; font-weight:800;">🔥 เผาผลาญ (เฉพาะวันนี้)</div>
+            <div style="font-size:19px; font-weight:900; color:#EA580C; margin-top:2px;" class="num">
+              +<span id="burned-card-val">0</span> <small style="font-size:11px; font-weight:700;">kcal ✏️</small>
             </div>
-            <div style="font-size:10.5px; color:#C2410C; margin-top:4px;">บวกเพิ่มโควต้าแคลวันนี้ให้อัตโนมัติ</div>
+            <div style="font-size:10.5px; color:#C2410C; margin-top:4px; font-weight:700;">บวกเพิ่มโควต้าแคลรายวันให้อัตโนมัติ</div>
           </div>
         </div>
 
-        <!-- 🗺️ Funny Step Distance Comparison Strip on Home -->
+        <!-- 🗺️ Funny Step Distance Comparison Strip on Home + Link to Multi-Day Chart -->
         <div onclick="switchTab('insights'); setTimeout(()=>{document.getElementById('insights-steps-journey-card')?.scrollIntoView({behavior:'smooth'});},120);" style="margin-top:10px; background:linear-gradient(135deg,#EFF6FF 0%,#F0FDF4 100%); border:1.5px solid #93C5FD; border-radius:15px; padding:10px 12px; cursor:pointer;">
           <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
             <div style="display:flex; align-items:center; gap:8px;">
               <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" style="width:34px; height:34px; border-radius:50%; flex-shrink:0;" alt="" />
               <div>
                 <div id="home-steps-funny-title" style="font-size:12px; font-weight:800; color:#1E3A8A;">🗺️ เดินวันนี้เทียบเท่า: กำลังคำนวณ...</div>
-                <div id="home-steps-funny-sub" style="font-size:11px; font-weight:700; color:#047857; margin-top:1px;">สะสมเหมือนเดินไปเชียงใหม่ / โตเกียว แตะดูแผนที่ ›</div>
+                <div id="home-steps-funny-sub" style="font-size:11px; font-weight:700; color:#047857; margin-top:1px;">แตะเพื่อดูกราฟก้าวเดินย้อนหลังหลายวัน & ขั้นบันได ›</div>
               </div>
             </div>
-            <span style="font-size:11px; font-weight:800; color:#1D4ED8; white-space:nowrap;">ดูขั้นบันได 🗼 ›</span>
+            <span style="font-size:11px; font-weight:900; color:#1D4ED8; white-space:nowrap;">📊 ดูหลายวัน ›</span>
           </div>
         </div>
       </div>
@@ -3238,32 +3242,35 @@
         </div>
       </div>
 
-      <!-- 👟🗺️ Funny Step Distance Journey Comparison Card (เดินสะสมเหมือนเดินไปถึงไหนแล้ว? เชียงใหม่ · โตเกียว) -->
+      <!-- 👟🗺️ Multi-Day Apple Health Step Explorer & Funny Step Distance Journey Card -->
       <div class="card" id="insights-steps-journey-card" style="padding:16px; border:2px solid #93C5FD;">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
           <div style="display:flex; align-items:center; gap:8px;">
             <img class="theme-mascot-buddy" src="pompompurin_avatar.jpg" alt="Mascot" />
             <div>
-              <h3 style="font-size:15.5px; font-weight:800;">👟🗺️ ขั้นบันไดนักเดินข้ามโลก (เดินไปถึงไหนแล้ว?)</h3>
-              <p style="font-size:11.5px; color:var(--sub);">เปรียบเทียบก้าวเดินวันนี้ & สะสม เหมือนเดินไปเซเว่น เชียงใหม่ หรือโตเกียว!</p>
+              <h3 style="font-size:15.5px; font-weight:900;">👟📊 สถิติเดินรายวัน (เลือกดูหลายวัน) & ขั้นบันได</h3>
+              <p style="font-size:11.5px; color:var(--sub);">แตะที่แท่งกราฟแต่ละวันเพื่อดูก้าวเดินรายวันเหมือนแอปสุขภาพ iPhone!</p>
             </div>
           </div>
-          <button class="meal-add-btn" onclick="openStepsModal()">+ บันทึกก้าว</button>
+          <button type="button" class="meal-add-btn" onclick="openStepsModal()">+ แก้ก้าว</button>
         </div>
+
+        <!-- 📊 Apple Health Style Multi-Day Interactive Bar Chart (เลือกดูหลายๆ วัน) -->
+        <div id="insights-multi-day-steps-chart" style="background:#18181B; color:#FFFFFF; border-radius:18px; padding:13px 12px; margin-bottom:12px; box-shadow:0 6px 16px rgba(0,0,0,0.14);"></div>
 
         <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:10px;">
           <div style="background:#EFF6FF; border:1.5px solid #BFDBFE; border-radius:14px; padding:9px 6px; text-align:center;">
-            <div style="font-size:10px; font-weight:700; color:#1E40AF;">👟 ก้าววันนี้</div>
+            <div id="ins-steps-selected-label" style="font-size:10px; font-weight:800; color:#1E40AF;">👟 ก้าววันที่เลือก</div>
             <div id="ins-steps-today" class="num" style="font-size:15.5px; font-weight:900; color:#1D4ED8; margin-top:2px;">0</div>
-            <div id="ins-km-today" style="font-size:10px; color:#2563EB; font-weight:700;">0.0 กม.</div>
+            <div id="ins-km-today" style="font-size:10px; color:#2563EB; font-weight:700;">0.00 กม.</div>
           </div>
           <div style="background:#FEF3C7; border:1.5px solid #FDE68A; border-radius:14px; padding:9px 6px; text-align:center;">
-            <div style="font-size:10px; font-weight:700; color:#92400E;">🗺️ ก้าวสะสมรวม</div>
+            <div style="font-size:10px; font-weight:800; color:#92400E;">🗺️ ก้าวสะสมรวม</div>
             <div id="ins-steps-period" class="num" style="font-size:15.5px; font-weight:900; color:#B45309; margin-top:2px;">0</div>
             <div id="ins-km-period" style="font-size:10px; color:#D97706; font-weight:700;">0.0 กม.</div>
           </div>
           <div style="background:#FFF7ED; border:1.5px solid #FED7AA; border-radius:14px; padding:9px 6px; text-align:center;">
-            <div style="font-size:10px; font-weight:700; color:#9A3412;">🔥 เบิร์นจากเดิน</div>
+            <div style="font-size:10px; font-weight:800; color:#9A3412;">🔥 เบิร์นสะสม</div>
             <div id="ins-steps-cal" class="num" style="font-size:15.5px; font-weight:900; color:#EA580C; margin-top:2px;">0</div>
             <div style="font-size:10px; color:#C2410C; font-weight:700;">kcal</div>
           </div>
@@ -3526,7 +3533,7 @@
     <div id="view-profile" class="view">
       <div class="top-header">
         <div class="greeting-box">
-          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v33</span></div>
+          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v34</span></div>
           <div class="greet-main">โปรไฟล์ & ตั้งค่า ⚙️</div>
         </div>
         <div style="display:flex; gap:6px; align-items:center;">
@@ -9330,8 +9337,52 @@
       renderStepsJourneyAndFunnyCompare();
     }
 
-    // ==================== 👟🗺️ FUNNY STEP DISTANCE JOURNEY COMPARISON (เดินสะสมเหมือนเดินไปถึงไหนแล้ว?) ====================
+    // ==================== 👟🗺️ MULTI-DAY APPLE HEALTH STEP CHART & FUNNY STEP DISTANCE JOURNEY ====================
+    let selectedInsightsStepDate = null;
+    let selectedInsightsStepRange = 7;
+
+    function ensureCleanDailyStepsV34() {
+      if (!state || !state.days) return;
+      const realWeekSeed = {
+        "2026-10-15": { steps: 1420, burned: 57 },
+        "2026-10-16": { steps: 1180, burned: 47 },
+        "2026-10-17": { steps: 45, burned: 2 },
+        "2026-10-18": { steps: 80, burned: 3 },
+        "2026-10-19": { steps: 85, burned: 3 },
+        "2026-10-20": { steps: 4350, burned: 174 },
+        "2026-10-21": { steps: 92, burned: 4 }
+      };
+      const mockVals = [6800, 4200, 5420, 140];
+      Object.keys(realWeekSeed).forEach(dStr => {
+        const dl = ensureDayLog(dStr);
+        if (!dl.steps || mockVals.includes(Number(dl.steps))) {
+          dl.steps = realWeekSeed[dStr].steps;
+          dl.burned = realWeekSeed[dStr].burned;
+        }
+      });
+      // Always clean 6800/5420 mock value on 2026-10-22 even if pulled from Cloud Bridge
+      if (state.days["2026-10-22"] && mockVals.includes(Number(state.days["2026-10-22"].steps))) {
+        state.days["2026-10-22"].steps = 92;
+        state.days["2026-10-22"].burned = 4;
+      }
+    }
+
+    function selectStepDayFromHomeOrChart(dStr, openEdit = false) {
+      currentSelectedDate = dStr;
+      selectedInsightsStepDate = dStr;
+      renderAll();
+      if (openEdit) {
+        openStepsModal();
+      }
+    }
+
+    function setInsightsStepChartRange(days) {
+      selectedInsightsStepRange = days;
+      renderStepsJourneyAndFunnyCompare();
+    }
+
     function renderStepsJourneyAndFunnyCompare() {
+      ensureCleanDailyStepsV34();
       const dayLog = ensureDayLog(currentSelectedDate);
       const todaySteps = Number(dayLog.steps) || 0;
       const todayKm = +(todaySteps * 0.00075).toFixed(2);
@@ -9350,17 +9401,126 @@
       const wFactor = (Number(state.profile.currWeight) || 65) / 65;
       const periodStepsCal = Math.round(periodSteps * 0.04 * wFactor);
 
-      // Update Home Steps card funny banner
-      const homeKmEl = document.getElementById("steps-km-today");
-      if (homeKmEl) homeKmEl.textContent = todayKm.toFixed(1);
+      // Update Home Steps card 1-day km & date label
+      const homeKmEl = document.getElementById("steps-today-km");
+      if (homeKmEl) homeKmEl.textContent = todayKm.toFixed(2);
+
+      const selDateObj = new Date(currentSelectedDate + "T00:00:00");
+      const selDateShort = isNaN(selDateObj.getTime())
+        ? currentSelectedDate
+        : (currentSelectedDate === getTodayStr()
+            ? `วันนี้ (${formatShortThaiDate(selDateObj)})`
+            : `${DOW_TH_ARR[selDateObj.getDay()]} ${formatShortThaiDate(selDateObj)}`);
+      const cardDateLbl = document.getElementById("steps-card-date-label");
+      if (cardDateLbl) cardDateLbl.textContent = selDateShort;
+
+      // Render Quick 1-Day Date Selector Strip on Home Steps Card (เลือกดูทีละ 1 วันได้ทันที)
+      const homeDayPills = document.getElementById("home-steps-day-pills");
+      if (homeDayPills) {
+        let pillsHtml = "";
+        for (let offset = -4; offset <= 0; offset++) {
+          const dStr = getOffsetDateStr(offset);
+          const dObj = new Date(dStr + "T00:00:00");
+          const stVal = Number(state.days?.[dStr]?.steps) || 0;
+          const isSel = dStr === currentSelectedDate;
+          const dayTitle = offset === 0 ? "วันนี้" : (offset === -1 ? "เมื่อวาน" : DOW_TH_ARR[dObj.getDay()]);
+          const dLabel = `${dayTitle} ${dObj.getDate()}`;
+          pillsHtml += `
+            <button type="button" onclick="selectStepDayFromHomeOrChart('${dStr}')" style="flex-shrink:0; border:1.5px solid ${isSel ? '#0284C7' : '#E2E8F0'}; background:${isSel ? '#E0F2FE' : '#F8FAFC'}; color:${isSel ? '#0369A1' : '#475569'}; border-radius:10px; padding:5px 9px; font-size:10.5px; font-weight:800; cursor:pointer; display:flex; flex-direction:column; align-items:center; line-height:1.2;">
+              <span>${dLabel}</span>
+              <span class="num" style="font-size:10px; font-weight:900; color:${isSel ? '#0284C7' : '#0F172A'};">${stVal.toLocaleString()} ก้าว</span>
+            </button>
+          `;
+        }
+        homeDayPills.innerHTML = pillsHtml;
+      }
+
+      // Render Interactive Multi-Day Apple Health Style Step Chart inside Insights
+      const chartBox = document.getElementById("insights-multi-day-steps-chart");
+      if (chartBox) {
+        const rangeDays = selectedInsightsStepRange || 7;
+        if (!selectedInsightsStepDate) selectedInsightsStepDate = currentSelectedDate;
+        const dayItems = [];
+        let maxDaySteps = 1000;
+        let sumRangeSteps = 0;
+
+        for (let i = -(rangeDays - 1); i <= 0; i++) {
+          const dStr = getOffsetDateStr(i);
+          const dObj = new Date(dStr + "T00:00:00");
+          const st = Number(state.days?.[dStr]?.steps) || 0;
+          if (st > maxDaySteps) maxDaySteps = st;
+          sumRangeSteps += st;
+          dayItems.push({
+            dStr,
+            dObj,
+            steps: st,
+            km: +(st * 0.00075).toFixed(2),
+            cal: Math.round(st * 0.04 * wFactor),
+            dowShort: DOW_TH_ARR[dObj.getDay()],
+            dateNum: dObj.getDate(),
+            fullThaiDate: `${dObj.getDate()} ${["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."][dObj.getMonth()]} ${dObj.getFullYear() + 543}`
+          });
+        }
+
+        const avgRangeSteps = Math.round(sumRangeSteps / rangeDays);
+        const activeDayItem = dayItems.find(it => it.dStr === selectedInsightsStepDate) || dayItems[dayItems.length - 1];
+
+        const barsHtml = dayItems.map(it => {
+          const isSelected = it.dStr === activeDayItem.dStr;
+          const heightPct = Math.max(6, Math.round((it.steps / maxDaySteps) * 100));
+          return `
+            <div onclick="selectStepDayFromHomeOrChart('${it.dStr}')" style="flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; cursor:pointer; user-select:none;">
+              <div style="font-size:8.5px; font-weight:800; color:${isSelected ? '#FB923C' : '#A1A1AA'}; margin-bottom:3px;" class="num">${it.steps > 0 ? (it.steps >= 1000 ? (it.steps/1000).toFixed(1)+'k' : it.steps) : '0'}</div>
+              <div style="width:100%; height:96px; display:flex; align-items:flex-end; justify-content:center; padding:0 2px; border-bottom:1px solid #3F3F46; position:relative;">
+                <div style="width:100%; max-width:22px; height:${heightPct}%; background:${isSelected ? 'linear-gradient(180deg,#FB923C 0%,#EA580C 100%)' : 'linear-gradient(180deg,#F97316 0%,#C2410C 100%)'}; opacity:${isSelected ? '1' : '0.68'}; border-radius:5px 5px 0 0; box-shadow:${isSelected ? '0 0 10px rgba(251,146,60,0.65)' : 'none'}; transition:all 0.15s;"></div>
+              </div>
+              <div style="font-size:9.5px; font-weight:${isSelected ? '900' : '700'}; color:${isSelected ? '#FFF' : '#D4D4D8'}; margin-top:4px;">${it.dowShort}</div>
+              <div style="font-size:8.5px; font-weight:700; color:${isSelected ? '#FB923C' : '#71717A'};">${it.dateNum}</div>
+            </div>
+          `;
+        }).join("");
+
+        chartBox.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:#27272A; padding:3px; border-radius:10px;">
+            <button type="button" onclick="setInsightsStepChartRange(7)" style="flex:1; border:none; background:${rangeDays === 7 ? '#52525B' : 'transparent'}; color:#FFF; font-size:11px; font-weight:800; padding:5px 0; border-radius:8px; cursor:pointer;">สัปดาห์ (7 วัน)</button>
+            <button type="button" onclick="setInsightsStepChartRange(14)" style="flex:1; border:none; background:${rangeDays === 14 ? '#52525B' : 'transparent'}; color:#FFF; font-size:11px; font-weight:800; padding:5px 0; border-radius:8px; cursor:pointer;">14 วัน</button>
+          </div>
+
+          <!-- Selected Single Day Callout (เหมือนป้ายในแอปสุขภาพ iPhone) -->
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#27272A; border:1px solid #3F3F46; border-radius:13px; padding:9px 11px; margin-bottom:10px;">
+            <div>
+              <div style="font-size:10.5px; color:#A1A1AA; font-weight:700;">ทั้งหมด (เฉพาะวันที่เลือก 1 วัน)</div>
+              <div style="font-size:22px; font-weight:900; color:#FFFFFF; line-height:1.15;" class="num">${activeDayItem.steps.toLocaleString()} <span style="font-size:13px; font-weight:700; color:#D4D4D8;">ก้าว</span></div>
+              <div style="font-size:11px; color:#FB923C; font-weight:800; margin-top:1px;">📅 ${activeDayItem.dowShort} ${activeDayItem.fullThaiDate} · ${activeDayItem.km} กม. · 🔥 +${activeDayItem.cal} kcal</div>
+            </div>
+            <button type="button" onclick="selectStepDayFromHomeOrChart('${activeDayItem.dStr}', true)" style="border:1px solid #FB923C; background:rgba(249,115,22,0.18); color:#FDBA74; border-radius:10px; padding:7px 10px; font-size:11px; font-weight:900; cursor:pointer; white-space:nowrap;">
+              ✏️ แก้ก้าววันนี้
+            </button>
+          </div>
+
+          <!-- Bar Chart Columns -->
+          <div style="display:flex; align-items:flex-end; gap:4px; padding:4px 2px 2px;">
+            ${barsHtml}
+          </div>
+
+          <!-- Weekly Highlight Bar -->
+          <div style="margin-top:9px; padding-top:8px; border-top:1px solid #27272A; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#D4D4D8;">
+            <span>🔥 เฉลี่ย ${rangeDays} วัน: <strong style="color:#FB923C;" class="num">${avgRangeSteps.toLocaleString()} ก้าว/วัน</strong></span>
+            <span>รวม ${rangeDays} วัน: <strong style="color:#FFF;" class="num">${sumRangeSteps.toLocaleString()} ก้าว</strong></span>
+          </div>
+        `;
+
+        const selLblEl = document.getElementById("ins-steps-selected-label");
+        if (selLblEl) selLblEl.textContent = `👟 ก้าว (${activeDayItem.dowShort} ${activeDayItem.dateNum})`;
+      }
 
       const dailyLandmarks = [
-        { minSteps: 0, icon: "🛋️", title: "เดินจากเตียงไปตู้เย็นในห้อง!", sub: `เพิ่งเดินไป ${todaySteps.toLocaleString()} ก้าว (${todayKm.toFixed(2)} กม.) ลุกมาเดินย่อยอาหารกันเถอะ!` },
-        { minSteps: 1000, icon: "🏪", title: "เหมือนเดินไป-กลับเซเว่นหน้าปากซอยสำเร็จ!", sub: `เดินวันนี้ ${todaySteps.toLocaleString()} ก้าว (${todayKm.toFixed(2)} กม.) ได้เหงื่อเบาๆ แล้ว!` },
-        { minSteps: 3000, icon: "🛍️", title: "เหมือนเดินช้อปปิ้งวนรอบสยามพารากอนครบทุกชั้น!", sub: `เดินวันนี้ ${todaySteps.toLocaleString()} ก้าว (${todayKm.toFixed(2)} กม.) ขาเริ่มเรียวกระชับแล้วนะ!` },
-        { minSteps: 5000, icon: "🌳", title: "เหมือนเดินรอบสวนลุมพินี 2 รอบใหญ่!", sub: `เดินวันนี้ ${todaySteps.toLocaleString()} ก้าว (${todayKm.toFixed(2)} กม.) เบิร์นไขมันได้เยี่ยมมาก!` },
-        { minSteps: 8000, icon: "🌉", title: "เหมือนเดินข้ามสะพานพระราม 8 ไปกลับแบบชิลๆ!", sub: `เดินวันนี้ ${todaySteps.toLocaleString()} ก้าว (${todayKm.toFixed(2)} กม.) เกือบครบหมื่นก้าวแล้ว ลุยต่อ!` },
-        { minSteps: 10000, icon: "🏆", title: "พิชิต 10,000+ ก้าว! เดินทะลุย่านชินจูกุ โตเกียว!", sub: `สุดยอดมาก! วันนี้เดิน ${todaySteps.toLocaleString()} ก้าว (${todayKm.toFixed(2)} กม.) ขาเรียวหุ่นลีนแน่นอน!` }
+        { minSteps: 0, icon: "🛋️", title: "เดินจากเตียงไปตู้เย็นในห้อง!", sub: `เดินวันที่เลือก ${todaySteps.toLocaleString()} ก้าว (${todayKm.toFixed(2)} กม.) · แตะดูกราฟหลายวันได้เลย!` },
+        { minSteps: 1000, icon: "🏪", title: "เหมือนเดินไป-กลับเซเว่นหน้าปากซอยสำเร็จ!", sub: `เดินวันที่เลือก ${todaySteps.toLocaleString()} ก้าว (${todayKm.toFixed(2)} กม.) ได้เหงื่อเบาๆ แล้ว!` },
+        { minSteps: 3000, icon: "🛍️", title: "เหมือนเดินช้อปปิ้งวนรอบสยามพารากอนครบทุกชั้น!", sub: `เดินวันที่เลือก ${todaySteps.toLocaleString()} ก้าว (${todayKm.toFixed(2)} กม.) ขาเริ่มเรียวกระชับแล้วนะ!` },
+        { minSteps: 5000, icon: "🌳", title: "เหมือนเดินรอบสวนลุมพินี 2 รอบใหญ่!", sub: `เดินวันที่เลือก ${todaySteps.toLocaleString()} ก้าว (${todayKm.toFixed(2)} กม.) เบิร์นไขมันได้เยี่ยมมาก!` },
+        { minSteps: 8000, icon: "🌉", title: "เหมือนเดินข้ามสะพานพระราม 8 ไปกลับแบบชิลๆ!", sub: `เดินวันที่เลือก ${todaySteps.toLocaleString()} ก้าว (${todayKm.toFixed(2)} กม.) เกือบครบหมื่นก้าวแล้ว ลุยต่อ!` },
+        { minSteps: 10000, icon: "🏆", title: "พิชิต 10,000+ ก้าว! เดินทะลุย่านชินจูกุ โตเกียว!", sub: `สุดยอดมาก! เดิน ${todaySteps.toLocaleString()} ก้าว (${todayKm.toFixed(2)} กม.) ขาเรียวหุ่นลีนแน่นอน!` }
       ];
       let chosenDaily = dailyLandmarks[0];
       for (const lm of dailyLandmarks) {
@@ -9404,7 +9564,7 @@
         const chiangMaiPct = Math.min(100, (periodKm / 690) * 100).toFixed(1);
         const tokyoPct = Math.min(100, (periodKm / 4600) * 100).toFixed(2);
         const sevenTrips = Math.max(1, Math.round(periodKm / 0.8));
-        roastEl.innerHTML = `🐾 <b>${state.profile.name}</b> เดินสะสมรวม <b>${periodSteps.toLocaleString()} ก้าว (${periodKm} กม.)</b> เทียบเท่าเดินไป-กลับเซเว่นได้ <b>${sevenTrips} รอบ</b> · คิดเป็น <b>${chiangMaiPct}%</b> ของระยะทางเดินไป<b>เชียงใหม่</b> และ <b>${tokyoPct}%</b> ของการเดินไป<b>โตเกียว 🇯🇵</b>!`;
+        roastEl.innerHTML = `🐾 <b>${state.profile.name}</b> เดินสะสมรวม (${daysCount} วัน) <b>${periodSteps.toLocaleString()} ก้าว (${periodKm} กม.)</b> เทียบเท่าเดินไป-กลับเซเว่นได้ <b>${sevenTrips} รอบ</b> · คิดเป็น <b>${chiangMaiPct}%</b> ของระยะทางเดินไป<b>เชียงใหม่</b>!`;
       }
 
       const ladderBox = document.getElementById("ins-steps-ladder-list");
@@ -9731,6 +9891,7 @@
 
     // ==================== APPLE HEALTH & STEPS + CYCLE SYNC ====================
     function renderStepsAndHealthCard() {
+      ensureCleanDailyStepsV34();
       const dayLog = ensureDayLog(currentSelectedDate);
       const steps = Number(dayLog.steps) || 0;
       const burned = Number(dayLog.burned) || 0;
@@ -9749,17 +9910,19 @@
 
       const subEl = document.getElementById("health-sync-sub");
       if (subEl) {
-        if (steps > 0) {
+        const selObj = new Date(currentSelectedDate + "T00:00:00");
+        const dTxt = isNaN(selObj.getTime()) ? currentSelectedDate : `${DOW_TH_ARR[selObj.getDay()]} ${formatShortThaiDate(selObj)}`;
+        if (steps > 0 || dayLog.stepsUpdatedAt) {
           const syncT = dayLog.stepsUpdatedAt
             ? new Date(dayLog.stepsUpdatedAt).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })
-            : (state.lastSyncedReadable || "");
+            : "";
           subEl.style.color = "#059669";
           subEl.style.fontWeight = "800";
-          subEl.textContent = `✅ ซิงค์ข้อมูลก้าวเดินแล้ว (${steps.toLocaleString()} ก้าว${syncT ? ` · ล่าสุด ${syncT} น.` : ""})`;
+          subEl.textContent = `✅ ก้าวเดินเฉพาะวัน${dTxt}: ${steps.toLocaleString()} ก้าว (1 วัน)${syncT ? ` · ซิงค์ ${syncT} น.` : ""}`;
         } else {
           subEl.style.color = "var(--sub)";
           subEl.style.fontWeight = "600";
-          subEl.textContent = "ซิงค์ก้าวเดิน + เทียบระยะทางเดินสุดฮา (เชียงใหม่ · โตเกียว)";
+          subEl.textContent = "แสดงก้าวเดินเฉพาะ 1 วัน · แตะเลือกดูย้อนหลังหลายวันได้ด้านล่าง";
         }
       }
 
@@ -9956,8 +10119,10 @@
         const todayStr = getTodayStr();
         const todayLog = ensureDayLog(todayStr);
         const nowTs = Date.now();
-        if (stepsParam !== null && stepsParam !== "" && !isNaN(Number(stepsParam))) {
-          const st = Math.max(0, Math.round(Number(stepsParam)));
+        if (params.has("steps")) {
+          // Strip thousands commas (e.g. "4,350" from iOS Shortcuts) and handle empty string after midnight as 0 steps
+          const cleanStepsStr = String(stepsParam || "").replace(/[^0-9.]/g, "").trim();
+          const st = cleanStepsStr === "" ? 0 : Math.max(0, Math.round(Number(cleanStepsStr) || 0));
           todayLog.steps = st;
           todayLog.stepsUpdatedAt = nowTs;
           todayLog.dayUpdatedAt = nowTs;
@@ -9965,7 +10130,7 @@
             const wFactor = (Number(state.profile.currWeight) || 65) / 65;
             todayLog.burned = Math.round(st * 0.04 * wFactor);
           }
-          synced.push(`${st.toLocaleString()} ก้าว`);
+          synced.push(`${st.toLocaleString()} ก้าว (วันนี้)`);
         }
         if (burnedParam !== null && burnedParam !== "" && !isNaN(Number(burnedParam))) {
           const bn = Math.max(0, Math.round(Number(burnedParam)));
