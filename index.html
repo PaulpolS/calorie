@@ -2580,6 +2580,18 @@
           <button id="qmode-macho" class="cat-chip" style="flex:1; font-size:11.5px;" onclick="setQuestMode('macho')">🍮💪 ภารกิจปอมๆ กล้ามดุ</button>
         </div>
 
+        <!-- 🔔 Smart Mask & Scrub Schedule Reminder Banner -->
+        <div id="beauty-routine-alert-box" style="background:linear-gradient(135deg,#FDF2F8 0%,#F0F9FF 100%); border:1.5px solid #F9A8D4; border-radius:14px; padding:10px 12px; margin-bottom:10px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px;">
+            <div style="font-size:12px; font-weight:800; color:#9D174D;">🔔 ตารางเตือนมาส์กหน้า & ขัดผิวของคุณ</div>
+            <button type="button" onclick="openBeautyRoutineModal()" style="border:1px solid #F472B6; background:#FFFFFF; color:#BE185D; border-radius:99px; padding:3px 9px; font-size:10.5px; font-weight:800; cursor:pointer; white-space:nowrap;">⚙️ ตั้งวันเตือน</button>
+          </div>
+          <div id="beauty-routine-summary-txt" style="font-size:11px; color:#475569; font-weight:700; line-height:1.45;">
+            🧖‍♀️ มาส์กหน้า: ทุกวันจันทร์, พุธ · 🧂 ขัดผิว: ทุกวันพุธ
+          </div>
+          <div id="beauty-routine-today-due" style="margin-top:6px; display:none;"></div>
+        </div>
+
         <!-- Checklist Items -->
         <div id="home-quest-list" style="display:flex; flex-direction:column; gap:7px; margin-bottom:10px;"></div>
 
@@ -2601,13 +2613,23 @@
           <span style="background:#F59E0B; color:#FFF; font-size:11px; font-weight:800; padding:6px 10px; border-radius:99px; white-space:nowrap;">เริ่มฝึก ▶</span>
         </div>
 
-        <!-- Salt Scrub Last Date & Next Due Banner -->
-        <div style="display:flex; align-items:center; justify-content:space-between; background:#FDF2F8; border:1px solid #FBCFE8; border-radius:13px; padding:8px 11px; margin-bottom:8px; font-size:11.5px;">
-          <div>
-            <span style="font-weight:800; color:#9D174D;">🧂 ขัดเกลือ/สครับผิวล่าสุด:</span>
-            <span id="last-scrub-date-txt" style="color:#BE185D; font-weight:700;">ยังไม่ได้บันทึก</span>
+        <!-- Salt Scrub & Face Mask Last Date & Next Due Banner -->
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; background:#FDF2F8; border:1px solid #FBCFE8; border-radius:13px; padding:8px 11px; margin-bottom:8px; font-size:11.5px; flex-wrap:wrap;">
+          <div style="flex:1; min-width:170px;">
+            <div>
+              <span style="font-weight:800; color:#9D174D;">🧖‍♀️ มาส์กหน้าล่าสุด:</span>
+              <span id="last-mask-date-txt" style="color:#BE185D; font-weight:700;">ยังไม่ได้บันทึก</span>
+            </div>
+            <div style="margin-top:2px;">
+              <span style="font-weight:800; color:#9D174D;">🧂 ขัดผิวล่าสุด:</span>
+              <span id="last-scrub-date-txt" style="color:#BE185D; font-weight:700;">ยังไม่ได้บันทึก</span>
+            </div>
           </div>
-          <button onclick="toggleBeautyTask('scrub')" style="border:none; background:#EC4899; color:#FFF; border-radius:8px; padding:4px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">🧂 ขัดวันนี้!</button>
+          <div style="display:flex; gap:5px; align-items:center;">
+            <button type="button" onclick="openBeautyRoutineModal()" style="border:1px solid #F472B6; background:#FFF; color:#9D174D; border-radius:8px; padding:5px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">⚙️ ตั้งวันเตือน</button>
+            <button type="button" onclick="toggleBeautyTask('mask')" style="border:none; background:#8B5CF6; color:#FFF; border-radius:8px; padding:5px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">🧖‍♀️ มาส์กวันนี้</button>
+            <button type="button" onclick="toggleBeautyTask('scrub')" style="border:none; background:#EC4899; color:#FFF; border-radius:8px; padding:5px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">🧂 ขัดวันนี้!</button>
+          </div>
         </div>
 
         <!-- ⏳ Countdown to Glowing Skin -->
@@ -3166,21 +3188,32 @@
         <div id="sched-calendar-grid" class="sched-cal-grid"></div>
 
         <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:10px; font-size:10.5px; font-weight:700; color:var(--sub);">
-          <span>🔵 นัดหมอ/ทำฟัน/ธุระ</span>
-          <span>🧂 วันขัดเกลือ/มาร์กหน้า</span>
+          <span>🔵 นัดหมาย/ธุระ</span>
+          <span>🧖‍♀️ วันมาส์กหน้า (ตามตาราง)</span>
+          <span>🧂 วันขัดผิว (ตามตาราง)</span>
           <span>🌸 คาดการณ์ประจำเดือน</span>
+        </div>
+        <div style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+          <div id="sched-beauty-rule-bar" style="font-size:11px; font-weight:700; color:var(--sub);">
+            🧖‍♀️ มาส์กหน้า: จันทร์, พุธ · 🧂 ขัดผิว: พุธ
+          </div>
+          <button type="button" class="meal-add-btn" style="font-size:11px; padding:4px 10px;" onclick="openBeautyRoutineModal()">⚙️ ตั้งวันมาส์กหน้า/ขัดผิว</button>
         </div>
       </div>
 
-      <!-- Quick Add Category Pills -->
+      <!-- Quick Add & Custom Saved Category Pills -->
       <div class="card" style="padding:14px;">
-        <div style="font-size:13.5px; font-weight:800; margin-bottom:8px;">⚡ กดเพิ่มกำหนดการด่วน:</div>
-        <div style="display:flex; gap:6px; flex-wrap:wrap;">
-          <button class="cat-chip" onclick="openAddScheduleModal('🦷 นัดไปทำฟัน', 'dental')">🦷 นัดไปทำฟัน</button>
-          <button class="cat-chip" onclick="openAddScheduleModal('🏥 นัดหาหมอ / ตรวจสุขภาพ', 'doctor')">🏥 นัดหาหมอ</button>
-          <button class="cat-chip" onclick="openAddScheduleModal('✨ นัดคลินิกความงาม / เลเซอร์', 'beauty')">✨ คลินิกความงาม</button>
-          <button class="cat-chip" onclick="openAddScheduleModal('🧂 วันขัดเกลือสครับผิว', 'scrub')">🧂 วันขัดเกลือ</button>
-          <button class="cat-chip" onclick="openAddScheduleModal('💑 นัดเดท / กินข้าวกับแฟน', 'couple')">💑 นัดกับแฟน</button>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px;">
+          <div style="font-size:13.5px; font-weight:800;">⚡ หมวดหมู่นัดหมายที่ใช้บ่อย (แตะเพื่อเพิ่มด่วน):</div>
+          <button type="button" onclick="openAddScheduleModal()" style="border:none; background:var(--green-bg); color:var(--green-dark); border-radius:99px; padding:4px 9px; font-size:11px; font-weight:800; cursor:pointer;">✍️ พิมพ์เองอิสระ</button>
+        </div>
+        <div style="font-size:11px; color:var(--sub); margin-bottom:8px;">
+          แตะปุ่มหมวดหมู่ด้านล่างเพื่อสร้างนัดหมาย หรือพิมพ์หมวดหมู่ใหม่เองแล้วกดบันทึกเก็บไว้ใช้บ่อยได้เลยครับ (กด ✕ บนป้ายเพื่อลบหมวดหมู่ที่ไม่ใช้)
+        </div>
+        <div id="sched-saved-cats-bar" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;"></div>
+        <div style="display:flex; gap:6px;">
+          <input type="text" id="sched-quick-new-cat-input" class="form-control" style="padding:7px 11px; font-size:12px;" placeholder="➕ พิมพ์หมวดหมู่นัดหมายใหม่เก็บไว้ใช้บ่อย (เช่น 💆‍♀️ เลเซอร์หน้าใส, 🏋️‍♂️ นัดเทรนเนอร์)..." onkeydown="if(event.key==='Enter') addCustomScheduleCategoryFromBar()" />
+          <button type="button" onclick="addCustomScheduleCategoryFromBar()" style="border:none; background:var(--green-dark); color:#FFF; border-radius:11px; padding:0 12px; font-size:11.5px; font-weight:800; cursor:pointer; white-space:nowrap;">💾 บันทึกหมวดหมู่</button>
         </div>
       </div>
 
@@ -3297,7 +3330,7 @@
     <div id="view-profile" class="view">
       <div class="top-header">
         <div class="greeting-box">
-          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v26</span></div>
+          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v27</span></div>
           <div class="greet-main">โปรไฟล์ & ตั้งค่า ⚙️</div>
         </div>
         <button type="button" class="meal-add-btn" style="padding:8px 14px; font-size:13px;" onclick="switchTab('home')">← กลับหน้าแรก</button>
@@ -4214,54 +4247,194 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL 12: ADD SCHEDULE / APPOINTMENT (นัดหาหมอ ทำฟัน ขัดผิว) ==================== -->
+  <!-- ==================== MODAL 12: ADD SCHEDULE / APPOINTMENT (เขียนหมวดหมู่เองได้อิสระ + บันทึกหมวดหมู่ใช้บ่อย) ==================== -->
   <div id="modal-schedule-add" class="modal-backdrop" onclick="if(event.target===this) closeModal('modal-schedule-add')">
     <div class="sheet">
       <div class="sheet-handle"></div>
       <div class="sheet-head">
-        <h3>🗓️ เพิ่มกำหนดการ / นัดหมายใหม่</h3>
+        <h3 id="modal-sched-head-title">🗓️ เพิ่มกำหนดการ / นัดหมายใหม่</h3>
         <button class="close-btn" onclick="closeModal('modal-schedule-add')">✕</button>
       </div>
+      <input type="hidden" id="sched-edit-id" value="" />
       <div class="form-group">
-        <label>หัวข้อนัดหมาย (เช่น นัดทำฟัน, นัดหาหมอ, คลินิกความงาม)</label>
-        <input type="text" id="sched-input-title" class="form-control" placeholder="เช่น 🦷 นัดไปขูดหินปูน / ทำฟัน" />
+        <label>📌 ชื่อนัดหมาย / กิจกรรม (พิมพ์ได้อย่างอิสระ)</label>
+        <input type="text" id="sched-input-title" class="form-control" placeholder="เช่น นัดขูดหินปูน, ฉีดวิตามินผิว, นัดเทรนเนอร์, กินชาบูกับแฟน..." />
+      </div>
+      <div class="form-group">
+        <label>🏷️ หมวดหมู่ (เว้นว่างได้ หรือพิมพ์หมวดหมู่เองได้ตามใจชอบเลยครับ!)</label>
+        <div style="display:flex; gap:6px;">
+          <input type="text" id="sched-input-cat" class="form-control" style="flex:1;" placeholder="พิมพ์เองได้เลย เช่น 🦷 ทำฟัน, 💆‍♀️ คลินิก, 🏋️‍♂️ ฟิตเนส (หรือเว้นว่างก็ได้)" />
+          <button type="button" onclick="saveCurrentTypedCatAsFavorite()" style="border:1.5px solid var(--green); background:var(--green-bg); color:var(--green-dark); border-radius:12px; padding:0 11px; font-size:11.5px; font-weight:800; cursor:pointer; white-space:nowrap;">💾 บันทึกหมวดหมู่นี้</button>
+        </div>
+        <label style="display:flex; align-items:center; gap:6px; margin-top:6px; font-size:11.5px; color:var(--sub); font-weight:700; cursor:pointer;">
+          <input type="checkbox" id="sched-save-cat-checkbox" checked style="width:15px; height:15px; accent-color:var(--green-dark);" />
+          <span>บันทึกหมวดหมู่ที่พิมพ์ใหม่ไว้เป็นปุ่มลัดสำหรับใช้งานครั้งต่อไปอัตโนมัติ ⭐</span>
+        </label>
+        <div style="margin-top:8px;">
+          <div style="font-size:11px; font-weight:800; color:var(--sub); margin-bottom:5px;">⚡ หรือแตะเลือกจากหมวดหมู่ที่คุณบันทึกไว้ (กด ✕ เพื่อลบอันที่ไม่ใช้):</div>
+          <div id="modal-sched-cat-chips" style="display:flex; gap:5px; flex-wrap:wrap; max-height:115px; overflow-y:auto; padding:2px;"></div>
+        </div>
       </div>
       <div class="form-row-2">
         <div class="form-group">
-          <label>หมวดหมู่</label>
-          <select id="sched-input-cat" class="form-control">
-            <option value="dental">🦷 นัดทำฟัน</option>
-            <option value="doctor">🏥 นัดหาหมอ / ตรวจสุขภาพ</option>
-            <option value="beauty">✨ คลินิกความงาม / ทำหน้า</option>
-            <option value="scrub">🧂 วันขัดเกลือ / สปาผิว</option>
-            <option value="couple">💑 นัดเดท / วันสำคัญกับแฟน</option>
-            <option value="other">📌 ธุระอื่นๆ</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>ของใคร</label>
+          <label>👥 ของใคร</label>
           <select id="sched-input-who" class="form-control">
             <option value="both">💑 ไปด้วยกัน 2 คน</option>
             <option value="paul">👦 คุณพอล</option>
             <option value="partner">👧 คุณแฟน</option>
           </select>
         </div>
+        <div class="form-group">
+          <label>📅 วันที่นัดหมาย</label>
+          <input type="date" id="sched-input-date" class="form-control num" />
+        </div>
       </div>
       <div class="form-row-2">
         <div class="form-group">
-          <label>วันที่นัดหมาย</label>
-          <input type="date" id="sched-input-date" class="form-control num" />
-        </div>
-        <div class="form-group">
-          <label>เวลา</label>
+          <label>⏰ เวลา</label>
           <input type="time" id="sched-input-time" class="form-control num" value="10:30" />
         </div>
-      </div>
-      <div class="form-group">
-        <label>สถานที่ / โน้ตเพิ่มเติม (ถ้ามี)</label>
-        <input type="text" id="sched-input-note" class="form-control" placeholder="เช่น รพ.กรุงเทพ / คลินิกสยาม / เตรียมบัตรประชาชน" />
+        <div class="form-group">
+          <label>📝 สถานที่ / โน้ตเพิ่มเติม (ถ้ามี)</label>
+          <input type="text" id="sched-input-note" class="form-control" placeholder="เช่น คลินิกสยาม / เตรียมฟิล์มเอ็กซเรย์" />
+        </div>
       </div>
       <button class="btn-primary" onclick="saveNewScheduleItem()">✅ บันทึกกำหนดการลงปฏิทิน</button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL 12B: BEAUTY ROUTINE SCHEDULE SETTINGS (ตั้งวันเตือนมาส์กหน้า & ขัดผิว) ==================== -->
+  <div id="modal-beauty-routine" class="modal-backdrop" onclick="if(event.target===this) closeModal('modal-beauty-routine')">
+    <div class="sheet" style="max-height:88vh; overflow-y:auto;">
+      <div class="sheet-handle"></div>
+      <div class="sheet-head">
+        <h3>🧖‍♀️🧂 ตั้งตารางเตือนมาส์กหน้า & ขัดผิว</h3>
+        <button class="close-btn" onclick="closeModal('modal-beauty-routine')">✕</button>
+      </div>
+      <div style="font-size:12px; color:var(--sub); margin-bottom:12px; line-height:1.5;">
+        ตั้งเงื่อนไขวันมาส์กหน้าและวันขัดผิวได้หลากหลายแบบ เช่น <b>มาส์กหน้าทุกวันจันทร์+พุธ</b> และ <b>ขัดผิวทุกวันพุธ</b> หรือเว้นระยะทุกๆ กี่วัน แอปจะขึ้นป้ายเตือนให้ตรงวันอัตโนมัติครับ ✨
+      </div>
+
+      <!-- SECTION 1: 🧖‍♀️ MASK SCHEDULE -->
+      <div style="background:#F5F3FF; border:1.5px solid #DDD6FE; border-radius:16px; padding:13px; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <div style="font-size:14px; font-weight:800; color:#5B21B6;">🧖‍♀️ 1. ตารางเตือนมาส์กหน้า (Face Mask)</div>
+          <span id="mask-rule-live-badge" style="font-size:10.5px; font-weight:800; background:#EDE9FE; color:#6D28D9; padding:3px 8px; border-radius:99px;">ทุกวันจันทร์, พุธ</span>
+        </div>
+
+        <!-- Quick Presets for Mask -->
+        <div style="font-size:11px; font-weight:800; color:#6D28D9; margin-bottom:5px;">⚡ กดเลือกสูตรยอดฮิตด่วน:</div>
+        <div style="display:flex; gap:5px; flex-wrap:wrap; margin-bottom:10px;">
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('mask', 'weekdays', [1,3])">🌟 ทุกวันจันทร์ + พุธ</button>
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('mask', 'weekdays', [1,3,5])">จันทร์ + พุธ + ศุกร์</button>
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('mask', 'weekdays', [6,0])">เสาร์ + อาทิตย์</button>
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('mask', 'interval', 2)">วันเว้นวัน (ทุก 2 วัน)</button>
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('mask', 'interval', 3)">ทุกๆ 3 วัน</button>
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('mask', 'daily', 1)">ทำทุกวัน</button>
+        </div>
+
+        <div class="form-group" style="margin-bottom:8px;">
+          <label style="color:#5B21B6;">รูปแบบเงื่อนไขการเตือนมาส์กหน้า</label>
+          <select id="mask-rule-mode" class="form-control" onchange="onBeautyRuleModeChange('mask')">
+            <option value="weekdays">📅 เลือกวันในสัปดาห์ (เช่น จันทร์ + พุธ เลือกได้หลายวัน)</option>
+            <option value="interval">🔄 เว้นระยะทุกๆ N วัน (นับจากวันที่มาส์กล่าสุด)</option>
+            <option value="monthly_dates">🗓️ ระบุวันที่ในเดือน (เช่น วันที่ 1, 10, 20 ของเดือน)</option>
+            <option value="daily">✨ เตือนมาส์กหน้าทุกวัน (สายบูสต์ผิวฉ่ำเร่งด่วน)</option>
+            <option value="off">⏸️ ไม่ตั้งวันประจำ (กดติ๊กเองตามใจ)</option>
+          </select>
+        </div>
+
+        <!-- Mask Weekdays Selector -->
+        <div id="mask-rule-weekdays-box" style="margin-bottom:6px;">
+          <div style="font-size:11px; font-weight:700; color:#5B21B6; margin-bottom:5px;">แตะเลือกวันในสัปดาห์ที่ต้องการมาส์กหน้า (เลือกได้มากกว่า 1 วัน):</div>
+          <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:5px;">
+            <button type="button" id="mask-dow-1" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('mask', 1)">จ.</button>
+            <button type="button" id="mask-dow-2" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('mask', 2)">อ.</button>
+            <button type="button" id="mask-dow-3" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('mask', 3)">พ.</button>
+            <button type="button" id="mask-dow-4" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('mask', 4)">พฤ.</button>
+            <button type="button" id="mask-dow-5" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('mask', 5)">ศ.</button>
+            <button type="button" id="mask-dow-6" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('mask', 6)">ส.</button>
+            <button type="button" id="mask-dow-0" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('mask', 0)">อา.</button>
+          </div>
+        </div>
+
+        <!-- Mask Interval Selector -->
+        <div id="mask-rule-interval-box" style="display:none; margin-bottom:6px;">
+          <label style="font-size:11.5px; font-weight:700; color:#5B21B6;">เตือนให้มาส์กหน้าทุกๆ กี่วัน (นับจากครั้งล่าสุดที่มาส์ก):</label>
+          <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
+            <input type="number" id="mask-rule-interval-days" class="form-control num" value="2" min="1" max="30" style="width:90px; text-align:center; font-weight:800;" oninput="updateBeautyRuleLiveBadges()" />
+            <span style="font-size:12px; font-weight:700; color:#5B21B6;">วัน / ครั้ง (เช่น 2 = วันเว้นวัน, 3 = ทุก 3 วัน)</span>
+          </div>
+        </div>
+
+        <!-- Mask Monthly Dates Selector -->
+        <div id="mask-rule-monthly-box" style="display:none; margin-bottom:6px;">
+          <label style="font-size:11.5px; font-weight:700; color:#5B21B6;">ระบุวันที่ของเดือน (คั่นด้วยจุลภาค เช่น 1, 10, 20):</label>
+          <input type="text" id="mask-rule-monthly-dates" class="form-control num" value="1, 10, 20" placeholder="เช่น 1, 10, 20" oninput="updateBeautyRuleLiveBadges()" />
+        </div>
+      </div>
+
+      <!-- SECTION 2: 🧂 SCRUB SCHEDULE -->
+      <div style="background:#FDF2F8; border:1.5px solid #FBCFE8; border-radius:16px; padding:13px; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <div style="font-size:14px; font-weight:800; color:#9D174D;">🧂 2. ตารางเตือนขัดผิว / สครับเกลือ (Body Scrub)</div>
+          <span id="scrub-rule-live-badge" style="font-size:10.5px; font-weight:800; background:#FCE7F3; color:#BE185D; padding:3px 8px; border-radius:99px;">ทุกวันพุธ</span>
+        </div>
+
+        <!-- Quick Presets for Scrub -->
+        <div style="font-size:11px; font-weight:800; color:#BE185D; margin-bottom:5px;">⚡ กดเลือกสูตรยอดฮิตด่วน:</div>
+        <div style="display:flex; gap:5px; flex-wrap:wrap; margin-bottom:10px;">
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('scrub', 'weekdays', [3])">🌟 ทุกวันพุธ</button>
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('scrub', 'weekdays', [3,0])">พุธ + อาทิตย์ (2 วัน/สัปดาห์)</button>
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('scrub', 'weekdays', [6])">ทุกวันเสาร์</button>
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('scrub', 'weekdays', [0])">ทุกวันอาทิตย์</button>
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('scrub', 'interval', 3)">ทุกๆ 3 วัน</button>
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('scrub', 'interval', 5)">ทุกๆ 5 วัน</button>
+          <button type="button" class="cat-chip" style="font-size:11px; padding:4px 9px;" onclick="applyBeautyRulePreset('scrub', 'interval', 7)">ทุกๆ 7 วัน</button>
+        </div>
+
+        <div class="form-group" style="margin-bottom:8px;">
+          <label style="color:#9D174D;">รูปแบบเงื่อนไขการเตือนขัดผิว</label>
+          <select id="scrub-rule-mode" class="form-control" onchange="onBeautyRuleModeChange('scrub')">
+            <option value="weekdays">📅 เลือกวันในสัปดาห์ (เช่น ทุกวันพุธ หรือ พุธ+อาทิตย์)</option>
+            <option value="interval">🔄 เว้นระยะทุกๆ N วัน (นับจากวันที่ขัดผิวล่าสุด)</option>
+            <option value="monthly_dates">🗓️ ระบุวันที่ในเดือน (เช่น วันที่ 1, 15 ของเดือน)</option>
+            <option value="daily">✨ เตือนทุกวัน</option>
+            <option value="off">⏸️ ไม่ตั้งวันประจำ (กดติ๊กเองตามใจ)</option>
+          </select>
+        </div>
+
+        <!-- Scrub Weekdays Selector -->
+        <div id="scrub-rule-weekdays-box" style="margin-bottom:6px;">
+          <div style="font-size:11px; font-weight:700; color:#9D174D; margin-bottom:5px;">แตะเลือกวันในสัปดาห์ที่ต้องการขัดผิว (เลือกได้มากกว่า 1 วัน):</div>
+          <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:5px;">
+            <button type="button" id="scrub-dow-1" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('scrub', 1)">จ.</button>
+            <button type="button" id="scrub-dow-2" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('scrub', 2)">อ.</button>
+            <button type="button" id="scrub-dow-3" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('scrub', 3)">พ.</button>
+            <button type="button" id="scrub-dow-4" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('scrub', 4)">พฤ.</button>
+            <button type="button" id="scrub-dow-5" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('scrub', 5)">ศ.</button>
+            <button type="button" id="scrub-dow-6" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('scrub', 6)">ส.</button>
+            <button type="button" id="scrub-dow-0" class="cat-chip" style="padding:8px 0; text-align:center; font-size:12px;" onclick="toggleRuleWeekday('scrub', 0)">อา.</button>
+          </div>
+        </div>
+
+        <!-- Scrub Interval Selector -->
+        <div id="scrub-rule-interval-box" style="display:none; margin-bottom:6px;">
+          <label style="font-size:11.5px; font-weight:700; color:#9D174D;">เตือนให้ขัดผิวทุกๆ กี่วัน (นับจากครั้งล่าสุดที่ขัดผิว):</label>
+          <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
+            <input type="number" id="scrub-rule-interval-days" class="form-control num" value="3" min="1" max="30" style="width:90px; text-align:center; font-weight:800;" oninput="updateBeautyRuleLiveBadges()" />
+            <span style="font-size:12px; font-weight:700; color:#9D174D;">วัน / ครั้ง (เช่น 3 = ทุก 3 วัน, 7 = สัปดาห์ละครั้ง)</span>
+          </div>
+        </div>
+
+        <!-- Scrub Monthly Dates Selector -->
+        <div id="scrub-rule-monthly-box" style="display:none; margin-bottom:6px;">
+          <label style="font-size:11.5px; font-weight:700; color:#9D174D;">ระบุวันที่ของเดือน (คั่นด้วยจุลภาค เช่น 1, 15):</label>
+          <input type="text" id="scrub-rule-monthly-dates" class="form-control num" value="1, 15" placeholder="เช่น 1, 15" oninput="updateBeautyRuleLiveBadges()" />
+        </div>
+      </div>
+
+      <button type="button" class="btn-primary" onclick="saveBeautyRoutineModal()">✅ บันทึกตารางเตือนมาส์กหน้า & ขัดผิว</button>
     </div>
   </div>
 
@@ -4530,6 +4703,33 @@
       };
     }
 
+    const DEFAULT_SCHEDULE_CATEGORIES = [
+      "🦷 ทำฟัน / ขูดหินปูน",
+      "🏥 นัดหาหมอ / ตรวจสุขภาพ",
+      "✨ คลินิกความงาม / เลเซอร์",
+      "🧖‍♀️ มาส์กหน้า / สปาผิว",
+      "🧂 ขัดเกลือสครับผิว",
+      "💑 นัดเดท / กินข้าวกับแฟน",
+      "🏋️‍♂️ ฟิตเนส / นัดเทรนเนอร์",
+      "💇‍♀️ ทำผม / ทำเล็บ",
+      "✈️ ทริปเที่ยว / เดินทาง",
+      "💼 งาน / ธุระสำคัญ"
+    ];
+
+    function normalizeBeautyRuleObj(r, defaultWeekdays, defaultInterval) {
+      const raw = (r && typeof r === "object") ? r : {};
+      const validModes = ["weekdays", "interval", "monthly_dates", "daily", "off"];
+      const mode = validModes.includes(raw.mode) ? raw.mode : "weekdays";
+      const weekdays = Array.isArray(raw.weekdays)
+        ? raw.weekdays.map(Number).filter(n => !isNaN(n) && n >= 0 && n <= 6)
+        : [...defaultWeekdays];
+      const intervalDays = Math.max(1, Math.min(30, Number(raw.intervalDays) || defaultInterval));
+      const monthDates = Array.isArray(raw.monthDates) && raw.monthDates.length > 0
+        ? raw.monthDates.map(Number).filter(n => n >= 1 && n <= 31)
+        : [1, 15];
+      return { mode, weekdays, intervalDays, monthDates };
+    }
+
     function normalizeBeautyLogsObj(bl) {
       const raw = bl || {};
       const daily = (raw.daily && typeof raw.daily === "object") ? { ...raw.daily } : {};
@@ -4538,9 +4738,15 @@
           daily[k] = { ...raw[k], ...(daily[k] || {}) };
         }
       });
+      const rc = (raw.routineConfig && typeof raw.routineConfig === "object") ? raw.routineConfig : {};
       return {
         lastSaltScrubDate: raw.lastSaltScrubDate || getOffsetDateStr(-2),
+        lastMaskDate: raw.lastMaskDate || getOffsetDateStr(-2),
         glowTargetDays: Number(raw.glowTargetDays) || 28,
+        routineConfig: {
+          mask: normalizeBeautyRuleObj(rc.mask, [1, 3], 2),
+          scrub: normalizeBeautyRuleObj(rc.scrub, [3], 3)
+        },
         daily
       };
     }
@@ -4720,9 +4926,10 @@
           partner: buildDefaultPartnerSlot()
         },
         schedules: [
-          { id: 901, title: "🦷 นัดไปขูดหินปูน / ตรวจฟัน", cat: "dental", who: "both", date: getOffsetDateStr(5), time: "14:00", note: "คลินิกทันตกรรม" },
-          { id: 902, title: "🧂 วันขัดเกลือสครับผิว + มาร์กหน้า", cat: "scrub", who: "partner", date: getOffsetDateStr(2), time: "20:00", note: "สครับผิวใส" }
+          { id: 901, title: "🦷 นัดไปขูดหินปูน / ตรวจฟัน", cat: "🦷 ทำฟัน / ขูดหินปูน", who: "both", date: getOffsetDateStr(5), time: "14:00", note: "คลินิกทันตกรรม" },
+          { id: 902, title: "🧂 วันขัดเกลือสครับผิว + มาส์กหน้า", cat: "🧂 ขัดเกลือสครับผิว", who: "partner", date: getOffsetDateStr(2), time: "20:00", note: "สครับผิวใส" }
         ],
+        customScheduleCategories: [...DEFAULT_SCHEDULE_CATEGORIES],
         aiConfig: {
           provider: "google",
           kieModel: "gemini-3.5-flash-lite",
@@ -4787,6 +4994,9 @@
         beautyLogs: normalizeBeautyLogsObj(chosen.beautyLogs || def.beautyLogs),
         cycleData: normalizeCycleDataObj(chosen.cycleData || def.cycleData),
         schedules: Array.isArray(chosen.schedules) ? chosen.schedules : def.schedules,
+        customScheduleCategories: (Array.isArray(chosen.customScheduleCategories) && chosen.customScheduleCategories.length > 0)
+          ? chosen.customScheduleCategories
+          : [...DEFAULT_SCHEDULE_CATEGORIES],
         aiConfig: { ...def.aiConfig, ...(chosen.aiConfig || {}) },
         chatHistory: Array.isArray(chosen.chatHistory) ? chosen.chatHistory : def.chatHistory,
         activeProfileId: chosen.activeProfileId || "paul",
@@ -5194,7 +5404,21 @@
 
       merged.bookmarks = (primary.bookmarks && primary.bookmarks.length > 0) ? primary.bookmarks : (secondary.bookmarks || []);
       merged.schedules = (primary.schedules && primary.schedules.length > 0) ? primary.schedules : (secondary.schedules || []);
-      merged.beautyLogs = { ...(secondary.beautyLogs || {}), ...(primary.beautyLogs || {}) };
+      const catSet = new Set([
+        ...(primary.customScheduleCategories || []),
+        ...(secondary.customScheduleCategories || []),
+        ...DEFAULT_SCHEDULE_CATEGORIES
+      ].filter(Boolean));
+      merged.customScheduleCategories = Array.from(catSet);
+      merged.beautyLogs = {
+        ...(secondary.beautyLogs || {}),
+        ...(primary.beautyLogs || {}),
+        routineConfig: (primary.beautyLogs?.routineConfig || secondary.beautyLogs?.routineConfig),
+        daily: {
+          ...(secondary.beautyLogs?.daily || {}),
+          ...(primary.beautyLogs?.daily || {})
+        }
+      };
       merged.cycleData = {
         ...(secondary.cycleData || {}),
         ...(primary.cycleData || {}),
@@ -6160,11 +6384,210 @@
       if (key === "scrub" && bLog[key]) {
         state.beautyLogs.lastSaltScrubDate = currentSelectedDate;
       }
+      if (key === "mask" && bLog[key]) {
+        state.beautyLogs.lastMaskDate = currentSelectedDate;
+      }
       saveState();
       renderBeautyQuestsAndGlow();
+      if (document.getElementById("view-schedule")?.classList.contains("active")) {
+        renderScheduleTab();
+      }
       if (document.getElementById("view-insights")?.classList.contains("active")) {
         renderInsights();
       }
+    }
+
+    const THAI_DOW_NAMES = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"];
+    const THAI_DOW_SHORT = ["อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส."];
+
+    function ensureBeautyRoutineConfig() {
+      if (!state.beautyLogs) state.beautyLogs = normalizeBeautyLogsObj({});
+      if (!state.beautyLogs.routineConfig) {
+        state.beautyLogs.routineConfig = {
+          mask: normalizeBeautyRuleObj(null, [1, 3], 2),
+          scrub: normalizeBeautyRuleObj(null, [3], 3)
+        };
+      }
+      state.beautyLogs.routineConfig.mask = normalizeBeautyRuleObj(state.beautyLogs.routineConfig.mask, [1, 3], 2);
+      state.beautyLogs.routineConfig.scrub = normalizeBeautyRuleObj(state.beautyLogs.routineConfig.scrub, [3], 3);
+      return state.beautyLogs.routineConfig;
+    }
+
+    function describeBeautyRule(rule) {
+      if (!rule || rule.mode === "off") return "ไม่ตั้งวันประจำ (ติ๊กเองตามใจ)";
+      if (rule.mode === "daily") return "ทำทุกวัน ✨";
+      if (rule.mode === "interval") {
+        const n = Math.max(1, Number(rule.intervalDays) || 2);
+        return n === 1 ? "ทำทุกวัน" : (n === 2 ? "วันเว้นวัน (ทุกๆ 2 วัน)" : `ทุกๆ ${n} วัน`);
+      }
+      if (rule.mode === "monthly_dates") {
+        const dates = (rule.monthDates || [1, 15]).slice().sort((a, b) => a - b);
+        return `ทุกวันที่ ${dates.join(", ")} ของเดือน`;
+      }
+      // weekdays
+      const order = [1, 2, 3, 4, 5, 6, 0];
+      const w = (rule.weekdays || []).slice().sort((a, b) => order.indexOf(a) - order.indexOf(b));
+      if (w.length === 0) return "ยังไม่ได้เลือกวัน";
+      if (w.length === 7) return "ทุกวัน (จันทร์-อาทิตย์)";
+      return "ทุกวัน" + w.map(d => THAI_DOW_NAMES[d]).join(" + ");
+    }
+
+    function isBeautyRuleDueOnDate(dateStr, rule, lastDoneDateStr) {
+      if (!rule || rule.mode === "off") return false;
+      if (rule.mode === "daily") return true;
+      const dt = new Date(dateStr + "T00:00:00");
+      if (isNaN(dt.getTime())) return false;
+      if (rule.mode === "weekdays") {
+        const dow = dt.getDay();
+        return Array.isArray(rule.weekdays) && rule.weekdays.includes(dow);
+      }
+      if (rule.mode === "monthly_dates") {
+        const dom = dt.getDate();
+        return Array.isArray(rule.monthDates) && rule.monthDates.includes(dom);
+      }
+      if (rule.mode === "interval") {
+        const n = Math.max(1, Number(rule.intervalDays) || 2);
+        if (!lastDoneDateStr) return true;
+        const lastDt = new Date(lastDoneDateStr + "T00:00:00");
+        if (isNaN(lastDt.getTime())) return true;
+        const diffDays = Math.round((dt - lastDt) / 86400000);
+        return diffDays >= n && (diffDays % n === 0 || dateStr === getTodayStr());
+      }
+      return false;
+    }
+
+    function getNextBeautyDueInfo(fromDateStr, rule, lastDoneDateStr) {
+      if (!rule || rule.mode === "off") {
+        return { isDueToday: false, nextLabel: "กดติ๊กได้ทุกเมื่อที่ทำ" };
+      }
+      if (isBeautyRuleDueOnDate(fromDateStr, rule, lastDoneDateStr)) {
+        return { isDueToday: true, nextLabel: "🔔 ถึงคิววันนี้ตามตารางที่ตั้งไว้!" };
+      }
+      const baseDt = new Date(fromDateStr + "T00:00:00");
+      for (let step = 1; step <= 31; step++) {
+        const d = new Date(baseDt);
+        d.setDate(d.getDate() + step);
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        const candStr = `${y}-${m}-${day}`;
+        if (isBeautyRuleDueOnDate(candStr, rule, lastDoneDateStr)) {
+          const dowName = THAI_DOW_NAMES[d.getDay()];
+          const dayDiffTxt = step === 1 ? "พรุ่งนี้" : `อีก ${step} วัน`;
+          return {
+            isDueToday: false,
+            nextLabel: `คิวถัดไป: วัน${dowName} (${dayDiffTxt})`
+          };
+        }
+      }
+      return { isDueToday: false, nextLabel: describeBeautyRule(rule) };
+    }
+
+    let __editingRoutineTemp = null;
+
+    function syncRoutineModalUIFromTemp() {
+      if (!__editingRoutineTemp) return;
+      ["mask", "scrub"].forEach(type => {
+        const r = __editingRoutineTemp[type];
+        const modeSel = document.getElementById(`${type}-rule-mode`);
+        if (modeSel) modeSel.value = r.mode;
+
+        const wBox = document.getElementById(`${type}-rule-weekdays-box`);
+        const iBox = document.getElementById(`${type}-rule-interval-box`);
+        const mBox = document.getElementById(`${type}-rule-monthly-box`);
+        if (wBox) wBox.style.display = r.mode === "weekdays" ? "block" : "none";
+        if (iBox) iBox.style.display = r.mode === "interval" ? "block" : "none";
+        if (mBox) mBox.style.display = r.mode === "monthly_dates" ? "block" : "none";
+
+        for (let d = 0; d <= 6; d++) {
+          const btn = document.getElementById(`${type}-dow-${d}`);
+          if (btn) btn.classList.toggle("active", (r.weekdays || []).includes(d));
+        }
+        const intInp = document.getElementById(`${type}-rule-interval-days`);
+        if (intInp && document.activeElement !== intInp) intInp.value = r.intervalDays || (type === "mask" ? 2 : 3);
+        const monInp = document.getElementById(`${type}-rule-monthly-dates`);
+        if (monInp && document.activeElement !== monInp) monInp.value = (r.monthDates || [1, 15]).join(", ");
+      });
+      updateBeautyRuleLiveBadges();
+    }
+
+    function updateBeautyRuleLiveBadges() {
+      if (!__editingRoutineTemp) return;
+      ["mask", "scrub"].forEach(type => {
+        const r = __editingRoutineTemp[type];
+        const intInp = document.getElementById(`${type}-rule-interval-days`);
+        if (intInp) r.intervalDays = Math.max(1, Math.min(30, Number(intInp.value) || 2));
+        const monInp = document.getElementById(`${type}-rule-monthly-dates`);
+        if (monInp) {
+          const parsed = monInp.value.split(/[, ]+/).map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n) && n >= 1 && n <= 31);
+          if (parsed.length > 0) r.monthDates = Array.from(new Set(parsed));
+        }
+        const badge = document.getElementById(`${type}-rule-live-badge`);
+        if (badge) badge.textContent = describeBeautyRule(r);
+      });
+    }
+
+    function openBeautyRoutineModal() {
+      const rc = ensureBeautyRoutineConfig();
+      __editingRoutineTemp = JSON.parse(JSON.stringify(rc));
+      syncRoutineModalUIFromTemp();
+      openModal("modal-beauty-routine");
+    }
+
+    function onBeautyRuleModeChange(type) {
+      if (!__editingRoutineTemp) ensureBeautyRoutineConfig();
+      const sel = document.getElementById(`${type}-rule-mode`);
+      if (sel && __editingRoutineTemp?.[type]) {
+        __editingRoutineTemp[type].mode = sel.value;
+      }
+      syncRoutineModalUIFromTemp();
+    }
+
+    function toggleRuleWeekday(type, dow) {
+      if (!__editingRoutineTemp) return;
+      const r = __editingRoutineTemp[type];
+      r.mode = "weekdays";
+      if (!Array.isArray(r.weekdays)) r.weekdays = [];
+      if (r.weekdays.includes(dow)) {
+        if (r.weekdays.length > 1) {
+          r.weekdays = r.weekdays.filter(x => x !== dow);
+        } else {
+          showToast("เลือกอย่างน้อย 1 วัน หรือเปลี่ยนโหมดเป็น 'ไม่ตั้งวันประจำ' ได้ครับ");
+        }
+      } else {
+        r.weekdays.push(dow);
+      }
+      syncRoutineModalUIFromTemp();
+    }
+
+    function applyBeautyRulePreset(type, mode, val) {
+      if (!__editingRoutineTemp) {
+        const rc = ensureBeautyRoutineConfig();
+        __editingRoutineTemp = JSON.parse(JSON.stringify(rc));
+      }
+      const r = __editingRoutineTemp[type];
+      r.mode = mode;
+      if (mode === "weekdays" && Array.isArray(val)) {
+        r.weekdays = [...val];
+      } else if (mode === "interval") {
+        r.intervalDays = Number(val) || 2;
+      }
+      syncRoutineModalUIFromTemp();
+    }
+
+    function saveBeautyRoutineModal() {
+      updateBeautyRuleLiveBadges();
+      if (__editingRoutineTemp) {
+        state.beautyLogs.routineConfig = JSON.parse(JSON.stringify(__editingRoutineTemp));
+      }
+      saveState();
+      renderBeautyQuestsAndGlow();
+      if (document.getElementById("view-schedule")?.classList.contains("active")) {
+        renderScheduleTab();
+      }
+      closeModal("modal-beauty-routine");
+      const rc = ensureBeautyRoutineConfig();
+      showToast(`🔔 บันทึกตารางเตือนแล้ว! (มาส์ก: ${describeBeautyRule(rc.mask)} · ขัดผิว: ${describeBeautyRule(rc.scrub)})`);
     }
 
     function addCustomDailyQuest() {
@@ -6197,28 +6620,47 @@
     }
 
     function calcGlowStats() {
-      if (!state.beautyLogs) state.beautyLogs = { lastSaltScrubDate: getOffsetDateStr(-2), glowTargetDays: 28, daily: {} };
+      if (!state.beautyLogs) state.beautyLogs = normalizeBeautyLogsObj({});
+      const rc = ensureBeautyRoutineConfig();
       let sunDays = 0, vitDays = 0, maskDays = 0, activeBeautyDays = 0;
       const scrubDates = [];
+      const maskDates = [];
       for (let i = -27; i <= 0; i++) {
         const dStr = getOffsetDateStr(i);
         const log = state.beautyLogs.daily?.[dStr];
         if (log) {
           if (log.sunscreen) sunDays++;
           if (log.vitamin) vitDays++;
-          if (log.mask) maskDays++;
+          if (log.mask) {
+            maskDays++;
+            maskDates.push(dStr);
+          }
           if (log.scrub) scrubDates.push(dStr);
           if (log.sunscreen || log.vitamin || log.mask || log.scrub) activeBeautyDays++;
         }
       }
-      const lastScrub = state.beautyLogs.lastSaltScrubDate || getOffsetDateStr(-2);
+      const lastScrub = (scrubDates.length > 0 ? scrubDates[scrubDates.length - 1] : null) || state.beautyLogs.lastSaltScrubDate || getOffsetDateStr(-2);
+      const lastMask = (maskDates.length > 0 ? maskDates[maskDates.length - 1] : null) || state.beautyLogs.lastMaskDate || getOffsetDateStr(-2);
+      state.beautyLogs.lastSaltScrubDate = lastScrub;
+      state.beautyLogs.lastMaskDate = lastMask;
       if (!scrubDates.includes(lastScrub)) scrubDates.push(lastScrub);
-      const diffMs = new Date(getTodayStr() + "T00:00:00") - new Date(lastScrub + "T00:00:00");
-      const daysSinceScrub = Math.max(0, Math.round(diffMs / 86400000));
-      const nextScrubIn = Math.max(0, 3 - daysSinceScrub);
+      const todayZero = new Date(getTodayStr() + "T00:00:00");
+      const daysSinceScrub = Math.max(0, Math.round((todayZero - new Date(lastScrub + "T00:00:00")) / 86400000));
+      const daysSinceMask = Math.max(0, Math.round((todayZero - new Date(lastMask + "T00:00:00")) / 86400000));
+      const maskDueInfo = getNextBeautyDueInfo(currentSelectedDate, rc.mask, lastMask);
+      const scrubDueInfo = getNextBeautyDueInfo(currentSelectedDate, rc.scrub, lastScrub);
+      const nextScrubIn = scrubDueInfo.isDueToday ? 0 : Math.max(1, 3 - daysSinceScrub);
       const countdownDays = Math.max(1, 14 - Math.min(13, activeBeautyDays));
       const glowPct = Math.min(100, Math.max(25, Math.round(((14 - countdownDays) / 14) * 100)));
-      return { sunDays, vitDays, maskDays, activeBeautyDays, lastScrub, daysSinceScrub, nextScrubIn, countdownDays, glowPct, scrubDates };
+      return {
+        sunDays, vitDays, maskDays, activeBeautyDays,
+        lastScrub, lastMask, daysSinceScrub, daysSinceMask,
+        nextScrubIn, countdownDays, glowPct, scrubDates,
+        maskRuleDesc: describeBeautyRule(rc.mask),
+        scrubRuleDesc: describeBeautyRule(rc.scrub),
+        maskDueInfo,
+        scrubDueInfo
+      };
     }
 
     function renderBeautyQuestsAndGlow() {
@@ -6251,6 +6693,43 @@
       const glow = calcGlowStats();
       const exDoneCount = Object.keys(bLog.completedExercises || {}).length;
 
+      // Update Smart Routine Banner on Home Card
+      const sumTxtEl = document.getElementById("beauty-routine-summary-txt");
+      if (sumTxtEl) {
+        sumTxtEl.innerHTML = `🧖‍♀️ <b>มาส์กหน้า:</b> ${glow.maskRuleDesc} &nbsp;·&nbsp; 🧂 <b>ขัดผิว:</b> ${glow.scrubRuleDesc}`;
+      }
+      const dueBoxEl = document.getElementById("beauty-routine-today-due");
+      if (dueBoxEl) {
+        const dueNotices = [];
+        if (glow.maskDueInfo.isDueToday && !bLog.mask) {
+          dueNotices.push(`<span style="display:inline-flex; align-items:center; gap:5px; background:#EDE9FE; color:#5B21B6; border:1px solid #C4B5FD; padding:4px 9px; border-radius:99px; font-size:11px; font-weight:800;">🔔 วันนี้ถึงคิวมาส์กหน้า! (${glow.maskRuleDesc})</span>`);
+        } else if (glow.maskDueInfo.isDueToday && bLog.mask) {
+          dueNotices.push(`<span style="display:inline-flex; align-items:center; gap:5px; background:#DCFCE7; color:#166534; padding:4px 9px; border-radius:99px; font-size:11px; font-weight:800;">✅ มาส์กหน้าตามตารางวันนี้เรียบร้อย!</span>`);
+        }
+        if (glow.scrubDueInfo.isDueToday && !bLog.scrub) {
+          dueNotices.push(`<span style="display:inline-flex; align-items:center; gap:5px; background:#FCE7F3; color:#9D174D; border:1px solid #F9A8D4; padding:4px 9px; border-radius:99px; font-size:11px; font-weight:800;">🔔 วันนี้ถึงคิวขัดผิว! (${glow.scrubRuleDesc})</span>`);
+        } else if (glow.scrubDueInfo.isDueToday && bLog.scrub) {
+          dueNotices.push(`<span style="display:inline-flex; align-items:center; gap:5px; background:#DCFCE7; color:#166534; padding:4px 9px; border-radius:99px; font-size:11px; font-weight:800;">✅ ขัดผิวตามตารางวันนี้เรียบร้อย!</span>`);
+        }
+        if (dueNotices.length > 0) {
+          dueBoxEl.style.display = "flex";
+          dueBoxEl.style.flexWrap = "wrap";
+          dueBoxEl.style.gap = "6px";
+          dueBoxEl.innerHTML = dueNotices.join("");
+        } else {
+          dueBoxEl.style.display = "block";
+          dueBoxEl.innerHTML = `<span style="font-size:10.5px; color:#64748B; font-weight:700;">✨ มาส์กหน้า (${glow.maskDueInfo.nextLabel}) · ขัดผิว (${glow.scrubDueInfo.nextLabel})</span>`;
+        }
+      }
+
+      const maskSubText = glow.maskDueInfo.isDueToday
+        ? `🔔 ถึงคิวมาส์กหน้าวันนี้! (ตาราง: ${glow.maskRuleDesc})`
+        : `ตาราง: ${glow.maskRuleDesc} · ${glow.maskDueInfo.nextLabel}`;
+
+      const scrubSubText = glow.scrubDueInfo.isDueToday
+        ? `🔔 ถึงคิวขัดผิววันนี้พอดี! (ตาราง: ${glow.scrubRuleDesc})`
+        : `ตาราง: ${glow.scrubRuleDesc} · ${glow.scrubDueInfo.nextLabel}`;
+
       const tasks = mode === "macho"
         ? [
             { key: "liftWeights", icon: "🏋️‍♂️", title: `ออกกำลังกายในห้อง / ดัมเบล (${exDoneCount}/5 ท่า)`, sub: "ปั๊มกล้ามแขนและซิกแพคด้วยคลาส 2 เฟรม!", isWorkout: true },
@@ -6258,16 +6737,17 @@
             { key: "logFood3", icon: "🍱", title: `บันทึกอาหาร & คุมแคลไม่เกินเป้า (${dayTotals.cal}/${state.profile.calGoal} kcal)`, sub: "ลีนไขมันแต่กล้ามยังแน่นปึ้ก" },
             { key: "vitamin", icon: "💊", title: "กินวิตามินรวม / เวย์ / ครีเอทีน", sub: "ฟื้นฟูกล้ามเนื้อและบูสต์พลังงาน" },
             { key: "sunscreen", icon: "☀️", title: "ทากันแดดผู้ชายหน้าใสไม่หมอง", sub: "กล้ามดุแต่ผิวต้องเนียนหล่อด้วย!" },
-            { key: "water8", icon: "💧", title: `ดื่มน้ำสะอาดให้ครบ ${state.profile.waterGoalGlasses || 8} แก้ว`, sub: "ระบบเผาผลาญทำงานเต็มสูบ 100%" },
-            { key: "scrub", icon: "🧂", title: "สครับผิว / ขัดขี้ไคลตัวหอมสะอาด", sub: glow.nextScrubIn === 0 ? "🔥 ถึงกำหนดขัดผิววันนี้พอดี!" : `ขัดล่าสุด ${glow.daysSinceScrub} วันที่แล้ว (อีก ${glow.nextScrubIn} วันขัดใหม่)` }
+            { key: "mask", icon: "🧖‍♀️", title: "มาส์กหน้ากู้ผิวใส 15 นาที", sub: maskSubText, isDueToday: glow.maskDueInfo.isDueToday },
+            { key: "scrub", icon: "🧂", title: "สครับผิว / ขัดขี้ไคลตัวหอมสะอาด", sub: scrubSubText, isDueToday: glow.scrubDueInfo.isDueToday },
+            { key: "water8", icon: "💧", title: `ดื่มน้ำสะอาดให้ครบ ${state.profile.waterGoalGlasses || 8} แก้ว`, sub: "ระบบเผาผลาญทำงานเต็มสูบ 100%" }
           ]
         : [
             { key: "roomWorkout", icon: "🧘‍♀️", title: `ออกกำลังกายในห้องง่ายๆ (${exDoneCount}/5 ท่า)`, sub: "ซิทอัพ สควอท หรือดัมเบลกับตัวละคร 2 เฟรม!", isWorkout: true },
             { key: "logFood3", icon: "🥗", title: `บันทึกอาหารวันนี้ & คุมแคล (${dayTotals.cal}/${state.profile.calGoal} kcal)`, sub: "หุ่นสวยเอวเอสเริ่มที่การเลือกกิน" },
             { key: "sunscreen", icon: "☀️", title: "ทากันแดด 2 ข้อนิ้ว (สม่ำเสมอ)", sub: `ทาสม่ำเสมอแล้ว ${glow.sunDays} วันในเดือนนี้` },
             { key: "vitamin", icon: "🍒", title: "เติมวิตามินผิวสวย (Vit C / คอลลาเจน)", sub: "บูสต์ผิวกระจ่างใสจากภายใน" },
-            { key: "mask", icon: "🧖‍♀️", title: "มาส์กหน้าฉ่ำโกลว์ 15 นาที", sub: "เติมความชุ่มชื้นให้ผิวอิ่มน้ำ" },
-            { key: "scrub", icon: "🧂", title: "ขัดเกลือสครับผิวเนียนนุ่ม", sub: glow.nextScrubIn === 0 ? "✨ วันนี้ถึงคิวขัดเกลือผิวสวยแล้วนะ!" : `ขัดล่าสุด ${glow.daysSinceScrub} วันที่แล้ว (อีก ${glow.nextScrubIn} วันขัดใหม่)` },
+            { key: "mask", icon: "🧖‍♀️", title: "มาส์กหน้าฉ่ำโกลว์ 15 นาที", sub: maskSubText, isDueToday: glow.maskDueInfo.isDueToday },
+            { key: "scrub", icon: "🧂", title: "ขัดเกลือสครับผิวเนียนนุ่ม", sub: scrubSubText, isDueToday: glow.scrubDueInfo.isDueToday },
             { key: "water8", icon: "💧", title: `ดื่มน้ำให้ครบ ${state.profile.waterGoalGlasses || 8} แก้ว ผิวฉ่ำน้ำ`, sub: "เคล็ดลับผิวกระจกแบบไม่ต้องพึ่งฟิลเตอร์" }
           ];
 
@@ -6305,15 +6785,20 @@
 
       const defaultHtml = tasks.map(t => {
         const isDone = !!bLog[t.key];
+        const highlightDue = t.isDueToday && !isDone;
         return `
-          <div class="quest-item ${isDone ? 'done' : ''}" onclick="toggleBeautyTask('${t.key}')">
+          <div class="quest-item ${isDone ? 'done' : ''}" onclick="toggleBeautyTask('${t.key}')" style="${highlightDue ? 'border-color:#EC4899; background:#FDF2F8; box-shadow:0 3px 10px rgba(236,72,153,0.12);' : ''}">
             <div class="quest-check">${isDone ? '✓' : ''}</div>
             <div style="font-size:20px;">${t.icon}</div>
             <div style="flex:1;">
-              <div class="quest-title" style="font-size:13px; font-weight:800; color:var(--ink);">${t.title}</div>
-              <div style="font-size:11px; color:var(--sub); font-weight:600;">${t.sub}</div>
+              <div class="quest-title" style="font-size:13px; font-weight:800; color:var(--ink); display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                <span>${t.title}</span>
+                ${highlightDue ? `<span style="background:#EC4899; color:#FFF; font-size:9.5px; font-weight:800; padding:1px 7px; border-radius:99px;">🔔 คิววันนี้!</span>` : ''}
+              </div>
+              <div style="font-size:11px; color:${highlightDue ? '#BE185D' : 'var(--sub)'}; font-weight:${highlightDue ? '700' : '600'};">${t.sub}</div>
             </div>
             ${t.isWorkout ? `<button onclick="event.stopPropagation(); switchTab('workout');" style="border:none; background:linear-gradient(135deg,#F59E0B,#D97706); color:#FFF; border-radius:99px; padding:5px 10px; font-size:10.5px; font-weight:800; cursor:pointer; white-space:nowrap;">▶ ฝึก 2 เฟรม</button>` : ''}
+            ${(t.key === 'mask' || t.key === 'scrub') ? `<button type="button" onclick="event.stopPropagation(); openBeautyRoutineModal();" style="border:1px solid var(--line); background:#FFF; color:var(--sub); border-radius:99px; padding:4px 8px; font-size:10px; font-weight:800; cursor:pointer; white-space:nowrap;">⚙️ ตั้งวัน</button>` : ''}
           </div>
         `;
       }).join("");
@@ -6332,9 +6817,13 @@
 
       gridEl.innerHTML = defaultHtml + customHtml;
 
+      const lastMaskEl = document.getElementById("last-mask-date-txt");
+      if (lastMaskEl) {
+        lastMaskEl.textContent = glow.daysSinceMask === 0 ? "วันนี้! ✨" : `${glow.daysSinceMask} วันที่แล้ว (${glow.lastMask.slice(5)}) · ${glow.maskDueInfo.nextLabel}`;
+      }
       const lastScrubEl = document.getElementById("last-scrub-date-txt");
       if (lastScrubEl) {
-        lastScrubEl.textContent = glow.daysSinceScrub === 0 ? "วันนี้! ✨" : `${glow.daysSinceScrub} วันที่แล้ว (${glow.lastScrub.slice(5)})`;
+        lastScrubEl.textContent = glow.daysSinceScrub === 0 ? "วันนี้! ✨" : `${glow.daysSinceScrub} วันที่แล้ว (${glow.lastScrub.slice(5)}) · ${glow.scrubDueInfo.nextLabel}`;
       }
       const cdTxtEl = document.getElementById("skin-glow-countdown-txt");
       if (cdTxtEl) cdTxtEl.textContent = `⏳ นับถอยหลังอีก ${glow.countdownDays} วัน ผิวจะสวยใสออร่าพุ่ง! ✨`;
@@ -6879,10 +7368,154 @@
       showToast("💊 บันทึกการตั้งค่ารอบเดือนและยาคุมเรียบร้อย!");
     }
 
-    // ==================== SCHEDULE & APPOINTMENT CALENDAR TAB (ปฏิทินกำหนดการ) ====================
+    // ==================== SCHEDULE & APPOINTMENT CALENDAR TAB (ปฏิทินกำหนดการ + หมวดหมู่อิสระ) ====================
     function changeScheduleMonth(delta) {
       currentSchedMonthOffset += delta;
       renderScheduleTab();
+    }
+
+    function ensureCustomScheduleCategories() {
+      if (!Array.isArray(state.customScheduleCategories) || state.customScheduleCategories.length === 0) {
+        state.customScheduleCategories = [...DEFAULT_SCHEDULE_CATEGORIES];
+      }
+      return state.customScheduleCategories;
+    }
+
+    function formatScheduleCategoryDisplay(rawCat) {
+      const legacyMap = {
+        dental: "🦷 ทำฟัน / ขูดหินปูน",
+        doctor: "🏥 นัดหาหมอ / ตรวจสุขภาพ",
+        beauty: "✨ คลินิกความงาม / เลเซอร์",
+        scrub: "🧂 ขัดเกลือสครับผิว",
+        couple: "💑 นัดเดท / กินข้าวกับแฟน",
+        other: "📌 ธุระทั่วไป"
+      };
+      if (!rawCat || !String(rawCat).trim()) return "";
+      const s = String(rawCat).trim();
+      return legacyMap[s] || s;
+    }
+
+    function extractScheduleCategoryIcon(catStr, titleStr) {
+      const combined = `${formatScheduleCategoryDisplay(catStr)} ${titleStr || ""}`.trim();
+      const emojiMatch = combined.match(/(\p{Emoji_Presentation}|\p{Extended_Pictographic})/u);
+      if (emojiMatch) return emojiMatch[0];
+      if (/ฟัน|หินปูน/.test(combined)) return "🦷";
+      if (/หมอ|รพ|โรงพยาบาล|ตรวจ/.test(combined)) return "🏥";
+      if (/คลินิก|เลเซอร์|โบท็อก|หน้าใส/.test(combined)) return "✨";
+      if (/มาส์ก|มาร์ก/.test(combined)) return "🧖‍♀️";
+      if (/ขัด|สครับ/.test(combined)) return "🧂";
+      if (/แฟน|เดท|ครบรอบ/.test(combined)) return "💑";
+      if (/ฟิตเนส|เวท|เทรนเนอร์/.test(combined)) return "🏋️‍♂️";
+      return "🗓️";
+    }
+
+    function renderSavedScheduleCategoryChips() {
+      const cats = ensureCustomScheduleCategories();
+      const barEl = document.getElementById("sched-saved-cats-bar");
+      if (barEl) {
+        barEl.innerHTML = cats.map((c, idx) => `
+          <div style="display:inline-flex; align-items:center; background:#FFFFFF; border:1.5px solid var(--line); border-radius:99px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,0.03);">
+            <button type="button" onclick="openAddScheduleModalByCatIdx(${idx})" style="border:none; background:transparent; color:var(--ink); padding:6px 10px 6px 12px; font-size:11.5px; font-weight:800; cursor:pointer;">
+              ${c}
+            </button>
+            <button type="button" onclick="deleteCustomScheduleCategory(${idx}, event)" title="ลบหมวดหมู่นี้" style="border:none; border-left:1px solid var(--line); background:#F8FAFC; color:#94A3B8; padding:6px 8px; font-size:10px; font-weight:800; cursor:pointer;">✕</button>
+          </div>
+        `).join("");
+      }
+
+      const modalChipsEl = document.getElementById("modal-sched-cat-chips");
+      if (modalChipsEl) {
+        const curVal = (document.getElementById("sched-input-cat")?.value || "").trim();
+        modalChipsEl.innerHTML = [
+          `<button type="button" class="cat-chip ${curVal === '' ? 'active' : ''}" style="font-size:11px; padding:5px 10px;" onclick="selectModalScheduleCategory('')">✨ ไม่ระบุหมวดหมู่ (อิสระ)</button>`,
+          ...cats.map((c, idx) => `
+            <div style="display:inline-flex; align-items:center; background:${curVal === c ? 'var(--green-bg)' : '#FFFFFF'}; border:1.5px solid ${curVal === c ? 'var(--green)' : 'var(--line)'}; border-radius:99px; overflow:hidden;">
+              <button type="button" onclick="selectModalScheduleCategoryByIdx(${idx})" style="border:none; background:transparent; color:${curVal === c ? 'var(--green-dark)' : 'var(--ink)'}; padding:4px 9px 4px 10px; font-size:11px; font-weight:800; cursor:pointer;">
+                ${c}
+              </button>
+              <button type="button" onclick="deleteCustomScheduleCategory(${idx}, event)" title="ลบหมวดหมู่" style="border:none; border-left:1px solid var(--line); background:transparent; color:#94A3B8; padding:4px 7px; font-size:9.5px; font-weight:800; cursor:pointer;">✕</button>
+            </div>
+          `)
+        ].join("");
+      }
+    }
+
+    function selectModalScheduleCategory(catText) {
+      const catInp = document.getElementById("sched-input-cat");
+      const titleInp = document.getElementById("sched-input-title");
+      if (catInp) catInp.value = catText;
+      if (titleInp && !titleInp.value.trim() && catText) {
+        titleInp.value = catText;
+      }
+      renderSavedScheduleCategoryChips();
+    }
+
+    function selectModalScheduleCategoryByIdx(idx) {
+      const cats = ensureCustomScheduleCategories();
+      if (cats[idx]) selectModalScheduleCategory(cats[idx]);
+    }
+
+    function openAddScheduleModalByCatIdx(idx) {
+      const cats = ensureCustomScheduleCategories();
+      const chosen = cats[idx] || "";
+      openAddScheduleModal(chosen, chosen);
+    }
+
+    function saveCategoryStringToSavedList(rawCatStr, showFeedback = true) {
+      const clean = (rawCatStr || "").trim();
+      if (!clean) {
+        if (showFeedback) showToast("✍️ พิมพ์ชื่อหมวดหมู่ในช่องก่อนกดบันทึกได้เลยครับ");
+        return false;
+      }
+      const cats = ensureCustomScheduleCategories();
+      if (!cats.includes(clean)) {
+        cats.unshift(clean);
+        saveState();
+        renderSavedScheduleCategoryChips();
+        if (showFeedback) showToast(`⭐ บันทึก "${clean}" เป็นหมวดหมู่ที่ใช้บ่อยแล้ว!`);
+        return true;
+      } else {
+        if (showFeedback) showToast(`มีหมวดหมู่ "${clean}" อยู่ในรายการที่ใช้บ่อยแล้วครับ ✨`);
+        return false;
+      }
+    }
+
+    function saveCurrentTypedCatAsFavorite() {
+      const inp = document.getElementById("sched-input-cat");
+      const titleInp = document.getElementById("sched-input-title");
+      const val = (inp?.value || "").trim() || (titleInp?.value || "").trim();
+      if (inp && !inp.value.trim() && val) inp.value = val;
+      saveCategoryStringToSavedList(val, true);
+    }
+
+    function addCustomScheduleCategoryFromBar() {
+      const inp = document.getElementById("sched-quick-new-cat-input");
+      if (!inp) return;
+      const val = inp.value.trim();
+      if (!val) {
+        showToast("✍️ พิมพ์ชื่อหมวดหมู่ใหม่ก่อนกดบันทึกนะครับ");
+        return;
+      }
+      saveCategoryStringToSavedList(val, true);
+      inp.value = "";
+    }
+
+    function deleteCustomScheduleCategory(idx, ev) {
+      if (ev) ev.stopPropagation();
+      const cats = ensureCustomScheduleCategories();
+      const removed = cats[idx];
+      if (!removed) return;
+      state.customScheduleCategories = cats.filter((_, i) => i !== idx);
+      saveState();
+      renderSavedScheduleCategoryChips();
+      showToast(`🗑️ ลบหมวดหมู่ "${removed}" แล้ว`);
+    }
+
+    function saveScheduleItemCatToFavorites(id) {
+      const item = (state.schedules || []).find(s => s.id === id);
+      if (!item) return;
+      const labelToSave = formatScheduleCategoryDisplay(item.cat) || item.title;
+      saveCategoryStringToSavedList(labelToSave, true);
     }
 
     function renderScheduleTab() {
@@ -6895,6 +7528,14 @@
       const lbl = document.getElementById("sched-month-title");
       if (lbl) lbl.textContent = `${mNames[month]} ${year + 543}`;
 
+      const rc = ensureBeautyRoutineConfig();
+      const ruleBarEl = document.getElementById("sched-beauty-rule-bar");
+      if (ruleBarEl) {
+        ruleBarEl.innerHTML = `🧖‍♀️ <b>มาส์กหน้า:</b> ${describeBeautyRule(rc.mask)} &nbsp;·&nbsp; 🧂 <b>ขัดผิว:</b> ${describeBeautyRule(rc.scrub)}`;
+      }
+
+      renderSavedScheduleCategoryChips();
+
       const grid = document.getElementById("sched-calendar-grid");
       if (!grid) return;
 
@@ -6902,6 +7543,8 @@
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const allSchedules = state.schedules || [];
       const todayStr = getTodayStr();
+      const lastMask = state.beautyLogs?.lastMaskDate || getOffsetDateStr(-2);
+      const lastScrub = state.beautyLogs?.lastSaltScrubDate || getOffsetDateStr(-2);
 
       let cellsHtml = "";
       for (let i = 0; i < firstDow; i++) {
@@ -6912,12 +7555,17 @@
         const events = allSchedules.filter(s => s.date === dStr);
         const isSel = dStr === currentSchedSelectedDate;
         const isToday = dStr === todayStr;
+        const isMaskDay = isBeautyRuleDueOnDate(dStr, rc.mask, lastMask);
+        const isScrubDay = isBeautyRuleDueOnDate(dStr, rc.scrub, lastScrub);
         const dots = events.slice(0, 3).map(() => `<span class="sched-dot-marker"></span>`).join("");
+        const routineMini = `${isMaskDay ? '<span style="font-size:8.5px;line-height:1;">🧖‍♀️</span>' : ''}${isScrubDay ? '<span style="font-size:8.5px;line-height:1;">🧂</span>' : ''}`;
 
         cellsHtml += `
           <div class="sched-cal-cell ${isSel ? 'selected' : ''}" onclick="selectScheduleDate('${dStr}')" style="${isToday && !isSel ? 'border-color:var(--green); background:#F0FDF4;' : ''}">
             <span>${d}</span>
-            <div style="display:flex; gap:2px;">${dots}</div>
+            <div style="display:flex; align-items:center; justify-content:center; gap:2px; min-height:10px;">
+              ${dots}${routineMini}
+            </div>
           </div>
         `;
       }
@@ -6927,14 +7575,6 @@
       const speechEl = document.getElementById("sched-mascot-greeting");
       if (!listEl) return;
 
-      const catIcons = {
-        dental: "🦷",
-        doctor: "🏥",
-        beauty: "✨",
-        scrub: "🧂",
-        couple: "💑",
-        other: "📌"
-      };
       const whoLabels = {
         both: "💑 ไปด้วยกัน 2 คน",
         paul: `👦 ${state.profilesMap?.paul?.profile?.name || "คุณพอล"}`,
@@ -6949,7 +7589,7 @@
           const nextEv = upcoming[0];
           speechEl.innerHTML = `📌 นัดหมายถัดไปของ <b>${state.profile.name}</b> คือ <b>"${nextEv.title}"</b> วันที่ <b>${nextEv.date}</b> เวลา ${nextEv.time || '09:00'} น. ห้ามลืมนะคะ! 🗓️✨`;
         } else {
-          speechEl.innerHTML = `ยังไม่มีนัดหมายเร็วๆ นี้เลย กดปุ่ม <b>+ เพิ่มนัด</b> เพื่อบันทึกนัดทำฟัน หาหมอ หรือขัดผิวได้เลยนะ! 🗓️`;
+          speechEl.innerHTML = `ยังไม่มีนัดหมายเร็วๆ นี้เลย กดปุ่ม <b>+ เพิ่มนัด</b> เพื่อพิมพ์นัดหมายเองแบบอิสระ หรือตั้งวันมาส์กหน้า/ขัดผิวได้เลยนะ! 🗓️`;
         }
       }
 
@@ -6961,21 +7601,29 @@
       listEl.innerHTML = sorted.map(item => {
         const isPast = item.date < todayStr;
         const isSelectedDate = item.date === currentSchedSelectedDate;
-        const ic = catIcons[item.cat] || (item.cat || "📌").split(" ")[0] || "📌";
+        const catDisplay = formatScheduleCategoryDisplay(item.cat);
+        const ic = extractScheduleCategoryIcon(item.cat, item.title);
         const whoTxt = whoLabels[item.who] || item.who || "ทั้งคู่";
         return `
-          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-radius:16px; background:${isSelectedDate ? '#FEF9C3' : (isPast ? '#F8FAFC' : '#FFFFFF')}; border:1.5px solid ${isSelectedDate ? '#FACC15' : 'var(--line)'}; opacity:${isPast ? '0.65' : '1'};">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <div style="width:42px; height:42px; border-radius:12px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; font-size:20px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 14px; border-radius:16px; background:${isSelectedDate ? '#FEF9C3' : (isPast ? '#F8FAFC' : '#FFFFFF')}; border:1.5px solid ${isSelectedDate ? '#FACC15' : 'var(--line)'}; opacity:${isPast ? '0.65' : '1'};">
+            <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;" onclick="editScheduleItem(${item.id})">
+              <div style="width:42px; height:42px; flex-shrink:0; border-radius:12px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; font-size:20px;">
                 ${ic}
               </div>
-              <div>
-                <div style="font-size:14px; font-weight:800; color:var(--ink);">${item.title}</div>
-                <div style="font-size:11.5px; color:var(--sub); font-weight:600;">📅 ${item.date} · ⏰ ${item.time || '10:00'} น. · ${whoTxt}</div>
+              <div style="flex:1; min-width:0;">
+                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                  <span style="font-size:14px; font-weight:800; color:var(--ink);">${item.title}</span>
+                  ${catDisplay ? `<span style="font-size:10px; font-weight:800; background:var(--green-bg); color:var(--green-dark); padding:2px 8px; border-radius:99px;">${catDisplay}</span>` : ''}
+                </div>
+                <div style="font-size:11.5px; color:var(--sub); font-weight:600; margin-top:2px;">📅 ${item.date} · ⏰ ${item.time || '10:00'} น. · ${whoTxt}</div>
                 ${item.note ? `<div style="font-size:11px; color:var(--green-dark); margin-top:2px;">📝 ${item.note}</div>` : ''}
               </div>
             </div>
-            <button class="food-del-btn" onclick="deleteScheduleItem(${item.id})" title="ลบนัดหมาย">✕</button>
+            <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
+              <button type="button" onclick="saveScheduleItemCatToFavorites(${item.id})" title="บันทึกเป็นหมวดหมู่ที่ใช้บ่อย" style="border:1px solid var(--line); background:#FFF; color:var(--green-dark); border-radius:8px; padding:5px 7px; font-size:11px; font-weight:800; cursor:pointer;">⭐ เก็บหมวดนี้</button>
+              <button type="button" onclick="editScheduleItem(${item.id})" title="แก้ไขนัดหมาย" style="border:1px solid var(--line); background:#FFF; color:var(--sub); border-radius:8px; padding:5px 7px; font-size:11px; cursor:pointer;">✏️</button>
+              <button class="food-del-btn" onclick="deleteScheduleItem(${item.id})" title="ลบนัดหมาย">✕</button>
+            </div>
           </div>
         `;
       }).join("");
@@ -6987,25 +7635,64 @@
     }
 
     function openAddScheduleModal(presetTitle = "", presetCat = "") {
+      const editIdEl = document.getElementById("sched-edit-id");
+      if (editIdEl) editIdEl.value = "";
+      const headEl = document.getElementById("modal-sched-head-title");
+      if (headEl) headEl.textContent = "🗓️ เพิ่มกำหนดการ / นัดหมายใหม่";
       document.getElementById("sched-input-title").value = presetTitle || "";
-      if (presetCat) document.getElementById("sched-input-cat").value = presetCat;
+      document.getElementById("sched-input-cat").value = formatScheduleCategoryDisplay(presetCat || "");
       document.getElementById("sched-input-date").value = currentSchedSelectedDate || getTodayStr();
       document.getElementById("sched-input-time").value = "10:30";
       document.getElementById("sched-input-who").value = state.activeProfileId === "partner" ? "partner" : "paul";
       document.getElementById("sched-input-note").value = "";
+      renderSavedScheduleCategoryChips();
+      openModal("modal-schedule-add");
+    }
+
+    function editScheduleItem(id) {
+      const item = (state.schedules || []).find(s => s.id === id);
+      if (!item) return;
+      const editIdEl = document.getElementById("sched-edit-id");
+      if (editIdEl) editIdEl.value = String(item.id);
+      const headEl = document.getElementById("modal-sched-head-title");
+      if (headEl) headEl.textContent = "✏️ แก้ไขกำหนดการ / นัดหมาย";
+      document.getElementById("sched-input-title").value = item.title || "";
+      document.getElementById("sched-input-cat").value = formatScheduleCategoryDisplay(item.cat || "");
+      document.getElementById("sched-input-date").value = item.date || getTodayStr();
+      document.getElementById("sched-input-time").value = item.time || "10:30";
+      document.getElementById("sched-input-who").value = item.who || "both";
+      document.getElementById("sched-input-note").value = item.note || "";
+      renderSavedScheduleCategoryChips();
       openModal("modal-schedule-add");
     }
 
     function saveNewScheduleItem() {
-      const title = document.getElementById("sched-input-title").value.trim() || "นัดหมายสำคัญ";
-      const cat = document.getElementById("sched-input-cat").value || "doctor";
+      const editId = Number(document.getElementById("sched-edit-id")?.value || 0);
+      const rawTitle = document.getElementById("sched-input-title").value.trim();
+      const rawCat = document.getElementById("sched-input-cat").value.trim();
+      const title = rawTitle || rawCat || "นัดหมายสำคัญ";
+      const cat = rawCat; // Can be completely free-form or empty!
       const date = document.getElementById("sched-input-date").value || getTodayStr();
       const time = document.getElementById("sched-input-time").value || "10:00";
       const who = document.getElementById("sched-input-who").value || "both";
       const note = document.getElementById("sched-input-note").value.trim();
 
+      const autoSaveCat = document.getElementById("sched-save-cat-checkbox")?.checked;
+      if (autoSaveCat && cat) {
+        saveCategoryStringToSavedList(cat, false);
+      }
+
       if (!state.schedules) state.schedules = [];
-      state.schedules.push({ id: Date.now(), title, cat, date, time, who, note });
+      if (editId) {
+        const idx = state.schedules.findIndex(s => s.id === editId);
+        if (idx !== -1) {
+          state.schedules[idx] = { ...state.schedules[idx], title, cat, date, time, who, note };
+        } else {
+          state.schedules.push({ id: Date.now(), title, cat, date, time, who, note });
+        }
+      } else {
+        state.schedules.push({ id: Date.now(), title, cat, date, time, who, note });
+      }
       currentSchedSelectedDate = date;
       saveState();
       renderScheduleTab();
