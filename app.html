@@ -1036,20 +1036,27 @@
       top: 8px;
       right: 10px;
       z-index: 4;
-      background: rgba(255, 255, 255, 0.86);
+      background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       color: var(--ink);
       font-size: 9.5px;
       font-weight: 800;
-      padding: 3px 8px;
+      padding: 3.5px 9px;
       border-radius: 999px;
-      border: 1.5px solid rgba(255, 255, 255, 0.95);
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+      border: 1.5px solid rgba(255, 255, 255, 0.98);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
       display: inline-flex;
       align-items: center;
       gap: 4px;
       pointer-events: none;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .mascot-hero-stage.speaking-active .hero-live-pill {
+      background: #FEF3C7;
+      border-color: #F59E0B;
+      color: #92400E;
+      transform: scale3d(1.06, 1.06, 1);
     }
     .hero-live-dot {
       width: 6px;
@@ -1058,6 +1065,9 @@
       background: #10B981;
       display: inline-block;
       animation: heroSparklePulse 1.6s ease-in-out infinite;
+    }
+    .mascot-hero-stage.speaking-active .hero-live-dot {
+      background: #F59E0B;
     }
 
     @keyframes heroBgPan {
@@ -2932,7 +2942,7 @@
             <span class="hero-float-item p3">✨</span>
             <span class="hero-float-item p4">🎀</span>
           </div>
-          <div class="hero-live-pill"><span class="hero-live-dot"></span>แตะตัวละครได้ ✨</div>
+          <div id="mascot-hero-live-pill" class="hero-live-pill"><span class="hero-live-dot"></span><span id="mascot-hero-live-pill-text">🔊 แตะฟังเสียงพูด ✨</span></div>
         </div>
         <div class="mascot-caption-bar">
           <div class="mascot-deco-left">
@@ -11548,6 +11558,7 @@
         state.questMode = "macho";
       }
       window.__lastAppliedTheme = null;
+      stopMascotHeroVoice();
       applyAppTheme();
       applyAppLogo();
       renderBeautyQuestsAndGlow();
@@ -11581,6 +11592,153 @@
       `;
     }
 
+    const SANRIO_VOICE_CLIPS = {
+      cinnamoroll: [
+        {
+          src: "voices/cinna_ig_song.mp3",
+          pill: "กำลังร้องเพลงชินนามอน 🎶",
+          toast: "☁️🎶 「ぼくはシナモン、うさぎじゃないもん、男の子の子犬だもん〜♪」 (เราคือชินนามอน ไม่ใช่กระต่ายนะ เป็นลูกหมาน้อยต่างหาก~♪)"
+        },
+        {
+          src: "voices/cinna_konnichiwa.mp3",
+          pill: "ชินนามอนกำลังพูด... ☁️",
+          toast: "☁️📞 「こんにちは！シナモンです！」 (สวัสดีค้าบ! ชินนามอนเองนะค้าบ~✨)"
+        },
+        {
+          src: "voices/cinna_1.mp3",
+          pill: "ชินนามอนหัวเราะคิกคัก ☁️",
+          toast: "☁️✨ 「ぼく、シナモン！えへへっ♪」 (เราชินนามอนเอง! อิอิ~ วันนี้คุมแคลสู้ๆ นะ!)"
+        },
+        {
+          src: "voices/cinna_happy.mp3",
+          pill: "ชินนามอนส่งความสุข 🍀",
+          toast: "☁️🍀 「しあわせのクローバー見つけた！」 (เจอใบโคลเวอร์แห่งความสุขแล้ว~!)"
+        }
+      ],
+      pompompurin: [
+        {
+          src: "voices/purin_bokupurin.mp3",
+          pill: "ร้องเพลง ป๊อปกะปุ๊ริน~! 🍮🎶",
+          toast: "🍮🎶 「ポッポッポポムポム… ぼく、プリン！」 (ป๊อป-ป๊อป-ปอมปอม… โบคุ ปุริน~! เพลงประจำตัวปอมปอมปุรินของแท้!)"
+        },
+        {
+          src: "voices/purin_short.mp3",
+          pill: "โบคุ ปุริน~! 🍮🎵",
+          toast: "🍮🎵 「ぼく、プリン！ポム月ポム日ポム曜日、ぼく、プリン！」 (ปอมปอมปุรินมารายงานตัวแล้วค้าบ~!)"
+        },
+        {
+          src: "voices/purin_shiran.mp3",
+          pill: "ปอมปอมอ้อนดุ๊กดิ๊ก 🍮✨",
+          toast: "🍮💛 「むずかしいこと、しらんぷりん♪」 (เรื่องยากๆ ไม่รู้ด้วยแล้ว ชิรันปุริน~♪)"
+        },
+        {
+          src: "voices/purin_asobou.mp3",
+          pill: "ปอมปอมชวนไปเดินเล่น 🍮☀️",
+          toast: "🍮☀️ 「ほら、お外はいい天気！君もこっちで遊ぼうよ〜！」 (อากาศดีจังเลย มาขยับตัวออกกำลังกายด้วยกันเร็ว~!)"
+        }
+      ],
+      pompom_muscle: [
+        {
+          src: "voices/muscle_pompow.mp3",
+          pill: "ปอมปอมเบ่งกล้าม ป๊อปปอมพาว!! 💪🔥",
+          toast: "🍮💪🔥 「ポッポッポム、ポムポムポッポッポー！！」 (ป๊อป-ป๊อป-ปอม พาวเวอร์!! ยกเวทเบิร์นไขมันลุยเลยลูกพี่!!)"
+        },
+        {
+          src: "voices/purin_short.mp3",
+          pill: "โบคุ มัสเซิลปุริน! 💪🍮",
+          toast: "🍮💪 「ぼく、プリン！！」 (เห็นกล้ามแน่นแบบนี้ เสียงยังน่ารักปุ๊กปิ๊กเหมือนเดิมนะค้าบ!)"
+        }
+      ],
+      mymelody: [
+        {
+          src: "voices/mymelody_yaaan.mp3",
+          pill: "มายเมโลดี้ส่งเสียงอ้อน 🍓🎀",
+          toast: "🍓🎀 「やぁ〜ん♪」 (ย๊า~ง♪ มายเมโลดี้เป็นกำลังใจให้คนเก่งนะคะ!)"
+        },
+        {
+          src: "voices/mymelody_arigatou.mp3",
+          pill: "มายเมโลดี้พูดขอบคุณ 🍓🌸",
+          toast: "🍓🌸 「ありがとうね♪ 寄り添えるっていいな♪」 (ขอบคุณน้า~ ได้ดูแลสุขภาพไปด้วยกันแบบนี้ดีจังเลย♪)"
+        }
+      ],
+      kuromi: [
+        {
+          src: "voices/kuromi_atai.mp3",
+          pill: "คุโรมิพูดเชียร์สุดซน 🖤💜",
+          toast: "🖤💜 「ほら、アタイがいるじゃないか！」 (นี่ไง! มีคุโรมิอยู่ข้างๆ ทั้งคน ไม่ต้องกลัวหลุดเป้าหรอกน่า!)"
+        },
+        {
+          src: "voices/kuromi_iine.mp3",
+          pill: "คุโรมิชมว่าเริ่ดมาก! 🖤✨",
+          toast: "🖤✨ 「きゅるん♪ いいねぇ〜！」 (คิวรุน~♪ เริ่ดมากเลยนี่นา วันนี้คุมแคลเก่งสุดๆ!)"
+        }
+      ],
+      littletwinstars: [
+        {
+          src: "voices/twinstars_wish.mp3",
+          pill: "กิกิ & ลาล่า อธิษฐานดาวตก 🌟🌙",
+          toast: "🌟🌙 「流れ星お願い… いいよね！いいよね！えへへっ♪」 (อธิษฐานกับดาวตก ขอให้หุ่นสวยสุขภาพดี เพี้ยง~♪)"
+        },
+        {
+          src: "voices/twinstars_chime.mp3",
+          pill: "เสียงกล่องดนตรีแห่งดวงดาว 🌠🎶",
+          toast: "🌟🌠 เสียงระฆังดาวตกจาก กิกิ & ลาล่า ส่งพลังวิ้งๆ ให้วันนี้สดใส!"
+        }
+      ],
+      allstars: [
+        {
+          src: "voices/purin_bokupurin.mp3",
+          pill: "ปอมปอมร้องเพลง ป๊อปกะปุ๊ริน! 🍮🎶",
+          toast: "🌈🍮 「ポッポッポポムポム… ぼく、プリン！」 (ปอมปอมนำทีมแก๊ง Sanrio ร้องเพลงเชียร์!)"
+        },
+        {
+          src: "voices/cinna_ig_song.mp3",
+          pill: "ชินนามอนร้องเพลงสุดคิวท์ ☁️🎶",
+          toast: "🌈☁️ 「ぼくはシナモン、うさぎじゃないもん〜♪」 (ชินนามอนมาร้องเพลงให้กำลังใจ!)"
+        },
+        {
+          src: "voices/kuromi_iine.mp3",
+          pill: "คุโรมิชมว่าเริ่ดมาก! 🖤💜",
+          toast: "🌈🖤 「きゅるん♪ いいねぇ〜！」 (คุโรมิบอกว่าวันนี้ทำดีมาก!)"
+        },
+        {
+          src: "voices/mymelody_yaaan.mp3",
+          pill: "มายเมโลดี้ส่งเสียงเชียร์ 🍓🎀",
+          toast: "🌈🍓 「やぁ〜ん♪」 (มายเมโลดี้ส่งกำลังใจให้ทั้งแก๊งเลย!)"
+        }
+      ],
+      halloween: [
+        {
+          src: "voices/cinna_1.mp3",
+          pill: "ผีน้อยชินนามอนส่งเสียงหลอก! 🎃👻",
+          toast: "🎃👻 「ぼく、シナモン！えへへっ♪」 (แบร่~! ผีน้อยชินนามอนบินมาเชียร์ Trick or Treat!)"
+        },
+        {
+          src: "voices/kuromi_atai.mp3",
+          pill: "แม่มดคุโรมิร่ายมนตร์ 🎃🖤",
+          toast: "🎃🖤 「ほら、アタイがいるじゃないか！」 (แม่มดคุโรมิมาเสกให้เบิร์นแคลรัวๆ แล้ว!)"
+        },
+        {
+          src: "voices/purin_shiran.mp3",
+          pill: "ปอมปอมฟักทองอ้อนขนม 🎃🍮",
+          toast: "🎃🍮 「むずかしいこと、しらんぷりん♪」 (ฮาโลวีนนี้กินคลีนแบบแฮปปี้ ชิรันปุริน~♪)"
+        }
+      ]
+    };
+
+    function stopMascotHeroVoice() {
+      try {
+        if (window.__mascotHeroAudio) {
+          window.__mascotHeroAudio.pause();
+          window.__mascotHeroAudio.currentTime = 0;
+        }
+      } catch (_) {}
+      const stage = document.getElementById("mascot-hero-stage");
+      if (stage) stage.classList.remove("speaking-active");
+      const pillText = document.getElementById("mascot-hero-live-pill-text");
+      if (pillText) pillText.textContent = "แตะฟังเสียง 🔊";
+    }
+
     function triggerMascotHeroJump() {
       const stage = document.getElementById("mascot-hero-stage");
       if (stage) {
@@ -11592,7 +11750,48 @@
           stage.classList.remove("jump-active");
         }, 720);
       }
-      if (window.__currentThemeJumpToast) {
+
+      const th = (state && state.theme) || safeLocalGet(DEVICE_THEME_KEY) || "cinnamoroll";
+      const clips = SANRIO_VOICE_CLIPS[th];
+      if (clips && clips.length > 0) {
+        if (!window.__mascotVoiceIdxMap) window.__mascotVoiceIdxMap = {};
+        const idx = (window.__mascotVoiceIdxMap[th] || 0) % clips.length;
+        window.__mascotVoiceIdxMap[th] = idx + 1;
+        const clip = clips[idx];
+
+        try {
+          if (!window.__mascotHeroAudio) {
+            window.__mascotHeroAudio = new Audio();
+            window.__mascotHeroAudio.preload = "auto";
+          } else {
+            window.__mascotHeroAudio.pause();
+          }
+          const audio = window.__mascotHeroAudio;
+          audio.src = clip.src;
+          audio.volume = 0.95;
+          audio.currentTime = 0;
+
+          const pillText = document.getElementById("mascot-hero-live-pill-text");
+          if (stage) stage.classList.add("speaking-active");
+          if (pillText) pillText.textContent = clip.pill || "กำลังส่งเสียง... 🎶";
+
+          const resetSpeakingUi = () => {
+            if (stage) stage.classList.remove("speaking-active");
+            if (pillText) pillText.textContent = "แตะฟังเสียง 🔊";
+          };
+          audio.onended = resetSpeakingUi;
+          audio.onerror = resetSpeakingUi;
+
+          const playPromise = audio.play();
+          if (playPromise && typeof playPromise.catch === "function") {
+            playPromise.catch(() => {
+              resetSpeakingUi();
+            });
+          }
+        } catch (_) {}
+
+        showToast(clip.toast || window.__currentThemeJumpToast || "✨ สู้ๆ นะวันนี้!");
+      } else if (window.__currentThemeJumpToast) {
         showToast(window.__currentThemeJumpToast);
       }
     }

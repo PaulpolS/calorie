@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calorie-pwa-v36';
+const CACHE_NAME = 'calorie-pwa-v37';
 const ASSETS = [
   './',
   './index.html',
@@ -39,6 +39,21 @@ const ASSETS = [
   './hero_char_allstars.webp',
   './hero_bg_halloween.jpg',
   './hero_char_halloween.webp',
+  './voices/cinna_ig_song.mp3',
+  './voices/cinna_konnichiwa.mp3',
+  './voices/cinna_1.mp3',
+  './voices/cinna_happy.mp3',
+  './voices/purin_bokupurin.mp3',
+  './voices/purin_short.mp3',
+  './voices/purin_shiran.mp3',
+  './voices/purin_asobou.mp3',
+  './voices/muscle_pompow.mp3',
+  './voices/mymelody_arigatou.mp3',
+  './voices/mymelody_yaaan.mp3',
+  './voices/kuromi_atai.mp3',
+  './voices/kuromi_iine.mp3',
+  './voices/twinstars_wish.mp3',
+  './voices/twinstars_chime.mp3',
   './wk_situp.gif',
   './wk_squat.gif',
   './wk_pushup.gif',
