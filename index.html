@@ -904,7 +904,7 @@
       border-radius: 50%;
     }
 
-    /* Sanrio Mascot Hero Card */
+    /* Sanrio Mascot Hero Card (60fps GPU-Accelerated Multi-Layer Animated Cover) */
     .mascot-deco {
       display: none;
       flex-direction: column;
@@ -913,6 +913,9 @@
       position: relative;
       overflow: hidden;
       background: #FFF;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
     }
     body[data-theme="cinnamoroll"] .mascot-deco {
       display: flex;
@@ -924,18 +927,225 @@
       border: 3px solid #E9C66A;
       box-shadow: 0 6px 0 #F1DA99, 0 10px 22px rgba(141, 75, 23, 0.16);
     }
-    .mascot-hero-img {
+    .mascot-hero-stage {
+      position: relative;
       width: 100%;
-      height: 138px;
-      object-fit: cover;
-      display: block;
+      height: 146px;
+      overflow: hidden;
+      contain: layout paint;
+      background: #F0F9FF;
+      transform: translateZ(0);
     }
+    .mascot-hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: scale3d(1.04, 1.04, 1);
+      animation: heroBgPan 7.5s ease-in-out infinite alternate;
+    }
+    .mascot-hero-char {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      pointer-events: none;
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform-origin: 50% 62%;
+      filter: drop-shadow(0 5px 10px rgba(15, 23, 42, 0.14));
+      animation: heroCharFloatCinna 3.4s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+    }
+    /* Theme-Specific Character Keyframes (100% GPU Compositor Transform Only) */
+    body[data-theme="cinnamoroll"] .mascot-hero-char {
+      transform-origin: 50% 52%;
+      animation: heroCharFloatCinna 3.4s ease-in-out infinite;
+    }
+    body[data-theme="pompompurin"] .mascot-hero-char {
+      transform-origin: 62% 72%;
+      animation: heroCharBouncePurin 2.8s ease-in-out infinite;
+    }
+    body[data-theme="pompom_muscle"] .mascot-hero-char {
+      transform-origin: 50% 75%;
+      filter: drop-shadow(0 0 12px rgba(250, 204, 21, 0.55));
+      animation: heroCharPumpMuscle 2.1s ease-in-out infinite;
+    }
+    body[data-theme="mymelody"] .mascot-hero-char {
+      transform-origin: 28% 72%;
+      animation: heroCharSwayMelody 3.2s ease-in-out infinite;
+    }
+    body[data-theme="kuromi"] .mascot-hero-char {
+      transform-origin: 50% 68%;
+      animation: heroCharCheekyKuromi 2.7s ease-in-out infinite;
+    }
+    body[data-theme="littletwinstars"] .mascot-hero-char {
+      transform-origin: 50% 60%;
+      animation: heroCharGlideTwinStars 4.0s ease-in-out infinite;
+    }
+    body[data-theme="allstars"] .mascot-hero-char {
+      transform-origin: 48% 36%;
+      animation: heroCharFlyAllStars 3.1s ease-in-out infinite;
+    }
+    body[data-theme="halloween"] .mascot-hero-char {
+      transform-origin: 78% 38%;
+      animation: heroCharSwoopHalloween 3.0s ease-in-out infinite;
+    }
+    /* Secondary Animated Scene Motion for All-Stars & Halloween */
+    body[data-theme="allstars"] .mascot-hero-img,
+    body[data-theme="halloween"] .mascot-hero-img {
+      animation: heroBgPartyBob 4.2s ease-in-out infinite;
+    }
+    /* Tap-to-Jump Interactive Class */
+    .mascot-hero-stage.jump-active .mascot-hero-char {
+      animation: heroCharHappyJump 0.68s cubic-bezier(0.22, 1, 0.36, 1) 1 !important;
+    }
+    /* Floating Kawaii Particles Layer */
+    .mascot-hero-fx {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+    }
+    .hero-float-item {
+      position: absolute;
+      font-size: 16px;
+      line-height: 1;
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+      animation: heroParticleFloat 3.6s ease-in-out infinite;
+    }
+    .hero-float-item.p1 { top: 12%; left: 7%; animation-duration: 3.3s; animation-delay: 0s; font-size: 17px; }
+    .hero-float-item.p2 { top: 16%; right: 8%; animation-duration: 3.9s; animation-delay: -1.1s; font-size: 16px; }
+    .hero-float-item.p3 { bottom: 14%; left: 12%; animation-duration: 3.5s; animation-delay: -2.0s; font-size: 15px; }
+    .hero-float-item.p4 { bottom: 16%; right: 11%; animation-duration: 3.1s; animation-delay: -0.6s; font-size: 17px; }
+    .hero-live-pill {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      z-index: 4;
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: var(--ink);
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      pointer-events: none;
+    }
+    .hero-live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+      display: inline-block;
+      animation: heroSparklePulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes heroBgPan {
+      0% { transform: scale3d(1.02, 1.02, 1) translate3d(-2px, -1px, 0); }
+      100% { transform: scale3d(1.035, 1.035, 1) translate3d(2px, 1px, 0); }
+    }
+    @keyframes heroBgPartyBob {
+      0%, 100% { transform: scale3d(1.02, 1.02, 1) translate3d(0, 0, 0); }
+      50% { transform: scale3d(1.035, 1.035, 1) translate3d(0, -2.5px, 0); }
+    }
+    @keyframes heroCharFloatCinna {
+      0%, 100% { transform: translate3d(-6px, 3px, 0) rotate(-2.5deg) scale3d(1.035, 1.035, 1); }
+      25% { transform: translate3d(0px, -5px, 0) rotate(0.8deg) scale3d(1.05, 1.05, 1); }
+      50% { transform: translate3d(7px, 2px, 0) rotate(2.6deg) scale3d(1.04, 1.03, 1); }
+      75% { transform: translate3d(1px, -4px, 0) rotate(-1.2deg) scale3d(1.05, 1.05, 1); }
+    }
+    @keyframes heroCharBouncePurin {
+      0%, 100% { transform: translate3d(-4px, 2px, 0) rotate(-2.2deg) scale3d(1.045, 1.02, 1); }
+      25% { transform: translate3d(0px, -5px, 0) rotate(1.4deg) scale3d(1.025, 1.055, 1); }
+      50% { transform: translate3d(4px, 2px, 0) rotate(2.4deg) scale3d(1.045, 1.02, 1); }
+      75% { transform: translate3d(0px, -4px, 0) rotate(-1.2deg) scale3d(1.025, 1.05, 1); }
+    }
+    @keyframes heroCharPumpMuscle {
+      0%, 100% { transform: translate3d(0, 2px, 0) scale3d(1.03, 1.015, 1) rotate(-1deg); }
+      35% { transform: translate3d(0, -6px, 0) scale3d(1.065, 1.055, 1) rotate(1.2deg); }
+      55% { transform: translate3d(0, -4px, 0) scale3d(1.08, 1.06, 1) rotate(-0.8deg); }
+    }
+    @keyframes heroCharSwayMelody {
+      0%, 100% { transform: translate3d(-3.5px, 2px, 0) rotate(-2.2deg) scale3d(1.04, 1.04, 1); }
+      50% { transform: translate3d(4.5px, -4px, 0) rotate(2.4deg) scale3d(1.055, 1.045, 1); }
+    }
+    @keyframes heroCharCheekyKuromi {
+      0%, 100% { transform: translate3d(-4px, 2px, 0) rotate(-2.6deg) scale3d(1.04, 1.03, 1); }
+      30% { transform: translate3d(2px, -5px, 0) rotate(2deg) scale3d(1.05, 1.05, 1); }
+      65% { transform: translate3d(5px, 1px, 0) rotate(2.8deg) scale3d(1.04, 1.04, 1); }
+    }
+    @keyframes heroCharGlideTwinStars {
+      0%, 100% { transform: translate3d(-7px, 2px, 0) rotate(-1.8deg) scale3d(1.035, 1.035, 1); }
+      50% { transform: translate3d(7px, -5px, 0) rotate(2deg) scale3d(1.05, 1.05, 1); }
+    }
+    @keyframes heroCharFlyAllStars {
+      0%, 100% { transform: translate3d(-9px, 3px, 0) rotate(-3.8deg) scale3d(1.04, 1.04, 1); }
+      25% { transform: translate3d(0px, -5px, 0) rotate(1.5deg) scale3d(1.06, 1.06, 1); }
+      50% { transform: translate3d(9px, 2px, 0) rotate(4deg) scale3d(1.04, 1.04, 1); }
+      75% { transform: translate3d(-1px, -4px, 0) rotate(-2deg) scale3d(1.05, 1.05, 1); }
+    }
+    @keyframes heroCharSwoopHalloween {
+      0%, 100% { transform: translate3d(-10px, 3px, 0) rotate(-4.5deg) scale3d(1.04, 1.04, 1); }
+      33% { transform: translate3d(3px, -6px, 0) rotate(3deg) scale3d(1.065, 1.065, 1); }
+      66% { transform: translate3d(10px, 2px, 0) rotate(4.5deg) scale3d(1.03, 1.05, 1); }
+    }
+    @keyframes heroCharHappyJump {
+      0% { transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotate(0deg); }
+      22% { transform: translate3d(0, 4px, 0) scale3d(1.07, 0.92, 1) rotate(-3deg); }
+      52% { transform: translate3d(0, -14px, 0) scale3d(0.96, 1.08, 1) rotate(5deg); }
+      78% { transform: translate3d(0, 2px, 0) scale3d(1.03, 0.97, 1) rotate(-2deg); }
+      100% { transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotate(0deg); }
+    }
+    @keyframes heroParticleFloat {
+      0%, 100% { transform: translate3d(0, 4px, 0) rotate(-8deg) scale3d(0.92, 0.92, 1); opacity: 0.78; }
+      50% { transform: translate3d(4px, -7px, 0) rotate(10deg) scale3d(1.12, 1.12, 1); opacity: 1; }
+    }
+    @keyframes heroAvatarBob {
+      0%, 100% { transform: translate3d(0, 0, 0) rotate(-3deg); }
+      50% { transform: translate3d(0, -3.5px, 0) rotate(3deg); }
+    }
+    @keyframes heroSparklePulse {
+      0%, 100% { transform: scale3d(0.95, 0.95, 1) rotate(-5deg); }
+      50% { transform: scale3d(1.14, 1.14, 1) rotate(6deg); }
+    }
+    /* Auto-Pause GPU animations when off-screen or backgrounded to save 100% battery & prevent any scroll lag */
+    body.hero-anim-paused .mascot-hero-img,
+    body.hero-anim-paused .mascot-hero-char,
+    body.hero-anim-paused .hero-float-item,
+    body.hero-anim-paused .mascot-badge-img,
+    body.hero-anim-paused #mascot-sparkle,
+    body.hero-anim-paused .hero-live-dot {
+      animation-play-state: paused !important;
+    }
+
     .mascot-caption-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 14px;
       background: #FFFFFF;
+      position: relative;
+      z-index: 4;
     }
     .mascot-deco-left {
       display: flex;
@@ -952,6 +1162,13 @@
       margin-top: -24px;
       background: #FFF;
       box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+      will-change: transform;
+      animation: heroAvatarBob 2.8s ease-in-out infinite;
+    }
+    #mascot-sparkle {
+      display: inline-block;
+      will-change: transform;
+      animation: heroSparklePulse 2.4s ease-in-out infinite;
     }
     .mascot-quote-title {
       font-size: 13.5px;
@@ -2704,9 +2921,19 @@
         <button type="button" onclick="openRenameProfileModal()" style="border:1.5px solid var(--line); background:var(--green-soft); color:var(--green-dark); border-radius:11px; padding:7px 10px; font-size:11.5px; font-weight:800; cursor:pointer; white-space:nowrap;" title="เปลี่ยนชื่อโปรไฟล์">✏️ แก้ชื่อ</button>
       </div>
 
-      <!-- Sanrio Mascot Cute Hero Banner (Shown on Sanrio themes) -->
-      <div id="mascot-banner" class="mascot-deco">
-        <img id="mascot-hero-banner-img" class="mascot-hero-img" src="cinnamoroll_hero.jpg" alt="Sanrio Theme Banner" />
+      <!-- Sanrio Mascot Cute Hero Banner (60fps GPU-Accelerated Animated Stage) -->
+      <div id="mascot-banner" class="mascot-deco" onclick="triggerMascotHeroJump()" title="แตะเพื่อให้ตัวละครดุ๊กดิ๊กทักทาย!">
+        <div id="mascot-hero-stage" class="mascot-hero-stage">
+          <img id="mascot-hero-banner-img" class="mascot-hero-img" src="hero_bg_cinnamoroll.jpg" alt="Sanrio Theme Background" decoding="async" />
+          <img id="mascot-hero-char-img" class="mascot-hero-char" src="hero_char_cinnamoroll.webp" alt="Sanrio Animated Character" decoding="async" />
+          <div id="mascot-hero-fx-layer" class="mascot-hero-fx">
+            <span class="hero-float-item p1">☁️</span>
+            <span class="hero-float-item p2">🧁</span>
+            <span class="hero-float-item p3">✨</span>
+            <span class="hero-float-item p4">🎀</span>
+          </div>
+          <div class="hero-live-pill"><span class="hero-live-dot"></span>แตะตัวละครได้ ✨</div>
+        </div>
         <div class="mascot-caption-bar">
           <div class="mascot-deco-left">
             <img id="mascot-badge-avatar" class="mascot-badge-img" src="cinnamoroll_avatar.jpg" alt="Mascot" />
@@ -11354,6 +11581,45 @@
       `;
     }
 
+    function triggerMascotHeroJump() {
+      const stage = document.getElementById("mascot-hero-stage");
+      if (stage) {
+        stage.classList.remove("jump-active");
+        void stage.offsetWidth;
+        stage.classList.add("jump-active");
+        clearTimeout(window.__heroJumpTimer);
+        window.__heroJumpTimer = setTimeout(() => {
+          stage.classList.remove("jump-active");
+        }, 720);
+      }
+      if (window.__currentThemeJumpToast) {
+        showToast(window.__currentThemeJumpToast);
+      }
+    }
+
+    function initMascotHeroPerformanceObserver() {
+      if (window.__heroPerfObserverInitialized) return;
+      window.__heroPerfObserverInitialized = true;
+      try {
+        const banner = document.getElementById("mascot-banner");
+        if (banner && "IntersectionObserver" in window) {
+          const io = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              document.body.classList.toggle("hero-anim-paused", !entry.isIntersecting);
+            });
+          }, { threshold: 0.05 });
+          io.observe(banner);
+        }
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) {
+            document.body.classList.add("hero-anim-paused");
+          } else {
+            document.body.classList.remove("hero-anim-paused");
+          }
+        });
+      } catch (_) {}
+    }
+
     function applyAppTheme() {
       const th = state.theme || safeLocalGet(DEVICE_THEME_KEY) || "cinnamoroll";
       state.theme = th;
@@ -11382,6 +11648,8 @@
       }
 
       const heroImgEl = document.getElementById("mascot-hero-banner-img");
+      const heroCharEl = document.getElementById("mascot-hero-char-img");
+      const heroFxEl = document.getElementById("mascot-hero-fx-layer");
       const badgeAvatarEl = document.getElementById("mascot-badge-avatar");
       const titleEl = document.getElementById("mascot-title");
       const subEl = document.getElementById("mascot-sub");
@@ -11402,7 +11670,10 @@
 
       const themeMeta = {
         cinnamoroll: {
-          hero: "cinnamoroll_hero.jpg",
+          hero: "hero_bg_cinnamoroll.jpg",
+          heroChar: "hero_char_cinnamoroll.webp",
+          fxParticles: ["☁️", "🧁", "✨", "🎀"],
+          jumpToast: "☁️🩵 ชินนามอนบินมาส่งกำลังใจให้แล้วนะ~ ฮึบๆ!",
           avatar: "cinnamoroll_avatar.jpg",
           title: "Cinnamoroll Sky Cafe ☁️🎀",
           sub: "คุมแคลแบบนุ่มฟูเหมือนปุยเมฆไปกับชินนามอนนะ! 🩵",
@@ -11425,7 +11696,10 @@
           `
         },
         pompompurin: {
-          hero: "pompompurin_hero.jpg",
+          hero: "hero_bg_pompompurin.jpg",
+          heroChar: "hero_char_pompompurin.webp",
+          fxParticles: ["🍮", "🥞", "🐾", "💛"],
+          jumpToast: "🍮🐾 ปอมปอมปุรินดุ๊กดิ๊กเชียร์อยู่ตรงนี้นะครับ!",
           avatar: "pompompurin_avatar.jpg",
           title: "Pompompurin Pudding Cafe 🍮🐾",
           sub: "กินอิ่มนอนหลับ หุ่นดีแบบแฮปปี้ไปกับปอมปอมปุริน! 💛",
@@ -11448,7 +11722,10 @@
           `
         },
         pompom_muscle: {
-          hero: "pompom_muscle_hero.jpg",
+          hero: "hero_bg_pompom_muscle.jpg",
+          heroChar: "hero_char_pompom_muscle.webp",
+          fxParticles: ["🔥", "💪", "⚡", "🏋️"],
+          jumpToast: "🍮💪🔥 เบ่งกล้ามโชว์ 1 ที! วันนี้อัดโปรตีนให้ถึงเป้าลุยยย!",
           avatar: "pompom_muscle_avatar.jpg",
           title: "Macho Pompompurin Gym 🍮💪🔥",
           sub: "โหมดผู้ชายสายโหด! ปอมๆ กล้ามดุคุมโปรตีนและยกเวทแบบเข้มๆ! 🏋️‍♂️",
@@ -11471,7 +11748,10 @@
           `
         },
         mymelody: {
-          hero: "mymelody_hero.jpg",
+          hero: "hero_bg_mymelody.jpg",
+          heroChar: "hero_char_mymelody.webp",
+          fxParticles: ["🍓", "🌸", "🎀", "🩷"],
+          jumpToast: "🍓🎀 มายเมโลดี้ส่งพลังความสดใสให้นะคะ สู้ๆ นะ!",
           avatar: "mymelody_avatar.jpg",
           title: "My Melody Strawberry Garden 🍓🎀",
           sub: "เลือกกินของอร่อยมีประโยชน์ไปกับมายเมโลดี้นะคะ! 🩷🌸",
@@ -11494,7 +11774,10 @@
           `
         },
         kuromi: {
-          hero: "kuromi_hero.jpg",
+          hero: "hero_bg_kuromi.jpg",
+          heroChar: "hero_char_kuromi.webp",
+          fxParticles: ["🖤", "🍒", "💜", "✨"],
+          jumpToast: "🖤😈 คุโรมิเชียร์อยู่นะ! วันนี้ห้ามแอบกินขนมเกินโควต้าล่ะ!",
           avatar: "kuromi_avatar.jpg",
           title: "Kuromi Cheeky Berry Cafe 🖤💜",
           sub: "มาปั้นหุ่นสวยแบบแสบซนสไตล์คุโรมิกันเถอะ! 😈🎀",
@@ -11520,7 +11803,10 @@
           `
         },
         littletwinstars: {
-          hero: "littletwinstars_hero.jpg",
+          hero: "hero_bg_littletwinstars.jpg",
+          heroChar: "hero_char_littletwinstars.webp",
+          fxParticles: ["🌟", "🌙", "🪄", "✨"],
+          jumpToast: "🌟🌙 กิกิ & ลาล่าเสกคาถาดวงดาวให้หุ่นปังสุขภาพดีนะ!",
           avatar: "littletwinstars_avatar.jpg",
           title: "Little Twin Stars Dreamy Sky 🌟🌙",
           sub: "ดูแลสุขภาพท่ามกลางหมู่ดาวไปกับกิกิ & ลาล่า ✨🩷🩵",
@@ -11542,7 +11828,10 @@
           `
         },
         allstars: {
-          hero: "allstars_hero.jpg",
+          hero: "hero_bg_allstars.jpg",
+          heroChar: "hero_char_allstars.webp",
+          fxParticles: ["🌈", "🎈", "🎉", "⭐"],
+          jumpToast: "🌈🎉 แก๊ง Sanrio All-Stars กระโดดเชียร์ครบทุกตัวเลย!",
           avatar: "allstars_avatar.jpg",
           title: "Sanrio All-Stars Rainbow Party 🌈🎡",
           sub: "รวมแก๊งเพื่อนรัก Cinnamoroll, Purin, Melody, Kuromi & Twin Stars! ✨",
@@ -11566,7 +11855,10 @@
           `
         },
         halloween: {
-          hero: "halloween_hero.jpg",
+          hero: "hero_bg_halloween.jpg",
+          heroChar: "hero_char_halloween.webp",
+          fxParticles: ["🎃", "🦇", "🍬", "👻"],
+          jumpToast: "🎃👻 แบร่~! ผีน้อยชินนามอนบินมาเชียร์ให้คุมแคลแบบไม่หลอก!",
           avatar: "halloween_avatar.jpg",
           title: "Sanrio Spooky-Cute Halloween 🎃👻",
           sub: "ปาร์ตี้ฮาโลวีนสุดคิวท์! กินคลีนไม่หลอก (Trick or Treat!) 🍬🦇",
@@ -11591,6 +11883,9 @@
         },
         cleanfit: {
           hero: "",
+          heroChar: "",
+          fxParticles: [],
+          jumpToast: "💎 พร้อมดูแลรูปร่างและโภชนาการวันนี้ครับ!",
           avatar: "",
           title: "CleanFit Nutrition & Health",
           sub: "บันทึกโภชนาการ ออกกำลังกาย และลดน้ำหนักรายวัน",
@@ -11609,12 +11904,27 @@
       };
 
       const cfg = themeMeta[th] || themeMeta.cinnamoroll;
+      window.__currentThemeJumpToast = cfg.jumpToast || "✨ สู้ๆ นะวันนี้!";
       if (heroImgEl && cfg.hero) heroImgEl.src = cfg.hero;
+      if (heroCharEl) {
+        if (cfg.heroChar) {
+          heroCharEl.src = cfg.heroChar;
+          heroCharEl.style.display = "block";
+        } else {
+          heroCharEl.style.display = "none";
+        }
+      }
+      if (heroFxEl && Array.isArray(cfg.fxParticles) && cfg.fxParticles.length === 4) {
+        heroFxEl.innerHTML = cfg.fxParticles
+          .map((em, i) => `<span class="hero-float-item p${i + 1}">${em}</span>`)
+          .join("");
+      }
       if (badgeAvatarEl && cfg.avatar) badgeAvatarEl.src = cfg.avatar;
       if (titleEl) titleEl.textContent = cfg.title;
       if (subEl) subEl.textContent = cfg.sub;
       if (spkEl) spkEl.textContent = cfg.sparkle;
       if (sublineEl) sublineEl.textContent = cfg.greet;
+      initMascotHeroPerformanceObserver();
 
       // Update ALL theme mascot buddies across every card & section!
       if (cfg.avatar) {
@@ -11862,6 +12172,7 @@
     }
 
     window.setAppTheme = setAppTheme;
+    window.triggerMascotHeroJump = triggerMascotHeroJump;
     window.setAppLogo = setAppLogo;
     window.chooseHomeIcon = chooseHomeIcon;
     window.pressPin = pressPin;

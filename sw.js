@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calorie-pwa-v35';
+const CACHE_NAME = 'calorie-pwa-v36';
 const ASSETS = [
   './',
   './index.html',
@@ -23,6 +23,22 @@ const ASSETS = [
   './allstars_avatar.jpg',
   './halloween_hero.jpg',
   './halloween_avatar.jpg',
+  './hero_bg_cinnamoroll.jpg',
+  './hero_char_cinnamoroll.webp',
+  './hero_bg_pompompurin.jpg',
+  './hero_char_pompompurin.webp',
+  './hero_bg_pompom_muscle.jpg',
+  './hero_char_pompom_muscle.webp',
+  './hero_bg_mymelody.jpg',
+  './hero_char_mymelody.webp',
+  './hero_bg_kuromi.jpg',
+  './hero_char_kuromi.webp',
+  './hero_bg_littletwinstars.jpg',
+  './hero_char_littletwinstars.webp',
+  './hero_bg_allstars.jpg',
+  './hero_char_allstars.webp',
+  './hero_bg_halloween.jpg',
+  './hero_char_halloween.webp',
   './wk_situp.gif',
   './wk_squat.gif',
   './wk_pushup.gif',
