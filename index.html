@@ -1336,11 +1336,214 @@
       100% { transform: translate3d(-160px, 56vh, 0) rotate(-12deg); opacity: 0; }
     }
 
+    /* ==================== CLEAN & EASY WORKSPACE UI (v39) ==================== */
+    .compact-top-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      padding: 5px 7px;
+      margin-bottom: 9px;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+    }
+    .compact-prof-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+      min-width: 0;
+    }
+    .compact-prof-group .prof-switch-btn {
+      padding: 5px 8px;
+      border-radius: 11px;
+      font-size: 11.5px;
+      gap: 5px;
+      flex: 1;
+      min-width: 0;
+      justify-content: center;
+    }
+    .compact-prof-group .prof-switch-btn img {
+      width: 22px;
+      height: 22px;
+    }
+    .compact-sync-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .compact-tool-pill {
+      border: 1px solid var(--line);
+      background: var(--green-soft);
+      color: var(--ink);
+      border-radius: 10px;
+      padding: 5px 7px;
+      font-size: 10.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .compact-tool-pill.primary {
+      background: var(--green);
+      color: #FFFFFF;
+      border-color: transparent;
+    }
+
+    /* 4-Column Mini Daily Status Glance Strip */
+    .home-mini-glance {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 9px;
+    }
+    .mini-glance-item {
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 7px 4px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .mini-glance-item:active {
+      transform: scale(0.96);
+    }
+    .mini-glance-item.active {
+      border-color: var(--green);
+      background: var(--green-soft);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.07);
+    }
+    .mg-top {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: var(--sub);
+      white-space: nowrap;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .mg-val {
+      font-size: 11.5px;
+      font-weight: 900;
+      color: var(--ink);
+      white-space: nowrap;
+      line-height: 1.25;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .mg-sub {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--green-dark);
+      white-space: nowrap;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Sticky Segmented Category Sub-Tab Bar */
+    .subtab-seg-bar {
+      position: sticky;
+      top: 6px;
+      z-index: 35;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      overflow-x: auto;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1.5px solid var(--line);
+      border-radius: 15px;
+      padding: 4px;
+      margin-bottom: 11px;
+      box-shadow: 0 5px 16px rgba(15, 23, 42, 0.06);
+      scrollbar-width: none;
+    }
+    .subtab-seg-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .subtab-seg-btn {
+      border: none;
+      background: transparent;
+      color: var(--sub);
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 7px 6px;
+      border-radius: 11px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex: 1;
+      text-align: center;
+      transition: all 0.16s ease;
+    }
+    .subtab-seg-btn.active {
+      background: var(--green);
+      color: #FFFFFF;
+      box-shadow: 0 3px 9px rgba(15, 23, 42, 0.14);
+    }
+
+    .home-sec-panel,
+    .ins-sec-panel,
+    .prof-sec-panel {
+      display: none;
+      animation: fadeView 0.18s ease;
+    }
+    .home-sec-panel.active,
+    .home-sec-panel.sec-active,
+    .ins-sec-panel.active,
+    .ins-sec-panel.sec-active,
+    .prof-sec-panel.active,
+    .prof-sec-panel.sec-active {
+      display: block;
+    }
+
+    .collapsible-drawer-btn {
+      border: 1px solid var(--line);
+      background: var(--green-soft);
+      color: var(--green-dark);
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .collapsible-drawer-box {
+      display: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--line);
+    }
+    .collapsible-drawer-box.open {
+      display: block;
+    }
+
     .mascot-caption-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 14px;
+      padding: 8px 12px;
       background: #FFFFFF;
       position: relative;
       z-index: 4;
@@ -3076,10 +3279,10 @@
     <!-- Toast Notification -->
     <div id="toast" class="toast">บันทึกเรียบร้อย ✨</div>
 
-    <!-- ==================== TAB 1: หน้าแรก (HOME) ==================== -->
+    <!-- ==================== TAB 1: หน้าแรก (HOME - CLEAN WORKSPACE v39) ==================== -->
     <div id="view-home" class="view active">
       <!-- Top Greeting -->
-      <div class="top-header">
+      <div class="top-header" style="margin-bottom:8px;">
         <div class="greeting-box">
           <div class="greet-sub" id="greet-time">สวัสดีตอนบ่าย ✨ <span id="user-name-disp">คุณพอล</span></div>
           <div class="greet-main" id="greet-subline">วันนี้ก็สู้ๆ นะ 💪</div>
@@ -3094,33 +3297,31 @@
         </div>
       </div>
 
-      <!-- 💻 Private Mac Server Sync Status Pill -->
-      <div id="home-sync-bar" style="display:flex; align-items:center; justify-content:space-between; gap:6px; background:var(--card); border:1.5px solid var(--line); border-radius:14px; padding:8px 11px; margin-bottom:8px; font-size:11.5px; font-weight:700; box-shadow:0 3px 10px rgba(0,0,0,0.03);">
-        <div onclick="syncWithMacServer(false)" style="display:flex; align-items:center; gap:6px; cursor:pointer; flex:1;">
-          <span id="home-sync-dot" style="font-size:13px;">🟠</span>
-          <span id="home-sync-text" style="color:var(--ink);">โหมดมือถือออฟไลน์ · สำรองข้อมูลในเครื่องแล้ว</span>
+      <!-- 👥💻 Unified Compact Profile Switcher + Mac Sync Toolbar (1 แถวคลีนๆ ไม่รกตา!) -->
+      <div class="compact-top-toolbar" id="home-profile-switcher">
+        <div class="compact-prof-group">
+          <button type="button" id="btn-prof-paul" class="prof-switch-btn active" data-prof-switch="paul" onclick="switchActiveUserProfile('paul')">
+            <img id="sw-av-paul" src="pompom_muscle_avatar.jpg" alt="" />
+            <span id="sw-name-paul">คุณพอล 💪</span>
+          </button>
+          <button type="button" id="btn-prof-partner" class="prof-switch-btn" data-prof-switch="partner" onclick="switchActiveUserProfile('partner')">
+            <img id="sw-av-partner" src="cinnamoroll_avatar.jpg" alt="" />
+            <span id="sw-name-partner">คุณแฟน 🌸</span>
+          </button>
+          <button type="button" class="compact-tool-pill" onclick="openRenameProfileModal()" title="เปลี่ยนชื่อโปรไฟล์">✏️</button>
         </div>
-        <div style="display:flex; align-items:center; gap:5px;">
-          <button onclick="saveSelfContainedHtml()" style="border:1px solid var(--line); background:var(--green-soft); color:var(--green-dark); border-radius:8px; padding:4px 8px; font-size:10.5px; font-weight:800; cursor:pointer; white-space:nowrap;">💾 เซฟลงไฟล์</button>
-          <button onclick="syncWithMacServer(false)" style="border:none; background:var(--green); color:#FFF; border-radius:8px; padding:4px 8px; font-size:10.5px; font-weight:800; cursor:pointer; white-space:nowrap;">🔄 ซิงค์คอม</button>
+        <div class="compact-sync-group" id="home-sync-bar">
+          <button type="button" class="compact-tool-pill" onclick="saveSelfContainedHtml()" title="บันทึกสำรองลงไฟล์">💾 เซฟ</button>
+          <button type="button" class="compact-tool-pill primary" onclick="syncWithMacServer(false)" title="ซิงค์ข้อมูลกับคอม Mac">
+            <span id="home-sync-dot" style="font-size:10px;">🟠</span>
+            <span>ซิงค์</span>
+          </button>
+          <span id="home-sync-text" style="display:none;">โหมดมือถือออฟไลน์</span>
         </div>
-      </div>
-
-      <!-- 👥 Multi-Profile Switcher Bar (สลับโปรไฟล์ คุณพอล & แฟน ข้อมูลแยกของใครของมัน) -->
-      <div class="profile-switcher-bar" id="home-profile-switcher">
-        <button type="button" id="btn-prof-paul" class="prof-switch-btn active" data-prof-switch="paul" onclick="switchActiveUserProfile('paul')">
-          <img id="sw-av-paul" src="pompom_muscle_avatar.jpg" alt="" />
-          <span id="sw-name-paul">คุณพอล 💪</span>
-        </button>
-        <button type="button" id="btn-prof-partner" class="prof-switch-btn" data-prof-switch="partner" onclick="switchActiveUserProfile('partner')">
-          <img id="sw-av-partner" src="cinnamoroll_avatar.jpg" alt="" />
-          <span id="sw-name-partner">คุณแฟน 🌸</span>
-        </button>
-        <button type="button" onclick="openRenameProfileModal()" style="border:1.5px solid var(--line); background:var(--green-soft); color:var(--green-dark); border-radius:11px; padding:7px 10px; font-size:11.5px; font-weight:800; cursor:pointer; white-space:nowrap;" title="เปลี่ยนชื่อโปรไฟล์">✏️ แก้ชื่อ</button>
       </div>
 
       <!-- Sanrio Mascot Cute Hero Banner (60fps GPU-Accelerated Animated Stage) -->
-      <div id="mascot-banner" class="mascot-deco" onclick="triggerMascotHeroJump()" title="แตะเพื่อให้ตัวละครดุ๊กดิ๊กทักทาย!">
+      <div id="mascot-banner" class="mascot-deco" style="margin-bottom:9px;" onclick="triggerMascotHeroJump()" title="แตะเพื่อให้ตัวละครดุ๊กดิ๊กทักทาย!">
         <div id="mascot-hero-stage" class="mascot-hero-stage">
           <img id="mascot-hero-banner-img" class="mascot-hero-img" src="hero_bg_cinnamoroll.jpg" alt="Sanrio Theme Background" decoding="async" />
           <img id="mascot-hero-char-img" class="mascot-hero-char" src="hero_char_cinnamoroll.webp" alt="Sanrio Animated Character" decoding="async" />
@@ -3130,7 +3331,7 @@
             <span class="hero-float-item p3">✨</span>
             <span class="hero-float-item p4">🎀</span>
           </div>
-          <div id="mascot-hero-live-pill" class="hero-live-pill"><span class="hero-live-dot"></span><span id="mascot-hero-live-pill-text">🔊 แตะฟังเสียงพูด ✨</span></div>
+          <div id="mascot-hero-live-pill" class="hero-live-pill"><span class="hero-live-dot"></span><span id="mascot-hero-live-pill-text">แตะฟังเสียง 🔊</span></div>
         </div>
         <div class="mascot-caption-bar">
           <div class="mascot-deco-left">
@@ -3140,13 +3341,13 @@
               <div id="mascot-sub" class="mascot-quote-sub">ค่อยๆ ดูแลตัวเองไปกับชินนามอนนะ! 🩵</div>
             </div>
           </div>
-          <span id="mascot-sparkle" style="font-size:20px;">🧁☁️</span>
+          <span id="mascot-sparkle" style="font-size:18px;">🧁☁️</span>
         </div>
       </div>
 
       <!-- Weekly Calendar Strip -->
-      <div class="card calendar-card">
-        <div class="cal-header" onclick="goToday()">
+      <div class="card calendar-card" style="padding:10px 12px; margin-bottom:9px;">
+        <div class="cal-header" style="margin-bottom:6px;" onclick="goToday()">
           <span id="selected-date-label">วันนี้</span>
           <span style="font-size:11px; color:var(--green); font-weight:700;">(กลับวันนี้)</span>
         </div>
@@ -3159,446 +3360,466 @@
         <button onclick="goToday()" style="background:none;border:none;color:var(--green-dark);font-weight:800;cursor:pointer;">วันนี้ →</button>
       </div>
 
-      <!-- 🎯 1. ภารกิจประจำวัน (DAILY MISSIONS: วันนี้ต้องทำอะไรบ้าง - อยู่บนสุดของหน้าแรก!) -->
-      <div class="card" id="home-beauty-quest-card" style="padding:16px; border: 2px solid var(--green-light);">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-          <div style="display:flex; align-items:center; gap:9px;">
-            <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" alt="Mascot" />
-            <div>
-              <div id="quest-card-title" style="font-size:15.5px; font-weight:800; color:var(--ink);">🎯 ภารกิจประจำวัน: วันนี้ต้องทำอะไรบ้าง!</div>
-              <div id="quest-card-sub" style="font-size:11.5px; color:var(--sub);">ติ๊กภารกิจดูแลหุ่น ออกกำลังกาย และดูแลผิวประจำวัน</div>
+      <!-- ⚡ 4-Pill Daily Mini Status Glance Strip (ดูภาพรวมครบในพริบตา · แตะเพื่อสลับหมวดทันที!) -->
+      <div class="home-mini-glance" id="home-mini-glance-grid">
+        <div class="mini-glance-item active" id="mg-card-food" onclick="switchHomeSubTab('food')">
+          <span class="mg-top">🔥 แคลคงเหลือ</span>
+          <span class="mg-val num" id="mg-cal-val">1,500</span>
+          <span class="mg-sub" id="mg-water-val">💧 0.0 / 2.4L</span>
+        </div>
+        <div class="mini-glance-item" id="mg-card-quest" onclick="switchHomeSubTab('quest')">
+          <span class="mg-top">🎯 ภารกิจวันนี้</span>
+          <span class="mg-val num" id="mg-quest-val">0/7 ข้อ</span>
+          <span class="mg-sub">ผิวใส & หุ่นดี</span>
+        </div>
+        <div class="mini-glance-item" id="mg-card-body" onclick="switchHomeSubTab('body')">
+          <span class="mg-top">👟 ก้าว & หุ่น</span>
+          <span class="mg-val num" id="mg-steps-val">0 ก้าว</span>
+          <span class="mg-sub num" id="mg-weight-val">⚖️ 63.5 kg</span>
+        </div>
+        <div class="mini-glance-item" id="mg-card-cycle" onclick="switchHomeSubTab('cycle')">
+          <span class="mg-top">💊 ยาคุมวันนี้</span>
+          <span class="mg-val num" id="mg-pill-val">เม็ดที่ 3/21</span>
+          <span class="mg-sub" id="mg-period-val">🌸 เช็กแผงยา</span>
+        </div>
+      </div>
+
+      <!-- 🗂️ Sticky Segmented Category Bar (แบ่งหมวดให้ใช้งานง่าย ไม่ต้องไถยาว 6 หน้าจอ!) -->
+      <div class="subtab-seg-bar" id="home-subtab-bar">
+        <button type="button" class="subtab-seg-btn active" data-home-tab="food" onclick="switchHomeSubTab('food')">🍽️ อาหาร/น้ำ</button>
+        <button type="button" class="subtab-seg-btn" data-home-tab="quest" onclick="switchHomeSubTab('quest')">🎯 ภารกิจ/ผิว</button>
+        <button type="button" class="subtab-seg-btn" data-home-tab="body" onclick="switchHomeSubTab('body')">⚖️ หุ่น/ก้าว</button>
+        <button type="button" class="subtab-seg-btn" data-home-tab="cycle" onclick="switchHomeSubTab('cycle')">💊 ยาคุม</button>
+        <button type="button" class="subtab-seg-btn" data-home-tab="all" onclick="switchHomeSubTab('all')">📋 ทั้งหมด</button>
+      </div>
+
+      <!-- ==================== SECTION 1: 🍽️ อาหาร & น้ำ (DEFAULT ACTIVE) ==================== -->
+      <div id="home-sec-food" class="home-sec-panel sec-active" data-home-sec="food">
+        <!-- Calories & Macros Card -->
+        <div class="card">
+          <div class="macro-card">
+            <div class="cal-ring-wrap">
+              <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="48" fill="none" stroke="#E8EEF5" stroke-width="11" stroke-dasharray="235 302" stroke-linecap="round" />
+                <circle id="cal-ring-prog" cx="60" cy="60" r="48" fill="none" stroke="#3B82F6" stroke-width="11" stroke-dasharray="0 302" stroke-linecap="round" />
+              </svg>
+              <div class="cal-ring-center">
+                <div class="bolt">⚡</div>
+                <div id="cal-left-num" class="cal-num num">1,500</div>
+                <div id="cal-left-lbl" class="cal-lbl">KCALS LEFT</div>
+              </div>
+            </div>
+
+            <div class="macro-bars">
+              <!-- Protein (Clickable to adjust Max Protein) -->
+              <div onclick="openCalLimitModal()" style="cursor:pointer;" title="แตะเพื่อตั้งค่าโปรตีนสูงสุดต่อวัน">
+                <div class="macro-row-top">
+                  <span style="color:var(--ink);">PROTEIN <span id="p-pct" style="color:var(--protein);">0%</span></span>
+                  <span id="p-gram" class="num" style="color:var(--sub); text-decoration:underline;">0 / 110g ✏️</span>
+                </div>
+                <div class="macro-track"><div id="p-bar" class="macro-fill" style="width:0%; background:var(--protein);"></div></div>
+              </div>
+              <!-- Carbs (Clickable to adjust Max Carbs) -->
+              <div onclick="openCalLimitModal()" style="cursor:pointer;" title="แตะเพื่อตั้งค่าคาร์บสูงสุดต่อวัน">
+                <div class="macro-row-top">
+                  <span style="color:var(--ink);">CARBS <span id="c-pct" style="color:var(--carbs);">0%</span></span>
+                  <span id="c-gram" class="num" style="color:var(--sub); text-decoration:underline;">0 / 150g ✏️</span>
+                </div>
+                <div class="macro-track"><div id="c-bar" class="macro-fill" style="width:0%; background:var(--carbs);"></div></div>
+              </div>
+              <!-- Fat -->
+              <div onclick="openCalLimitModal()" style="cursor:pointer;">
+                <div class="macro-row-top">
+                  <span style="color:var(--ink);">FAT <span id="f-pct" style="color:var(--fat);">0%</span></span>
+                  <span id="f-gram" class="num" style="color:var(--sub);">0 / 50g</span>
+                </div>
+                <div class="macro-track"><div id="f-bar" class="macro-fill" style="width:0%; background:var(--fat);"></div></div>
+              </div>
             </div>
           </div>
-          <span id="quest-done-badge" class="num" style="font-size:11.5px; font-weight:800; background:var(--green-bg); color:var(--green-dark); padding:4px 10px; border-radius:999px;">0/7</span>
-        </div>
 
-        <!-- Daily Mission Progress Bar -->
-        <div style="background:#F1F5F9; height:9px; border-radius:999px; overflow:hidden; margin-bottom:10px;">
-          <div id="quest-prog-fill" style="width:0%; height:100%; background:linear-gradient(90deg, var(--green-light), var(--green-dark)); border-radius:999px; transition:width 0.3s ease;"></div>
-        </div>
-
-        <!-- Mascot Encouragement Speech Bubble -->
-        <div class="mascot-speech-bubble" id="quest-mascot-bubble" style="margin-bottom:10px;">
-          <span>💬</span>
-          <span id="quest-mascot-text">มาทำภารกิจวันนี้ให้ครบกันนะ! ออกกำลังกายในห้อง ทากันแดด กินวิตามิน ผิวสวยหุ่นดีแน่นอน ✨</span>
-        </div>
-
-        <!-- Mode Quick Toggle (โหมดผิวสวย & หุ่นเป๊ะ 🌸 vs โหมดผู้ชายปอมๆ กล้ามดุ 💪) -->
-        <div style="display:flex; gap:6px; margin-bottom:10px;">
-          <button id="qmode-beauty" class="cat-chip active" style="flex:1; font-size:11.5px;" onclick="setQuestMode('beauty')">🌸 ภารกิจสวยใส & หุ่นเป๊ะ</button>
-          <button id="qmode-macho" class="cat-chip" style="flex:1; font-size:11.5px;" onclick="setQuestMode('macho')">🍮💪 ภารกิจปอมๆ กล้ามดุ</button>
-        </div>
-
-        <!-- 🔔 Smart Mask & Scrub Schedule Reminder Banner -->
-        <div id="beauty-routine-alert-box" style="background:linear-gradient(135deg,#FDF2F8 0%,#F0F9FF 100%); border:1.5px solid #F9A8D4; border-radius:14px; padding:10px 12px; margin-bottom:10px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px;">
-            <div style="font-size:12px; font-weight:800; color:#9D174D;">🔔 ตารางเตือนมาส์กหน้า & ขัดผิวของคุณ</div>
-            <button type="button" onclick="openBeautyRoutineModal()" style="border:1px solid #F472B6; background:#FFFFFF; color:#BE185D; border-radius:99px; padding:3px 9px; font-size:10.5px; font-weight:800; cursor:pointer; white-space:nowrap;">⚙️ ตั้งวันเตือน</button>
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; font-size:11.5px; color:var(--sub); margin-top:10px; padding-top:9px; border-top:1px solid var(--line);">
+            <span>กินแล้ว: <strong id="cal-eaten-txt" class="num" style="color:var(--ink);">0</strong></span>
+            <span>เบิร์น: <strong id="cal-burned-txt" class="num" style="color:#EA580C; cursor:pointer;" onclick="openStepsModal()">0</strong> ✏️</span>
+            <span style="cursor:pointer;" onclick="openCalLimitModal()">เป้า: <strong id="cal-target-txt" class="num" style="color:var(--green-dark); text-decoration:underline;">1,500</strong> kcal</span>
+            <button type="button" class="collapsible-drawer-btn" onclick="toggleDrawerBox('cal-quick-adjust-drawer', this)">🎚️ ปรับเป้าด่วน ▾</button>
           </div>
-          <div id="beauty-routine-summary-txt" style="font-size:11px; color:#475569; font-weight:700; line-height:1.45;">
-            🧖‍♀️ มาส์กหน้า: ทุกวันจันทร์, พุธ · 🧂 ขัดผิว: ทุกวันพุธ
+
+          <!-- 💸 Daily & Monthly Food Cost Tracker Strip -->
+          <div onclick="switchTab('insights')" style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:8px; padding:7px 11px; background:linear-gradient(90deg, #ECFDF5 0%, #F0FDF4 100%); border:1.5px solid #A7F3D0; border-radius:13px; cursor:pointer;">
+            <div style="display:flex; align-items:center; gap:7px;">
+              <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" style="width:24px; height:24px;" alt="" />
+              <div style="font-size:11.5px; font-weight:800; color:#065F46;">
+                💸 ค่ากินวันนี้: <span id="home-cost-today" class="num" style="color:#047857; font-size:13px;">฿0</span>
+                <span style="margin:0 4px; color:#6EE7B7;">|</span>
+                เดือนนี้: <span id="home-cost-month" class="num" style="color:#047857; font-size:13px;">฿0</span>
+              </div>
+            </div>
+            <span style="font-size:10.5px; font-weight:800; color:#047857;">ดูสรุป 🐘 ›</span>
           </div>
-          <div id="beauty-routine-today-due" style="margin-top:6px; display:none;"></div>
+
+          <!-- Collapsible Quick Calorie, Protein & Carb Limit Adjuster Drawer (ซ่อนไว้ให้คลีน กดเปิดได้ทันที) -->
+          <div id="cal-quick-adjust-drawer" class="collapsible-drawer-box">
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; background:var(--green-soft); padding:7px 10px; border-radius:14px; border:1px solid var(--line);">
+                <span style="font-size:11.5px; font-weight:800; color:var(--ink);">🔥 แคลสูงสุด:</span>
+                <div style="display:flex; align-items:center; gap:4px;">
+                  <button onclick="quickAdjustCalGoal(-100)" style="border:1px solid var(--line); background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:var(--ink);">-100</button>
+                  <button onclick="quickAdjustCalGoal(-50)" style="border:1px solid var(--line); background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:var(--ink);">-50</button>
+                  <button onclick="openCalLimitModal()" style="border:none; background:var(--green); color:#FFF; border-radius:8px; padding:4px 9px; font-size:11px; font-weight:800; cursor:pointer;">ตั้งค่า ✏️</button>
+                  <button onclick="quickAdjustCalGoal(50)" style="border:1px solid var(--line); background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:var(--ink);">+50</button>
+                  <button onclick="quickAdjustCalGoal(100)" style="border:1px solid var(--line); background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:var(--ink);">+100</button>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; background:#FEF2F2; padding:7px 10px; border-radius:14px; border:1px solid #FECACA;">
+                <span style="font-size:11.5px; font-weight:800; color:#991B1B;">🥩 โปรตีนสูงสุด (<span id="p-max-inline" class="num">110</span>g):</span>
+                <div style="display:flex; align-items:center; gap:4px;">
+                  <button onclick="quickAdjustProteinGoal(-20)" style="border:1px solid #FECACA; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#991B1B;">-20g</button>
+                  <button onclick="quickAdjustProteinGoal(-10)" style="border:1px solid #FECACA; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#991B1B;">-10g</button>
+                  <button onclick="openCalLimitModal()" style="border:none; background:#DC2626; color:#FFF; border-radius:8px; padding:4px 9px; font-size:11px; font-weight:800; cursor:pointer;">ตั้งค่า ✏️</button>
+                  <button onclick="quickAdjustProteinGoal(10)" style="border:1px solid #FECACA; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#991B1B;">+10g</button>
+                  <button onclick="quickAdjustProteinGoal(20)" style="border:1px solid #FECACA; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#991B1B;">+20g</button>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; background:#FFFBEB; padding:7px 10px; border-radius:14px; border:1px solid #FDE68A;">
+                <span style="font-size:11.5px; font-weight:800; color:#92400E;">🍚 คาร์บสูงสุด (<span id="carb-max-inline" class="num">160</span>g):</span>
+                <div style="display:flex; align-items:center; gap:4px;">
+                  <button onclick="quickAdjustCarbGoal(-20)" style="border:1px solid #FDE68A; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#92400E;">-20g</button>
+                  <button onclick="quickAdjustCarbGoal(-10)" style="border:1px solid #FDE68A; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#92400E;">-10g</button>
+                  <button onclick="openCalLimitModal()" style="border:none; background:#F59E0B; color:#FFF; border-radius:8px; padding:4px 9px; font-size:11px; font-weight:800; cursor:pointer;">ตั้งค่า ✏️</button>
+                  <button onclick="quickAdjustCarbGoal(10)" style="border:1px solid #FDE68A; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#92400E;">+10g</button>
+                  <button onclick="quickAdjustCarbGoal(20)" style="border:1px solid #FDE68A; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#92400E;">+20g</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Checklist Items -->
-        <div id="home-quest-list" style="display:flex; flex-direction:column; gap:7px; margin-bottom:10px;"></div>
+        <!-- 🍽️ Unified Food Logging Hub (รวมปุ่ม AI สแกน + คลังเมนู + จดเอง + บอก AI + เมนูประจำ Bookmark ไว้ในที่เดียว!) -->
+        <div class="card" style="padding:13px 14px; border:2px solid var(--green-light);">
+          <div class="ai-banner" style="margin-bottom:10px;" onclick="openModal('modal-scan-menu')">
+            <div class="ai-banner-left">
+              <div class="ai-cam-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+              <div>
+                <h3>📷 AI สแกนอาหาร / สินค้าเซเว่น ✨</h3>
+                <p>ถ่ายรูปอาหาร · อ่านฉลาก · คิดแคล+ราคาให้อัตโนมัติ</p>
+              </div>
+            </div>
+            <div style="font-size:20px; font-weight:700;">›</div>
+          </div>
 
-        <!-- Add Custom Daily Mission Input Row -->
-        <div style="display:flex; gap:6px; margin-bottom:10px;">
-          <input type="text" id="custom-quest-input" class="form-control" style="padding:8px 11px; font-size:12px;" placeholder="➕ เพิ่มภารกิจวันนี้เอง (เช่น งดชานม, นอนก่อน 5 ทุ่ม)..." onkeydown="if(event.key==='Enter') addCustomDailyQuest()" />
-          <button onclick="addCustomDailyQuest()" style="border:none; background:var(--green-dark); color:#FFF; border-radius:12px; padding:0 12px; font-size:12px; font-weight:800; cursor:pointer; white-space:nowrap;">+ เพิ่ม</button>
+          <div class="quick-grid" style="margin-bottom:0;">
+            <div class="quick-tile" onclick="openFoodLibrary('มื้อกลางวัน')">
+              <div id="qt-ic-1" class="quick-ic" style="background:linear-gradient(135deg,#8EC641,#5B9B18);">🔍</div>
+              <span id="qt-lbl-1">คลังเมนู+ราคา</span>
+            </div>
+            <div class="quick-tile" onclick="openManualFoodModal('มื้อกลางวัน')">
+              <div id="qt-ic-2" class="quick-ic" style="background:linear-gradient(135deg,#10B981,#047857);">✍️</div>
+              <span id="qt-lbl-2">จดเมนู+ราคาเอง</span>
+            </div>
+            <div class="quick-tile" onclick="openTextLogger()">
+              <div id="qt-ic-3" class="quick-ic" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);">💬</div>
+              <span id="qt-lbl-3">พิมพ์บอก AI</span>
+            </div>
+            <div class="quick-tile" onclick="toggleDrawerBox('home-bookmark-drawer', null)">
+              <div id="qt-ic-4" class="quick-ic" style="background:linear-gradient(135deg,#F59E0B,#D97706);">⭐</div>
+              <span id="qt-lbl-4">เมนูประจำ ▾</span>
+            </div>
+          </div>
+
+          <!-- ⭐ Collapsible Bookmarked Favorite Meals Drawer -->
+          <div id="home-bookmark-drawer" class="collapsible-drawer-box">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+              <div>
+                <div style="font-size:13.5px; font-weight:800; color:var(--ink);">⭐ เมนูประจำของฉัน (Bookmark)</div>
+                <div style="font-size:10.5px; color:var(--sub);">กด + เพื่อบันทึกเข้ามื้อพร้อมราคาทันที</div>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <select id="bm-target-meal" style="padding:4px 7px; border-radius:9px; border:1px solid var(--line); font-family:inherit; font-size:11.5px; font-weight:700;">
+                  <option value="มื้อเช้า">🍳 มื้อเช้า</option>
+                  <option value="มื้อกลางวัน" selected>🍛 มื้อกลางวัน</option>
+                  <option value="มื้อเย็น">🥗 มื้อเย็น</option>
+                  <option value="ของว่าง">🍎 ของว่าง</option>
+                </select>
+                <button class="meal-add-btn" onclick="openBookmarkCreator()">+ สร้างเมนู</button>
+              </div>
+            </div>
+            <div id="bookmarks-Quick-list" style="display:flex; flex-direction:column; gap:7px;"></div>
+          </div>
+        </div>
+
+        <!-- 4 Meal Logging Cards (อยู่ใกล้มือทันที ไม่ต้องเลื่อนหา!) -->
+        <div id="meals-container"></div>
+
+        <!-- Water Tracker Card -->
+        <div class="card">
+          <div class="water-header">
+            <h3>💧 น้ำดื่ม <span id="water-cup-size-lbl">(1 แก้ว = 300 ml)</span></h3>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span id="water-liters-badge" class="water-total-pill num">0.0 / 2.4 L</span>
+              <button onclick="openWaterGoalModal()" style="background:var(--green-soft); border:1px solid var(--line); border-radius:999px; padding:4px 9px; font-size:11px; font-weight:800; color:var(--green-dark); cursor:pointer;">⚙️ ตั้งเป้า</button>
+            </div>
+          </div>
+          <div id="glasses-container" class="glasses-grid"></div>
+          <div class="water-foot" style="justify-content:space-between; flex-wrap:wrap; gap:6px;">
+            <span id="water-foot-rec">ⓘ เป้าหมายวันนี้ 8 แก้ว (2.4 ลิตร)</span>
+            <div style="display:flex; gap:4px;">
+              <button onclick="addWater(-1)" style="border:1px solid var(--line); background:#FFF; border-radius:8px; padding:2px 8px; font-size:11px; font-weight:800; cursor:pointer;">-1 แก้ว</button>
+              <button onclick="addWaterMl(100)" style="border:1px solid #BAE6FD; background:#F0F9FF; color:#0284C7; border-radius:8px; padding:2px 8px; font-size:11px; font-weight:800; cursor:pointer;">+100 ml</button>
+              <button onclick="addWater(1)" style="border:1px solid #BAE6FD; background:#E0F2FE; color:#0284C7; border-radius:8px; padding:2px 8px; font-size:11px; font-weight:800; cursor:pointer;">+1 แก้ว</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 2: 🎯 ภารกิจ & ผิว (DAILY MISSIONS & SKINCARE) ==================== -->
+      <div id="home-sec-quest" class="home-sec-panel" data-home-sec="quest">
+        <div class="card" id="home-beauty-quest-card" style="padding:15px; border: 2px solid var(--green-light);">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <div style="display:flex; align-items:center; gap:9px;">
+              <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" alt="Mascot" />
+              <div>
+                <div id="quest-card-title" style="font-size:15px; font-weight:800; color:var(--ink);">🎯 ภารกิจประจำวัน: วันนี้ต้องทำอะไรบ้าง!</div>
+                <div id="quest-card-sub" style="font-size:11px; color:var(--sub);">ติ๊กภารกิจดูแลหุ่น ออกกำลังกาย และดูแลผิวประจำวัน</div>
+              </div>
+            </div>
+            <span id="quest-done-badge" class="num" style="font-size:11.5px; font-weight:800; background:var(--green-bg); color:var(--green-dark); padding:4px 10px; border-radius:999px;">0/7</span>
+          </div>
+
+          <!-- Daily Mission Progress Bar -->
+          <div style="background:#F1F5F9; height:8px; border-radius:999px; overflow:hidden; margin-bottom:9px;">
+            <div id="quest-prog-fill" style="width:0%; height:100%; background:linear-gradient(90deg, var(--green-light), var(--green-dark)); border-radius:999px; transition:width 0.3s ease;"></div>
+          </div>
+
+          <!-- Mascot Encouragement Speech Bubble -->
+          <div class="mascot-speech-bubble" id="quest-mascot-bubble" style="margin-bottom:9px;">
+            <span>💬</span>
+            <span id="quest-mascot-text">มาทำภารกิจวันนี้ให้ครบกันนะ! ออกกำลังกายในห้อง ทากันแดด กินวิตามิน ผิวสวยหุ่นดีแน่นอน ✨</span>
+          </div>
+
+          <!-- Mode Quick Toggle (โหมดผิวสวย & หุ่นเป๊ะ 🌸 vs โหมดผู้ชายปอมๆ กล้ามดุ 💪) -->
+          <div style="display:flex; gap:6px; margin-bottom:10px;">
+            <button id="qmode-beauty" class="cat-chip active" style="flex:1; font-size:11.5px;" onclick="setQuestMode('beauty')">🌸 ภารกิจสวยใส & หุ่นเป๊ะ</button>
+            <button id="qmode-macho" class="cat-chip" style="flex:1; font-size:11.5px;" onclick="setQuestMode('macho')">🍮💪 ภารกิจปอมๆ กล้ามดุ</button>
+          </div>
+
+          <!-- Checklist Items -->
+          <div id="home-quest-list" style="display:flex; flex-direction:column; gap:7px; margin-bottom:10px;"></div>
+
+          <!-- Add Custom Daily Mission Input Row -->
+          <div style="display:flex; gap:6px; margin-bottom:10px;">
+            <input type="text" id="custom-quest-input" class="form-control" style="padding:8px 11px; font-size:12px;" placeholder="➕ เพิ่มภารกิจวันนี้เอง (เช่น งดชานม, นอนก่อน 5 ทุ่ม)..." onkeydown="if(event.key==='Enter') addCustomDailyQuest()" />
+            <button onclick="addCustomDailyQuest()" style="border:none; background:var(--green-dark); color:#FFF; border-radius:12px; padding:0 12px; font-size:12px; font-weight:800; cursor:pointer; white-space:nowrap;">+ เพิ่ม</button>
+          </div>
+
+          <!-- 🔔 Unified Smart Mask & Scrub Schedule + Quick Action Box (รวมไว้ในกล่องเดียว ไม่ซ้ำซ้อน!) -->
+          <div id="beauty-routine-alert-box" style="background:linear-gradient(135deg,#FDF2F8 0%,#F0F9FF 100%); border:1.5px solid #F9A8D4; border-radius:14px; padding:10px 12px; margin-bottom:8px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px; flex-wrap:wrap;">
+              <div style="font-size:12px; font-weight:800; color:#9D174D;">🔔 ตารางมาส์กหน้า & ขัดผิวของคุณ</div>
+              <div style="display:flex; gap:4px; align-items:center;">
+                <button type="button" onclick="openBeautyRoutineModal()" style="border:1px solid #F472B6; background:#FFFFFF; color:#BE185D; border-radius:8px; padding:3px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">⚙️ ตั้งวันเตือน</button>
+                <button type="button" onclick="toggleBeautyTask('mask')" style="border:none; background:#8B5CF6; color:#FFF; border-radius:8px; padding:4px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">🧖‍♀️ มาส์กวันนี้</button>
+                <button type="button" onclick="toggleBeautyTask('scrub')" style="border:none; background:#EC4899; color:#FFF; border-radius:8px; padding:4px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">🧂 ขัดวันนี้!</button>
+              </div>
+            </div>
+            <div id="beauty-routine-summary-txt" style="font-size:11px; color:#475569; font-weight:700; line-height:1.45;">
+              🧖‍♀️ มาส์กหน้า: ทุกวันจันทร์, พุธ · 🧂 ขัดผิว: ทุกวันพุธ
+            </div>
+            <div style="font-size:10.5px; color:#831843; margin-top:4px; display:flex; gap:10px; flex-wrap:wrap;">
+              <span>🧖‍♀️ ล่าสุด: <strong id="last-mask-date-txt" style="color:#BE185D;">ยังไม่ได้บันทึก</strong></span>
+              <span>🧂 ล่าสุด: <strong id="last-scrub-date-txt" style="color:#BE185D;">ยังไม่ได้บันทึก</strong></span>
+            </div>
+            <div id="beauty-routine-today-due" style="margin-top:6px; display:none;"></div>
+          </div>
+
+          <!-- ⏳ Countdown to Glowing Skin -->
+          <div id="skin-glow-countdown-bar" class="goal-countdown-bar" style="margin-top:4px; display:flex; align-items:center; justify-content:space-between; padding:10px 12px;">
+            <span id="skin-glow-countdown-txt">⏳ นับถอยหลังอีก 14 วัน ผิวจะผลัดเซลล์สวยใสออร่าพุ่ง! ✨</span>
+            <span id="skin-glow-pct" class="num" style="font-weight:800;">50%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 3: ⚖️ หุ่น & ก้าวเดิน (STEPS, WEIGHT & WORKOUT) ==================== -->
+      <div id="home-sec-body" class="home-sec-panel" data-home-sec="body">
+        <!-- 🍎 Apple Health & Steps Sync Card -->
+        <div class="card" style="padding:15px 16px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:20px;">🍎</span>
+              <div>
+                <div style="font-size:14.5px; font-weight:900; color:var(--ink);">Apple สุขภาพ & ก้าวเดินใน 1 วัน 👟</div>
+                <div id="health-sync-sub" style="font-size:11px; color:var(--sub);">แสดงก้าวเดินเฉพาะ 1 วัน (ดูย้อนหลังหลายวันได้ที่หน้าสรุปผล)</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button type="button" class="meal-add-btn" onclick="openStepsModal()">👟 อัพเดทก้าว</button>
+              <button type="button" class="meal-add-btn" style="background:#FFE4E6; color:#E11D48;" onclick="openModal('modal-apple-health')">🍎 วิธีเชื่อม</button>
+            </div>
+          </div>
+
+          <!-- 📅 Quick 1-Day Date Selector Strip on Home Steps Card -->
+          <div id="home-steps-day-pills" style="display:flex; gap:5px; overflow-x:auto; padding-bottom:6px; margin-bottom:8px;"></div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div onclick="openStepsModal()" style="background:#F8FAFC; border:1.5px solid var(--line); border-radius:14px; padding:10px 12px; cursor:pointer;">
+              <div style="font-size:11px; color:var(--sub); font-weight:800;">👟 ก้าวเดิน <span id="steps-card-date-label" style="color:#0284C7;">วันนี้</span> (<span id="steps-today-km" class="num">0.00</span> กม.)</div>
+              <div style="font-size:19px; font-weight:900; color:var(--ink); margin-top:2px;" class="num">
+                <span id="steps-today-val">0</span> <small style="font-size:11px; font-weight:700; color:var(--sub);">ก้าว/วัน ✏️</small>
+              </div>
+              <div class="macro-track" style="margin-top:6px; height:5px;">
+                <div id="steps-prog-bar" class="macro-fill" style="width:0%; background:#10B981;"></div>
+              </div>
+            </div>
+            <div onclick="openStepsModal()" style="background:#FFF7ED; border:1.5px solid #FFEDD5; border-radius:14px; padding:10px 12px; cursor:pointer;">
+              <div style="font-size:11px; color:#9A3412; font-weight:800;">🔥 เผาผลาญ (เฉพาะวันนี้)</div>
+              <div style="font-size:19px; font-weight:900; color:#EA580C; margin-top:2px;" class="num">
+                +<span id="burned-card-val">0</span> <small style="font-size:11px; font-weight:700;">kcal ✏️</small>
+              </div>
+              <div style="font-size:10.5px; color:#C2410C; margin-top:4px; font-weight:700;">บวกเพิ่มโควต้าแคลรายวันให้อัตโนมัติ</div>
+            </div>
+          </div>
+
+          <!-- 🗺️ Funny Step Distance Comparison Strip on Home + Link to Multi-Day Chart -->
+          <div onclick="switchTab('insights'); setTimeout(()=>{switchInsightsSubTab('steps');},80);" style="margin-top:10px; background:linear-gradient(135deg,#EFF6FF 0%,#F0FDF4 100%); border:1.5px solid #93C5FD; border-radius:15px; padding:10px 12px; cursor:pointer;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" style="width:34px; height:34px; border-radius:50%; flex-shrink:0;" alt="" />
+                <div>
+                  <div id="home-steps-funny-title" style="font-size:12px; font-weight:800; color:#1E3A8A;">🗺️ เดินวันนี้เทียบเท่า: กำลังคำนวณ...</div>
+                  <div id="home-steps-funny-sub" style="font-size:11px; font-weight:700; color:#047857; margin-top:1px;">แตะเพื่อดูกราฟก้าวเดินย้อนหลังหลายวัน & ขั้นบันได ›</div>
+                </div>
+              </div>
+              <span style="font-size:11px; font-weight:900; color:#1D4ED8; white-space:nowrap;">📊 ดูหลายวัน ›</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weight & Height Summary Card -->
+        <div class="card">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+            <div class="card-title" style="margin-bottom:0;">⚖️ สรุปน้ำหนัก & ส่วนสูง</div>
+            <button class="meal-add-btn" onclick="openWeightModal()">✏️ แก้น้ำหนัก / ส่วนสูง</button>
+          </div>
+          <div onclick="openWeightModal()" style="display:flex; align-items:center; justify-content:space-between; background:var(--green-soft); border:1px solid var(--line); border-radius:12px; padding:6px 11px; margin-bottom:10px; font-size:12px; font-weight:700; color:var(--ink); cursor:pointer;">
+            <span>📏 ส่วนสูงของคุณ: <strong id="home-height-val" class="num" style="color:var(--green-dark);">172</strong> ซม.</span>
+            <span>📊 ดัชนี BMI: <strong id="home-bmi-val" class="num" style="color:var(--green-dark);">22.0</strong> (<span id="home-bmi-status">สมส่วน</span>) ✏️</span>
+          </div>
+          <div class="weight-tri">
+            <div class="w-side" onclick="openWeightModal()" style="cursor:pointer;" title="แตะเพื่อแก้ไขน้ำหนักเริ่มต้น">
+              <div class="w-lbl">น้ำหนักเริ่มต้น ✏️</div>
+              <div class="w-val num"><span id="w-start-val">65</span> <small>kg</small></div>
+            </div>
+
+            <div class="w-center-ring" onclick="openWeightModal()" style="cursor:pointer;">
+              <svg viewBox="0 0 136 136">
+                <circle cx="68" cy="68" r="58" fill="none" stroke="#EFEFEF" stroke-width="10" />
+                <circle id="w-ring-prog" cx="68" cy="68" r="58" fill="none" stroke="#EE8434" stroke-width="10" stroke-dasharray="220 365" stroke-linecap="round" />
+              </svg>
+              <div class="curr-lbl">ปัจจุบัน</div>
+              <div class="curr-val num"><span id="w-curr-val">63.5</span> <small>kg</small></div>
+              <button class="w-Update-btn" onclick="event.stopPropagation(); openWeightModal();">✏️ อัพเดท</button>
+            </div>
+
+            <div class="w-side" onclick="openWeightModal()" style="cursor:pointer;" title="แตะเพื่อแก้ไขน้ำหนักเป้าหมาย">
+              <div class="w-lbl">น้ำหนักเป้าหมาย ✏️</div>
+              <div class="w-val num"><span id="w-goal-val">58</span> <small>kg</small></div>
+            </div>
+          </div>
+
+          <div class="w-spark-row">
+            <span class="w-spark-lbl">7 วันล่าสุด</span>
+            <svg id="w-mini-spark" width="160" height="28" viewBox="0 0 160 28"></svg>
+            <span id="w-diff-pill" class="w-diff-badge num">-1.5 kg</span>
+          </div>
+
+          <div id="w-countdown-bar" class="goal-countdown-bar" onclick="openWeightModal()" style="cursor:pointer;">
+            เป้าหมายอีก 55 วัน · สู้ไปด้วยกันนะ ✨
+          </div>
         </div>
 
         <!-- 🏋️‍♀️ Direct Jump to In-Room 2-Frame Workout Studio -->
-        <div class="workout-hero-entry" style="margin-bottom:8px;" onclick="switchTab('workout')">
+        <div class="workout-hero-entry" style="margin-bottom:12px;" onclick="switchTab('workout')">
           <div style="display:flex; align-items:center; gap:10px;">
             <img class="theme-mascot-buddy" src="pompompurin_avatar.jpg" style="width:46px; height:46px; border-radius:50%; border:2px solid #FFF; box-shadow:0 3px 8px rgba(0,0,0,0.12);" alt="" />
             <div>
-              <div style="font-size:13.5px; font-weight:800; color:#78350F;">🏋️‍♀️ สอนออกกำลังกายในห้อง (อนิเมชัน 2 เฟรม!)</div>
-              <div style="font-size:11px; color:#92400E; font-weight:700;">ตัวละครสอนซิทอัพ · สควอท · ดัมเบล (แผนละ 5 ท่า พร้อมบอกแคล)</div>
+              <div style="font-size:13.5px; font-weight:800; color:#78350F;">🏋️‍♀️ คลาสสอนออกกำลังกายในห้อง (อนิเมชัน 2 เฟรม!)</div>
+              <div style="font-size:11px; color:#92400E; font-weight:700;">ตัวละครสอนซิทอัพ · สควอท · ดัมเบล · โยคะ (4 แผน 20 ท่า)</div>
             </div>
           </div>
           <span style="background:#F59E0B; color:#FFF; font-size:11px; font-weight:800; padding:6px 10px; border-radius:99px; white-space:nowrap;">เริ่มฝึก ▶</span>
         </div>
-
-        <!-- Salt Scrub & Face Mask Last Date & Next Due Banner -->
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; background:#FDF2F8; border:1px solid #FBCFE8; border-radius:13px; padding:8px 11px; margin-bottom:8px; font-size:11.5px; flex-wrap:wrap;">
-          <div style="flex:1; min-width:170px;">
-            <div>
-              <span style="font-weight:800; color:#9D174D;">🧖‍♀️ มาส์กหน้าล่าสุด:</span>
-              <span id="last-mask-date-txt" style="color:#BE185D; font-weight:700;">ยังไม่ได้บันทึก</span>
-            </div>
-            <div style="margin-top:2px;">
-              <span style="font-weight:800; color:#9D174D;">🧂 ขัดผิวล่าสุด:</span>
-              <span id="last-scrub-date-txt" style="color:#BE185D; font-weight:700;">ยังไม่ได้บันทึก</span>
-            </div>
-          </div>
-          <div style="display:flex; gap:5px; align-items:center;">
-            <button type="button" onclick="openBeautyRoutineModal()" style="border:1px solid #F472B6; background:#FFF; color:#9D174D; border-radius:8px; padding:5px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">⚙️ ตั้งวันเตือน</button>
-            <button type="button" onclick="toggleBeautyTask('mask')" style="border:none; background:#8B5CF6; color:#FFF; border-radius:8px; padding:5px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">🧖‍♀️ มาส์กวันนี้</button>
-            <button type="button" onclick="toggleBeautyTask('scrub')" style="border:none; background:#EC4899; color:#FFF; border-radius:8px; padding:5px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">🧂 ขัดวันนี้!</button>
-          </div>
-        </div>
-
-        <!-- ⏳ Countdown to Glowing Skin -->
-        <div id="skin-glow-countdown-bar" class="goal-countdown-bar" style="margin-top:4px; display:flex; align-items:center; justify-content:space-between; padding:10px 12px;">
-          <span id="skin-glow-countdown-txt">⏳ นับถอยหลังอีก 14 วัน ผิวจะผลัดเซลล์สวยใสออร่าพุ่ง! ✨</span>
-          <span id="skin-glow-pct" class="num" style="font-weight:800;">50%</span>
-        </div>
       </div>
 
-      <!-- Green AI Food Scan Banner -->
-      <div class="ai-banner" onclick="openModal('modal-scan-menu')">
-        <div class="ai-banner-left">
-          <div class="ai-cam-box">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          </div>
-          <div>
-            <h3>AI สแกนอาหาร ✨</h3>
-            <p>ถ่ายรูปอาหาร / สินค้าเซเว่น / พิมพ์บอก AI คิดแคล+ราคาทันที</p>
-          </div>
-        </div>
-        <div style="font-size:20px; font-weight:700;">›</div>
-      </div>
-
-      <!-- 4 Quick Action Buttons -->
-      <div class="quick-grid">
-        <div class="quick-tile" onclick="openFoodLibrary('มื้อกลางวัน')">
-          <div id="qt-ic-1" class="quick-ic" style="background:linear-gradient(135deg,#8EC641,#5B9B18);">🔍</div>
-          <span id="qt-lbl-1">คลังเมนู+ราคา</span>
-        </div>
-        <div class="quick-tile" onclick="openManualFoodModal('มื้อกลางวัน')">
-          <div id="qt-ic-2" class="quick-ic" style="background:linear-gradient(135deg,#10B981,#047857);">💸</div>
-          <span id="qt-lbl-2">ใส่เมนู+ราคาเอง</span>
-        </div>
-        <div class="quick-tile" onclick="switchTab('workout')">
-          <div id="qt-ic-3" class="quick-ic" style="background:linear-gradient(135deg,#F59E0B,#D97706);">🏋️‍♀️</div>
-          <span id="qt-lbl-3">ฝึกท่าในห้อง</span>
-        </div>
-        <div class="quick-tile" onclick="openWeightModal()">
-          <div id="qt-ic-4" class="quick-ic" style="background:linear-gradient(135deg,#F97316,#EA580C);">⚖️</div>
-          <span id="qt-lbl-4">น้ำหนัก/ส่วนสูง</span>
-        </div>
-      </div>
-
-      <!-- Calories & Macros Card -->
-      <div class="card">
-        <div class="macro-card">
-          <div class="cal-ring-wrap">
-            <svg viewBox="0 0 120 120">
-              <circle cx="60" cy="60" r="48" fill="none" stroke="#E8EEF5" stroke-width="11" stroke-dasharray="235 302" stroke-linecap="round" />
-              <circle id="cal-ring-prog" cx="60" cy="60" r="48" fill="none" stroke="#3B82F6" stroke-width="11" stroke-dasharray="0 302" stroke-linecap="round" />
-            </svg>
-            <div class="cal-ring-center">
-              <div class="bolt">⚡</div>
-              <div id="cal-left-num" class="cal-num num">1,500</div>
-              <div id="cal-left-lbl" class="cal-lbl">KCALS LEFT</div>
-            </div>
-          </div>
-
-          <div class="macro-bars">
-            <!-- Protein (Clickable to adjust Max Protein) -->
-            <div onclick="openCalLimitModal()" style="cursor:pointer;" title="แตะเพื่อตั้งค่าโปรตีนสูงสุดต่อวัน">
-              <div class="macro-row-top">
-                <span style="color:var(--ink);">PROTEIN <span id="p-pct" style="color:var(--protein);">0%</span></span>
-                <span id="p-gram" class="num" style="color:var(--sub); text-decoration:underline;">0 / 110g ✏️</span>
-              </div>
-              <div class="macro-track"><div id="p-bar" class="macro-fill" style="width:0%; background:var(--protein);"></div></div>
-            </div>
-            <!-- Carbs (Clickable to adjust Max Carbs) -->
-            <div onclick="openCalLimitModal()" style="cursor:pointer;" title="แตะเพื่อตั้งค่าคาร์บสูงสุดต่อวัน">
-              <div class="macro-row-top">
-                <span style="color:var(--ink);">CARBS <span id="c-pct" style="color:var(--carbs);">0%</span></span>
-                <span id="c-gram" class="num" style="color:var(--sub); text-decoration:underline;">0 / 150g ✏️</span>
-              </div>
-              <div class="macro-track"><div id="c-bar" class="macro-fill" style="width:0%; background:var(--carbs);"></div></div>
-            </div>
-            <!-- Fat -->
-            <div onclick="openCalLimitModal()" style="cursor:pointer;">
-              <div class="macro-row-top">
-                <span style="color:var(--ink);">FAT <span id="f-pct" style="color:var(--fat);">0%</span></span>
-                <span id="f-gram" class="num" style="color:var(--sub);">0 / 50g</span>
-              </div>
-              <div class="macro-track"><div id="f-bar" class="macro-fill" style="width:0%; background:var(--fat);"></div></div>
-            </div>
-          </div>
-        </div>
-        <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--sub); margin-top:12px; padding-top:10px; border-top:1px solid var(--line);">
-          <span>กินไปแล้ว: <strong id="cal-eaten-txt" class="num" style="color:var(--ink);">0</strong> kcal</span>
-          <span>เผาผลาญ: <strong id="cal-burned-txt" class="num" style="color:#EA580C; cursor:pointer;" onclick="openStepsModal()">0</strong> kcal ✏️</span>
-          <span style="cursor:pointer;" onclick="openCalLimitModal()">แคลสูงสุด: <strong id="cal-target-txt" class="num" style="color:var(--green-dark); text-decoration:underline;">1,500</strong> kcal ⚙️</span>
-        </div>
-        <!-- 💸 Daily & Monthly Food Cost Tracker Strip -->
-        <div onclick="switchTab('insights')" style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:8px; padding:8px 11px; background:linear-gradient(90deg, #ECFDF5 0%, #F0FDF4 100%); border:1.5px solid #A7F3D0; border-radius:14px; cursor:pointer;">
-          <div style="display:flex; align-items:center; gap:7px;">
-            <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" style="width:28px; height:28px;" alt="" />
-            <div style="font-size:12px; font-weight:800; color:#065F46;">
-              💸 ค่ากินวันนี้: <span id="home-cost-today" class="num" style="color:#047857; font-size:13.5px;">฿0</span>
-              <span style="margin:0 4px; color:#6EE7B7;">|</span>
-              เดือนนี้: <span id="home-cost-month" class="num" style="color:#047857; font-size:13.5px;">฿0</span>
-            </div>
-          </div>
-          <span style="font-size:10.5px; font-weight:800; color:#047857;">ดูสรุป 🐘 ›</span>
-        </div>
-        <!-- Quick Calorie, Protein & Carb Limit Adjuster Bars -->
-        <div style="display:flex; flex-direction:column; gap:6px; margin-top:10px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; background:var(--green-soft); padding:7px 10px; border-radius:14px; border:1px solid var(--line);">
-            <span style="font-size:11.5px; font-weight:800; color:var(--ink);">🔥 แคลสูงสุด:</span>
-            <div style="display:flex; align-items:center; gap:4px;">
-              <button onclick="quickAdjustCalGoal(-100)" style="border:1px solid var(--line); background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:var(--ink);">-100</button>
-              <button onclick="quickAdjustCalGoal(-50)" style="border:1px solid var(--line); background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:var(--ink);">-50</button>
-              <button onclick="openCalLimitModal()" style="border:none; background:var(--green); color:#FFF; border-radius:8px; padding:4px 9px; font-size:11px; font-weight:800; cursor:pointer;">ตั้งค่า ✏️</button>
-              <button onclick="quickAdjustCalGoal(50)" style="border:1px solid var(--line); background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:var(--ink);">+50</button>
-              <button onclick="quickAdjustCalGoal(100)" style="border:1px solid var(--line); background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:var(--ink);">+100</button>
-            </div>
-          </div>
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; background:#FEF2F2; padding:7px 10px; border-radius:14px; border:1px solid #FECACA;">
-            <span style="font-size:11.5px; font-weight:800; color:#991B1B;">🥩 โปรตีนสูงสุด (<span id="p-max-inline" class="num">110</span>g):</span>
-            <div style="display:flex; align-items:center; gap:4px;">
-              <button onclick="quickAdjustProteinGoal(-20)" style="border:1px solid #FECACA; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#991B1B;">-20g</button>
-              <button onclick="quickAdjustProteinGoal(-10)" style="border:1px solid #FECACA; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#991B1B;">-10g</button>
-              <button onclick="openCalLimitModal()" style="border:none; background:#DC2626; color:#FFF; border-radius:8px; padding:4px 9px; font-size:11px; font-weight:800; cursor:pointer;">ตั้งค่า ✏️</button>
-              <button onclick="quickAdjustProteinGoal(10)" style="border:1px solid #FECACA; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#991B1B;">+10g</button>
-              <button onclick="quickAdjustProteinGoal(20)" style="border:1px solid #FECACA; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#991B1B;">+20g</button>
-            </div>
-          </div>
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; background:#FFFBEB; padding:7px 10px; border-radius:14px; border:1px solid #FDE68A;">
-            <span style="font-size:11.5px; font-weight:800; color:#92400E;">🍚 คาร์บสูงสุด (<span id="carb-max-inline" class="num">160</span>g):</span>
-            <div style="display:flex; align-items:center; gap:4px;">
-              <button onclick="quickAdjustCarbGoal(-20)" style="border:1px solid #FDE68A; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#92400E;">-20g</button>
-              <button onclick="quickAdjustCarbGoal(-10)" style="border:1px solid #FDE68A; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#92400E;">-10g</button>
-              <button onclick="openCalLimitModal()" style="border:none; background:#F59E0B; color:#FFF; border-radius:8px; padding:4px 9px; font-size:11px; font-weight:800; cursor:pointer;">ตั้งค่า ✏️</button>
-              <button onclick="quickAdjustCarbGoal(10)" style="border:1px solid #FDE68A; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#92400E;">+10g</button>
-              <button onclick="quickAdjustCarbGoal(20)" style="border:1px solid #FDE68A; background:#FFF; border-radius:8px; padding:3px 7px; font-size:11px; font-weight:800; cursor:pointer; color:#92400E;">+20g</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 💊🌸 Birth Control Pill & Period Cycle Tracker Card (แผงยาคุมเสมือนจริง Yasmin + วันที่จริง + เว้น 7 วันมีเมน + เริ่มกล่องใหม่) -->
-      <div class="card" id="home-cycle-card" style="padding:15px 14px; border: 2px solid #FBCFE8; background:linear-gradient(180deg,#FFFBFD 0%,#FFFFFF 100%);">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; gap:6px; flex-wrap:wrap;">
-          <div style="display:flex; align-items:center; gap:9px;">
-            <img class="theme-mascot-buddy" src="mymelody_avatar.jpg" alt="Mascot" />
-            <div>
-              <div style="font-size:15px; font-weight:900; color:#9D174D; display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
-                <span>💊 แผงยาคุม & รอบประจำเดือน</span>
-                <span id="home-pill-brand-badge" style="background:#FCE7F3; color:#BE185D; border:1px solid #F9A8D4; font-size:10.5px; font-weight:900; padding:1.5px 7px; border-radius:99px;">Yasmin 21 เม็ด</span>
-              </div>
-              <div id="cycle-sub-status" style="font-size:11px; color:#BE185D; font-weight:700;">แตะที่เม็ดยาบนแผงเพื่อแกะเม็ดยา · มีวันที่จริงกำกับทุกเม็ด</div>
-            </div>
-          </div>
-          <div style="display:flex; gap:5px;">
-            <button type="button" class="meal-add-btn" style="background:#FCE7F3; color:#9D174D; border-color:#F9A8D4; font-weight:800;" onclick="openCycleSettingsModal()">📦 เลือกกล่องยี่ห้อ / ตั้งค่า</button>
-            <button type="button" class="meal-add-btn" style="background:#FFE4E6; color:#E11D48; border-color:#FECDD3;" onclick="openModal('modal-apple-health')">🍎</button>
-          </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
-          <!-- Daily Birth Control Pill Check -->
-          <div onclick="toggleDailyPillTaken()" id="pill-today-box" style="background:#FFF1F2; border:1.5px solid #FECDD3; border-radius:14px; padding:9px 10px; cursor:pointer; transition:all 0.15s;">
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:4px;">
-              <span style="font-size:11px; font-weight:800; color:#9F1239;">💊 ยาคุมวันนี้</span>
-              <span id="pill-pack-day-badge" class="num" style="font-size:10px; font-weight:800; background:#FFE4E6; color:#E11D48; padding:2px 6px; border-radius:99px;">เม็ดที่ 3/21</span>
-            </div>
-            <div id="pill-status-main" style="font-size:13.5px; font-weight:900; color:#E11D48; margin-top:3px;">⏳ ยังไม่ได้กดกินยา</div>
-            <div id="pill-time-sub" style="font-size:10px; color:#BE123C; margin-top:2px; font-weight:700;">แตะเพื่อบันทึกว่ากินแล้ว ✅</div>
-          </div>
-
-          <!-- Next Period Prediction -->
-          <div onclick="openCycleSettingsModal()" style="background:#FDF4FF; border:1.5px solid #F5D0FE; border-radius:14px; padding:9px 10px; cursor:pointer;">
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-              <span style="font-size:11px; font-weight:800; color:#86198F;">🩸 ช่วงเว้นยา / มีเมน</span>
-              <span style="font-size:11px;">🌸</span>
-            </div>
-            <div id="next-period-countdown" class="num" style="font-size:13.5px; font-weight:900; color:#A21CAF; margin-top:3px;">อีก 18 วัน</div>
-            <div id="next-period-date-sub" style="font-size:10px; color:#701A75; margin-top:2px; font-weight:700;">ประมาณวันที่ -</div>
-          </div>
-        </div>
-
-        <!-- 💊 Realistic Interactive Blister Pack (เหมือนแผง Yasmin จริง + วันที่จริงทุกเม็ด) -->
-        <div id="home-blister-pack-mount" style="margin-bottom:10px;"></div>
-
-        <!-- 🩸 7-Day Period Break & Next Pack Continuation Strip -->
-        <div id="home-pill-break-mount" style="margin-bottom:9px;"></div>
-
-        <!-- 🍎 Apple Health Period Sync Box (แสดงวันประจำเดือนที่ดึงมาจากแอปสุขภาพ iPhone) -->
-        <div id="home-apple-health-period-box" style="margin-bottom:9px;"></div>
-
-        <!-- Cycle Phase & Ovulation Bar + Quick Period Start Button -->
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; background:#FDF2F8; border-radius:13px; padding:8px 11px; font-size:11.5px;">
-          <div id="cycle-phase-text" style="color:#831843; font-weight:700; flex:1;">
-            🌷 ระยะปัจจุบัน: ช่วงฮอร์โมนคุมกำเนิด · โอกาสตั้งครรภ์ต่ำมาก
-          </div>
-          <button type="button" onclick="logPeriodStartedToday()" style="border:none; background:#E11D48; color:#FFF; border-radius:9px; padding:5px 9px; font-size:11px; font-weight:800; cursor:pointer; white-space:nowrap;">🩸 มีเมนวันนี้</button>
-        </div>
-      </div>
-
-      <!-- 🍎 Apple Health & Steps Sync Card (แสดงก้าวเดินเฉพาะ 1 วัน + สลับดูวันก่อนหน้าได้) -->
-      <div class="card" style="padding:15px 16px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:20px;">🍎</span>
-            <div>
-              <div style="font-size:14.5px; font-weight:900; color:var(--ink);">Apple สุขภาพ & ก้าวเดินใน 1 วัน 👟</div>
-              <div id="health-sync-sub" style="font-size:11px; color:var(--sub);">แสดงก้าวเดินเฉพาะ 1 วัน (ดูย้อนหลังหลายวันได้ที่หน้าสรุปผล)</div>
-            </div>
-          </div>
-          <div style="display:flex; gap:6px;">
-            <button type="button" class="meal-add-btn" onclick="openStepsModal()">👟 อัพเดทก้าว</button>
-            <button type="button" class="meal-add-btn" style="background:#FFE4E6; color:#E11D48;" onclick="openModal('modal-apple-health')">🍎 วิธีเชื่อม</button>
-          </div>
-        </div>
-
-        <!-- 📅 Quick 1-Day Date Selector Strip on Home Steps Card -->
-        <div id="home-steps-day-pills" style="display:flex; gap:5px; overflow-x:auto; padding-bottom:6px; margin-bottom:8px;"></div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div onclick="openStepsModal()" style="background:#F8FAFC; border:1.5px solid var(--line); border-radius:14px; padding:10px 12px; cursor:pointer;">
-            <div style="font-size:11px; color:var(--sub); font-weight:800;">👟 ก้าวเดิน <span id="steps-card-date-label" style="color:#0284C7;">วันนี้</span> (<span id="steps-today-km" class="num">0.00</span> กม.)</div>
-            <div style="font-size:19px; font-weight:900; color:var(--ink); margin-top:2px;" class="num">
-              <span id="steps-today-val">0</span> <small style="font-size:11px; font-weight:700; color:var(--sub);">ก้าว/วัน ✏️</small>
-            </div>
-            <div class="macro-track" style="margin-top:6px; height:5px;">
-              <div id="steps-prog-bar" class="macro-fill" style="width:0%; background:#10B981;"></div>
-            </div>
-          </div>
-          <div onclick="openStepsModal()" style="background:#FFF7ED; border:1.5px solid #FFEDD5; border-radius:14px; padding:10px 12px; cursor:pointer;">
-            <div style="font-size:11px; color:#9A3412; font-weight:800;">🔥 เผาผลาญ (เฉพาะวันนี้)</div>
-            <div style="font-size:19px; font-weight:900; color:#EA580C; margin-top:2px;" class="num">
-              +<span id="burned-card-val">0</span> <small style="font-size:11px; font-weight:700;">kcal ✏️</small>
-            </div>
-            <div style="font-size:10.5px; color:#C2410C; margin-top:4px; font-weight:700;">บวกเพิ่มโควต้าแคลรายวันให้อัตโนมัติ</div>
-          </div>
-        </div>
-
-        <!-- 🗺️ Funny Step Distance Comparison Strip on Home + Link to Multi-Day Chart -->
-        <div onclick="switchTab('insights'); setTimeout(()=>{document.getElementById('insights-steps-journey-card')?.scrollIntoView({behavior:'smooth'});},120);" style="margin-top:10px; background:linear-gradient(135deg,#EFF6FF 0%,#F0FDF4 100%); border:1.5px solid #93C5FD; border-radius:15px; padding:10px 12px; cursor:pointer;">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" style="width:34px; height:34px; border-radius:50%; flex-shrink:0;" alt="" />
+      <!-- ==================== SECTION 4: 💊 ยาคุม & รอบเดือน (PILL BLISTER PACK & PERIOD) ==================== -->
+      <div id="home-sec-cycle" class="home-sec-panel" data-home-sec="cycle">
+        <div class="card" id="home-cycle-card" style="padding:15px 14px; border: 2px solid #FBCFE8; background:linear-gradient(180deg,#FFFBFD 0%,#FFFFFF 100%);">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; gap:6px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:9px;">
+              <img class="theme-mascot-buddy" src="mymelody_avatar.jpg" alt="Mascot" />
               <div>
-                <div id="home-steps-funny-title" style="font-size:12px; font-weight:800; color:#1E3A8A;">🗺️ เดินวันนี้เทียบเท่า: กำลังคำนวณ...</div>
-                <div id="home-steps-funny-sub" style="font-size:11px; font-weight:700; color:#047857; margin-top:1px;">แตะเพื่อดูกราฟก้าวเดินย้อนหลังหลายวัน & ขั้นบันได ›</div>
+                <div style="font-size:15px; font-weight:900; color:#9D174D; display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
+                  <span>💊 แผงยาคุม & รอบประจำเดือน</span>
+                  <span id="home-pill-brand-badge" style="background:#FCE7F3; color:#BE185D; border:1px solid #F9A8D4; font-size:10.5px; font-weight:900; padding:1.5px 7px; border-radius:99px;">Yasmin 21 เม็ด</span>
+                </div>
+                <div id="cycle-sub-status" style="font-size:11px; color:#BE185D; font-weight:700;">แตะที่เม็ดยาบนแผงเพื่อแกะเม็ดยา · มีวันที่จริงกำกับทุกเม็ด</div>
               </div>
             </div>
-            <span style="font-size:11px; font-weight:900; color:#1D4ED8; white-space:nowrap;">📊 ดูหลายวัน ›</span>
+            <div style="display:flex; gap:5px;">
+              <button type="button" class="meal-add-btn" style="background:#FCE7F3; color:#9D174D; border-color:#F9A8D4; font-weight:800;" onclick="openCycleSettingsModal()">📦 เลือกยี่ห้อ / ตั้งค่า</button>
+              <button type="button" class="meal-add-btn" style="background:#FFE4E6; color:#E11D48; border-color:#FECDD3;" onclick="openModal('modal-apple-health')">🍎</button>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+            <!-- Daily Birth Control Pill Check -->
+            <div onclick="toggleDailyPillTaken()" id="pill-today-box" style="background:#FFF1F2; border:1.5px solid #FECDD3; border-radius:14px; padding:9px 10px; cursor:pointer; transition:all 0.15s;">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:4px;">
+                <span style="font-size:11px; font-weight:800; color:#9F1239;">💊 ยาคุมวันนี้</span>
+                <span id="pill-pack-day-badge" class="num" style="font-size:10px; font-weight:800; background:#FFE4E6; color:#E11D48; padding:2px 6px; border-radius:99px;">เม็ดที่ 3/21</span>
+              </div>
+              <div id="pill-status-main" style="font-size:13.5px; font-weight:900; color:#E11D48; margin-top:3px;">⏳ ยังไม่ได้กดกินยา</div>
+              <div id="pill-time-sub" style="font-size:10px; color:#BE123C; margin-top:2px; font-weight:700;">แตะเพื่อบันทึกว่ากินแล้ว ✅</div>
+            </div>
+
+            <!-- Next Period Prediction -->
+            <div onclick="openCycleSettingsModal()" style="background:#FDF4FF; border:1.5px solid #F5D0FE; border-radius:14px; padding:9px 10px; cursor:pointer;">
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <span style="font-size:11px; font-weight:800; color:#86198F;">🩸 ช่วงเว้นยา / มีเมน</span>
+                <span style="font-size:11px;">🌸</span>
+              </div>
+              <div id="next-period-countdown" class="num" style="font-size:13.5px; font-weight:900; color:#A21CAF; margin-top:3px;">อีก 18 วัน</div>
+              <div id="next-period-date-sub" style="font-size:10px; color:#701A75; margin-top:2px; font-weight:700;">ประมาณวันที่ -</div>
+            </div>
+          </div>
+
+          <!-- 💊 Realistic Interactive Blister Pack (เหมือนแผง Yasmin จริง + วันที่จริงทุกเม็ด) -->
+          <div id="home-blister-pack-mount" style="margin-bottom:10px;"></div>
+
+          <!-- 🩸 7-Day Period Break & Next Pack Continuation Strip -->
+          <div id="home-pill-break-mount" style="margin-bottom:9px;"></div>
+
+          <!-- 🍎 Apple Health Period Sync Box (แสดงวันประจำเดือนที่ดึงมาจากแอปสุขภาพ iPhone) -->
+          <div id="home-apple-health-period-box" style="margin-bottom:9px;"></div>
+
+          <!-- Cycle Phase & Ovulation Bar + Quick Period Start Button -->
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; background:#FDF2F8; border-radius:13px; padding:8px 11px; font-size:11.5px;">
+            <div id="cycle-phase-text" style="color:#831843; font-weight:700; flex:1;">
+              🌷 ระยะปัจจุบัน: ช่วงฮอร์โมนคุมกำเนิด · โอกาสตั้งครรภ์ต่ำมาก
+            </div>
+            <button type="button" onclick="logPeriodStartedToday()" style="border:none; background:#E11D48; color:#FFF; border-radius:9px; padding:5px 9px; font-size:11px; font-weight:800; cursor:pointer; white-space:nowrap;">🩸 มีเมนวันนี้</button>
           </div>
         </div>
       </div>
-
-      <!-- Weight & Height Summary Card -->
-      <div class="card">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
-          <div class="card-title" style="margin-bottom:0;">สรุปน้ำหนัก & ส่วนสูง</div>
-          <button class="meal-add-btn" onclick="openWeightModal()">✏️ แก้น้ำหนัก / ส่วนสูง</button>
-        </div>
-        <div onclick="openWeightModal()" style="display:flex; align-items:center; justify-content:space-between; background:var(--green-soft); border:1px solid var(--line); border-radius:12px; padding:6px 11px; margin-bottom:10px; font-size:12px; font-weight:700; color:var(--ink); cursor:pointer;">
-          <span>📏 ส่วนสูงของคุณ: <strong id="home-height-val" class="num" style="color:var(--green-dark);">172</strong> ซม.</span>
-          <span>📊 ดัชนี BMI: <strong id="home-bmi-val" class="num" style="color:var(--green-dark);">22.0</strong> (<span id="home-bmi-status">สมส่วน</span>) ✏️</span>
-        </div>
-        <div class="weight-tri">
-          <div class="w-side" onclick="openWeightModal()" style="cursor:pointer;" title="แตะเพื่อแก้ไขน้ำหนักเริ่มต้น">
-            <div class="w-lbl">น้ำหนักเริ่มต้น ✏️</div>
-            <div class="w-val num"><span id="w-start-val">65</span> <small>kg</small></div>
-          </div>
-
-          <div class="w-center-ring" onclick="openWeightModal()" style="cursor:pointer;">
-            <svg viewBox="0 0 136 136">
-              <circle cx="68" cy="68" r="58" fill="none" stroke="#EFEFEF" stroke-width="10" />
-              <circle id="w-ring-prog" cx="68" cy="68" r="58" fill="none" stroke="#EE8434" stroke-width="10" stroke-dasharray="220 365" stroke-linecap="round" />
-            </svg>
-            <div class="curr-lbl">ปัจจุบัน</div>
-            <div class="curr-val num"><span id="w-curr-val">63.5</span> <small>kg</small></div>
-            <button class="w-Update-btn" onclick="event.stopPropagation(); openWeightModal();">✏️ อัพเดท</button>
-          </div>
-
-          <div class="w-side" onclick="openWeightModal()" style="cursor:pointer;" title="แตะเพื่อแก้ไขน้ำหนักเป้าหมาย">
-            <div class="w-lbl">น้ำหนักเป้าหมาย ✏️</div>
-            <div class="w-val num"><span id="w-goal-val">58</span> <small>kg</small></div>
-          </div>
-        </div>
-
-        <div class="w-spark-row">
-          <span class="w-spark-lbl">7 วันล่าสุด</span>
-          <svg id="w-mini-spark" width="160" height="28" viewBox="0 0 160 28"></svg>
-          <span id="w-diff-pill" class="w-diff-badge num">-1.5 kg</span>
-        </div>
-
-        <div id="w-countdown-bar" class="goal-countdown-bar" onclick="openWeightModal()" style="cursor:pointer;">
-          เป้าหมายอีก 55 วัน · สู้ไปด้วยกันนะ ✨
-        </div>
-      </div>
-
-      <!-- Water Tracker Card -->
-      <div class="card">
-        <div class="water-header">
-          <h3>น้ำดื่ม <span id="water-cup-size-lbl">(1 แก้ว = 300 ml)</span></h3>
-          <div style="display:flex; align-items:center; gap:6px;">
-            <span id="water-liters-badge" class="water-total-pill num">0.0 / 2.4 L</span>
-            <button onclick="openWaterGoalModal()" style="background:var(--green-soft); border:1px solid var(--line); border-radius:999px; padding:4px 9px; font-size:11px; font-weight:800; color:var(--green-dark); cursor:pointer;">⚙️ ตั้งเป้า</button>
-          </div>
-        </div>
-        <div id="glasses-container" class="glasses-grid"></div>
-        <div class="water-foot" style="justify-content:space-between; flex-wrap:wrap; gap:6px;">
-          <span id="water-foot-rec">ⓘ เป้าหมายวันนี้ 8 แก้ว (2.4 ลิตร)</span>
-          <div style="display:flex; gap:4px;">
-            <button onclick="addWater(-1)" style="border:1px solid var(--line); background:#FFF; border-radius:8px; padding:2px 8px; font-size:11px; font-weight:800; cursor:pointer;">-1 แก้ว</button>
-            <button onclick="addWaterMl(100)" style="border:1px solid #BAE6FD; background:#F0F9FF; color:#0284C7; border-radius:8px; padding:2px 8px; font-size:11px; font-weight:800; cursor:pointer;">+100 ml</button>
-            <button onclick="addWater(1)" style="border:1px solid #BAE6FD; background:#E0F2FE; color:#0284C7; border-radius:8px; padding:2px 8px; font-size:11px; font-weight:800; cursor:pointer;">+1 แก้ว</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ⭐ Bookmarked Favorite Meals Card (เมนูประจำที่กินบ่อย) -->
-      <div class="card" style="padding:16px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-          <div>
-            <div style="font-size:15.5px; font-weight:800; color:var(--ink);">⭐ เมนูประจำของฉัน (Bookmark)</div>
-            <div style="font-size:11.5px; color:var(--sub);">กด + เพื่อบันทึกเข้ามื้อพร้อมราคาทันทีโดยไม่ต้องพิมพ์ใหม่</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:6px;">
-            <select id="bm-target-meal" style="padding:5px 8px; border-radius:10px; border:1px solid var(--line); font-family:inherit; font-size:12px; font-weight:700;">
-              <option value="มื้อเช้า">🍳 มื้อเช้า</option>
-              <option value="มื้อกลางวัน" selected>🍛 มื้อกลางวัน</option>
-              <option value="มื้อเย็น">🥗 มื้อเย็น</option>
-              <option value="ของว่าง">🍎 ของว่าง</option>
-            </select>
-            <button class="meal-add-btn" onclick="openBookmarkCreator()">+ สร้างเมนู</button>
-          </div>
-        </div>
-        <div id="bookmarks-Quick-list" style="display:flex; flex-direction:column; gap:8px;"></div>
-      </div>
-
-      <!-- 🍽️💸 Direct Meal & Price Quick Action Bar (ถ่ายรูป AI จัดการให้ vs กดใส่เองพร้อมราคา) -->
-      <div class="card" style="padding:14px; border:2px solid #10B981; background:linear-gradient(135deg,#ECFDF5 0%,#FFFFFF 100%);">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-          <div style="font-size:13.5px; font-weight:800; color:#065F46;">🍽️💸 บันทึกเมนูอาหาร & ราคา (บาท)</div>
-          <span style="font-size:10.5px; font-weight:800; color:#047857; background:#D1FAE5; padding:3px 8px; border-radius:99px;">แตะที่ราคาเมนูเพื่อแก้ได้ทุกชิ้น!</span>
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px;">
-          <button onclick="openModal('modal-scan-menu')" style="border:none; background:linear-gradient(135deg,#10B981,#059669); color:#FFF; border-radius:12px; padding:10px 6px; font-size:11.5px; font-weight:800; cursor:pointer; box-shadow:0 4px 10px rgba(16,185,129,0.2);">
-            📷 ถ่ายรูป AI<br><span style="font-size:10px; font-weight:600; opacity:0.92;">คิดแคล+ราคาให้</span>
-          </button>
-          <button onclick="openManualFoodModal('มื้อกลางวัน')" style="border:1.5px solid #10B981; background:#FFFFFF; color:#065F46; border-radius:12px; padding:10px 6px; font-size:11.5px; font-weight:800; cursor:pointer;">
-            ✍️ กดใส่เอง<br><span style="font-size:10px; font-weight:600; color:#047857;">กรอกราคา+แคลเอง</span>
-          </button>
-          <button onclick="openTextLogger()" style="border:1.5px solid #C4B5FD; background:#F5F3FF; color:#5B21B6; border-radius:12px; padding:10px 6px; font-size:11.5px; font-weight:800; cursor:pointer;">
-            💬 พิมพ์บอก AI<br><span style="font-size:10px; font-weight:600; color:#6D28D9;">ประเมินราคาเซเว่น</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- 4 Meal Logging Cards -->
-      <div id="meals-container"></div>
     </div>
 
-    <!-- ==================== TAB 2: เชิงลึก & สรุปภาพรวม (INSIGHTS) ==================== -->
+    <!-- ==================== TAB 2: เชิงลึก & สรุปภาพรวม (INSIGHTS - CLEAN SUB-TABS v39) ==================== -->
     <div id="view-insights" class="view">
       <div class="top-header">
         <div class="greeting-box">
-          <div class="greet-sub">สรุปแคล · ค่ากิน · เปรียบเทียบสุดฮา · สกินแคร์</div>
+          <div class="greet-sub">สรุปแคล · กราฟเดิน · น้ำหนัก · สกินแคร์ (จัดหมวดอ่านง่าย)</div>
           <div class="greet-main">สรุปภาพรวม & เชิงลึก 📈</div>
         </div>
         <div class="header-actions">
@@ -3607,177 +3828,198 @@
         </div>
       </div>
 
-      <!-- 📊 Period Summary Card: 1 Week / 1 Month / 3 Months / 6 Months / 1 Year + Funny Elephant Ladder -->
-      <div class="card" style="padding:16px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" alt="Mascot" />
+      <!-- 🗂️ Sticky Segmented Category Bar for Insights -->
+      <div class="subtab-seg-bar" id="insights-subtab-bar">
+        <button type="button" class="subtab-seg-btn active" data-ins-tab="overview" onclick="switchInsightsSubTab('overview')">📊 ยอดกิน</button>
+        <button type="button" class="subtab-seg-btn" data-ins-tab="steps" onclick="switchInsightsSubTab('steps')">👟 ก้าวเดิน</button>
+        <button type="button" class="subtab-seg-btn" data-ins-tab="bmi" onclick="switchInsightsSubTab('bmi')">⚖️ น้ำหนัก</button>
+        <button type="button" class="subtab-seg-btn" data-ins-tab="skin" onclick="switchInsightsSubTab('skin')">✨ ผิวสวย</button>
+        <button type="button" class="subtab-seg-btn" data-ins-tab="all" onclick="switchInsightsSubTab('all')">📋 ทั้งหมด</button>
+      </div>
+
+      <!-- INSIGHTS PANEL 1: OVERVIEW & 7D CALORIES -->
+      <div class="ins-sec-panel active" data-ins-sec="overview">
+        <!-- 📊 Period Summary Card: 1 Week / 1 Month / 3 Months / 6 Months / 1 Year + Funny Elephant Ladder -->
+        <div class="card" style="padding:16px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" alt="Mascot" />
+              <div>
+                <h3 style="font-size:15.5px; font-weight:800;">📊 สรุปยอดกินสะสม & ค่าอาหาร</h3>
+                <p style="font-size:11.5px; color:var(--sub);">เลือกดูตามช่วงเวลา พร้อมเทียบน้ำหนักแบบขั้นบันไดสุดฮา!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5 Period Tabs -->
+          <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:5px; margin-bottom:12px;">
+            <button id="per-btn-7" class="cat-chip" style="padding:7px 4px; font-size:11.5px;" onclick="setSummaryPeriod(7)">1 สัปดาห์</button>
+            <button id="per-btn-30" class="cat-chip active" style="padding:7px 4px; font-size:11.5px;" onclick="setSummaryPeriod(30)">1 เดือน</button>
+            <button id="per-btn-90" class="cat-chip" style="padding:7px 4px; font-size:11.5px;" onclick="setSummaryPeriod(90)">3 เดือน</button>
+            <button id="per-btn-180" class="cat-chip" style="padding:7px 4px; font-size:11.5px;" onclick="setSummaryPeriod(180)">6 เดือน</button>
+            <button id="per-btn-365" class="cat-chip" style="padding:7px 4px; font-size:11.5px;" onclick="setSummaryPeriod(365)">1 ปี</button>
+          </div>
+
+          <!-- 3 Big Totals: Total Calories, Total Weight (kg), Total Baht (฿) -->
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:12px;">
+            <div style="background:var(--green-soft); border:1.5px solid var(--line); border-radius:15px; padding:10px 8px; text-align:center;">
+              <div style="font-size:10.5px; font-weight:700; color:var(--sub);">🔥 แคลอรี่รวม</div>
+              <div id="sum-tot-cal" class="num" style="font-size:16px; font-weight:800; color:var(--ink); margin-top:2px;">0</div>
+              <div style="font-size:10px; color:var(--sub);">kcal</div>
+            </div>
+            <div style="background:#FFF7ED; border:1.5px solid #FED7AA; border-radius:15px; padding:10px 8px; text-align:center;">
+              <div style="font-size:10.5px; font-weight:700; color:#9A3412;">⚖️ น้ำหนักที่กินรวม</div>
+              <div id="sum-tot-kg" class="num" style="font-size:16px; font-weight:800; color:#EA580C; margin-top:2px;">0.0</div>
+              <div id="sum-tot-kg-sub" style="font-size:10px; color:#C2410C;">กิโลกรัม</div>
+            </div>
+            <div style="background:#ECFDF5; border:1.5px solid #A7F3D0; border-radius:15px; padding:10px 8px; text-align:center;">
+              <div style="font-size:10.5px; font-weight:700; color:#065F46;">💸 ค่ากินรวม</div>
+              <div id="sum-tot-baht" class="num" style="font-size:16px; font-weight:800; color:#047857; margin-top:2px;">฿0</div>
+              <div id="sum-avg-baht" style="font-size:10px; color:#059669;">เฉลี่ย ฿0/วัน</div>
+            </div>
+          </div>
+
+          <!-- 💬 Character Funny Roast Box (ข้อความแซวตลกๆ ตามตัวละครธีมที่เลือก) -->
+          <div id="insights-mascot-roast" style="display:flex; align-items:flex-start; gap:10px; background:var(--cream-bg); border:2px solid var(--line); border-radius:18px; padding:11px 12px; margin-bottom:12px;">
+            <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" style="width:44px; height:44px;" alt="Mascot" />
+            <div style="flex:1;">
+              <div id="roast-char-name" style="font-size:12px; font-weight:800; color:var(--green-dark); margin-bottom:2px;">☁️ Cinnamoroll ขอแซวหน่อย:</div>
+              <div id="roast-char-msg" style="font-size:12.5px; font-weight:700; color:var(--ink); line-height:1.45;">กำลังคำนวณความอิ่มของคุณอยู่นะ...</div>
+            </div>
+          </div>
+
+          <!-- 🐘 Funny Staircase Comparison (เปรียบเทียบตลกๆ เป็นขั้นบันได) -->
+          <div style="background:#F8FAFC; border:1.5px solid var(--line); border-radius:18px; padding:12px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <span style="font-size:13.5px; font-weight:800; color:var(--ink);">🐘 ขั้นบันไดเปรียบเทียบสุดฮา (กินไปหนักเท่าอะไร?)</span>
+              <span id="elephant-eq-badge" class="num" style="font-size:11px; font-weight:800; background:#FEF3C7; color:#B45309; padding:3px 8px; border-radius:99px;">0.00 ตัวช้าง</span>
+            </div>
+            <div id="funny-staircase-list" style="display:flex; flex-direction:column; gap:7px;"></div>
+            <div id="funny-money-compare" style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--line); font-size:12px; font-weight:700; color:#047857;"></div>
+          </div>
+        </div>
+
+        <!-- 7-Day Calorie Trend Chart -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span style="font-size:15.5px; font-weight:800;">📈 แคลอรี่ 7 วันย้อนหลัง</span>
+            <span id="avg-cal-7d" class="num" style="font-size:12.5px; font-weight:700; color:var(--green-dark);">เฉลี่ย 0 kcal/วัน</span>
+          </div>
+          <div id="cal-7d-bars" style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; align-items:end; height:140px; padding-top:20px;"></div>
+        </div>
+      </div>
+
+      <!-- INSIGHTS PANEL 2: MULTI-DAY STEPS CHART & JOURNEY -->
+      <div class="ins-sec-panel" data-ins-sec="steps">
+        <!-- 👟🗺️ Multi-Day Apple Health Step Explorer & Funny Step Distance Journey Card -->
+        <div class="card" id="insights-steps-journey-card" style="padding:16px; border:2px solid #93C5FD;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <img class="theme-mascot-buddy" src="pompompurin_avatar.jpg" alt="Mascot" />
+              <div>
+                <h3 style="font-size:15.5px; font-weight:900;">👟📊 สถิติเดินรายวัน (เลือกดูหลายวัน) & ขั้นบันได</h3>
+                <p style="font-size:11.5px; color:var(--sub);">แตะที่แท่งกราฟแต่ละวันเพื่อดูก้าวเดินรายวันเหมือนแอปสุขภาพ iPhone!</p>
+              </div>
+            </div>
+            <button type="button" class="meal-add-btn" onclick="openStepsModal()">+ แก้ก้าว</button>
+          </div>
+
+          <!-- 📊 Apple Health Style Multi-Day Interactive Bar Chart (เลือกดูหลายๆ วัน) -->
+          <div id="insights-multi-day-steps-chart" style="background:#18181B; color:#FFFFFF; border-radius:18px; padding:13px 12px; margin-bottom:12px; box-shadow:0 6px 16px rgba(0,0,0,0.14);"></div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:10px;">
+            <div style="background:#EFF6FF; border:1.5px solid #BFDBFE; border-radius:14px; padding:9px 6px; text-align:center;">
+              <div id="ins-steps-selected-label" style="font-size:10px; font-weight:800; color:#1E40AF;">👟 ก้าววันที่เลือก</div>
+              <div id="ins-steps-today" class="num" style="font-size:15.5px; font-weight:900; color:#1D4ED8; margin-top:2px;">0</div>
+              <div id="ins-km-today" style="font-size:10px; color:#2563EB; font-weight:700;">0.00 กม.</div>
+            </div>
+            <div style="background:#FEF3C7; border:1.5px solid #FDE68A; border-radius:14px; padding:9px 6px; text-align:center;">
+              <div style="font-size:10px; font-weight:800; color:#92400E;">🗺️ ก้าวสะสมรวม</div>
+              <div id="ins-steps-period" class="num" style="font-size:15.5px; font-weight:900; color:#B45309; margin-top:2px;">0</div>
+              <div id="ins-km-period" style="font-size:10px; color:#D97706; font-weight:700;">0.0 กม.</div>
+            </div>
+            <div style="background:#FFF7ED; border:1.5px solid #FED7AA; border-radius:14px; padding:9px 6px; text-align:center;">
+              <div style="font-size:10px; font-weight:800; color:#9A3412;">🔥 เบิร์นสะสม</div>
+              <div id="ins-steps-cal" class="num" style="font-size:15.5px; font-weight:900; color:#EA580C; margin-top:2px;">0</div>
+              <div style="font-size:10px; color:#C2410C; font-weight:700;">kcal</div>
+            </div>
+          </div>
+
+          <div style="background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:16px; padding:10px 12px; margin-bottom:10px;">
+            <div id="ins-steps-roast-msg" style="font-size:12px; font-weight:700; color:#78350F; line-height:1.45;">กำลังคำนวณระยะทางเดินของคุณ...</div>
+          </div>
+
+          <div id="ins-steps-ladder-list" style="display:flex; flex-direction:column; gap:7px;"></div>
+        </div>
+      </div>
+
+      <!-- INSIGHTS PANEL 3: WEIGHT & BMI -->
+      <div class="ins-sec-panel" data-ins-sec="bmi">
+        <!-- BMI Card -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
             <div>
-              <h3 style="font-size:15.5px; font-weight:800;">📊 สรุปยอดกินสะสม & ค่าอาหาร</h3>
-              <p style="font-size:11.5px; color:var(--sub);">เลือกดูตามช่วงเวลา พร้อมเทียบน้ำหนักแบบขั้นบันไดสุดฮา!</p>
+              <span style="font-size:16px; font-weight:800;">BMI (ดัชนีมวลกาย)</span>
+              <div id="bmi-hw-sub" style="font-size:12px; color:var(--sub); font-weight:700;">ส่วนสูง 170 ซม.</div>
+            </div>
+            <button class="meal-add-btn" onclick="openWeightModal()">✏️ แก้ส่วนสูง/น้ำหนัก</button>
+          </div>
+          <div class="bmi-top">
+            <div id="bmi-val-num" class="bmi-number num">21.9</div>
+            <div id="bmi-status-badge" class="bmi-status-pill">สุขภาพดี</div>
+          </div>
+          <div class="bmi-bar-wrap">
+            <div id="bmi-pointer" class="bmi-pointer" style="left: 50%;"></div>
+            <div class="bmi-scale-bar">
+              <div style="background:#3B82F6;"></div>
+              <div style="background:#22C55E;"></div>
+              <div style="background:#EAB308;"></div>
+            </div>
+            <div class="bmi-labels num">
+              <span>15.0</span>
+              <span>18.5 (สมส่วน)</span>
+              <span>23.0 / 25.0+</span>
             </div>
           </div>
         </div>
 
-        <!-- 5 Period Tabs -->
-        <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:5px; margin-bottom:12px;">
-          <button id="per-btn-7" class="cat-chip" style="padding:7px 4px; font-size:11.5px;" onclick="setSummaryPeriod(7)">1 สัปดาห์</button>
-          <button id="per-btn-30" class="cat-chip active" style="padding:7px 4px; font-size:11.5px;" onclick="setSummaryPeriod(30)">1 เดือน</button>
-          <button id="per-btn-90" class="cat-chip" style="padding:7px 4px; font-size:11.5px;" onclick="setSummaryPeriod(90)">3 เดือน</button>
-          <button id="per-btn-180" class="cat-chip" style="padding:7px 4px; font-size:11.5px;" onclick="setSummaryPeriod(180)">6 เดือน</button>
-          <button id="per-btn-365" class="cat-chip" style="padding:7px 4px; font-size:11.5px;" onclick="setSummaryPeriod(365)">1 ปี</button>
-        </div>
-
-        <!-- 3 Big Totals: Total Calories, Total Weight (kg), Total Baht (฿) -->
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:12px;">
-          <div style="background:var(--green-soft); border:1.5px solid var(--line); border-radius:15px; padding:10px 8px; text-align:center;">
-            <div style="font-size:10.5px; font-weight:700; color:var(--sub);">🔥 แคลอรี่รวม</div>
-            <div id="sum-tot-cal" class="num" style="font-size:16px; font-weight:800; color:var(--ink); margin-top:2px;">0</div>
-            <div style="font-size:10px; color:var(--sub);">kcal</div>
+        <!-- Weight History Log List -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span style="font-size:15.5px; font-weight:800;">ประวัติการชั่งน้ำหนัก</span>
+            <button class="meal-add-btn" onclick="openWeightModal()">+ บันทึกน้ำหนัก</button>
           </div>
-          <div style="background:#FFF7ED; border:1.5px solid #FED7AA; border-radius:15px; padding:10px 8px; text-align:center;">
-            <div style="font-size:10.5px; font-weight:700; color:#9A3412;">⚖️ น้ำหนักที่กินรวม</div>
-            <div id="sum-tot-kg" class="num" style="font-size:16px; font-weight:800; color:#EA580C; margin-top:2px;">0.0</div>
-            <div id="sum-tot-kg-sub" style="font-size:10px; color:#C2410C;">กิโลกรัม</div>
-          </div>
-          <div style="background:#ECFDF5; border:1.5px solid #A7F3D0; border-radius:15px; padding:10px 8px; text-align:center;">
-            <div style="font-size:10.5px; font-weight:700; color:#065F46;">💸 ค่ากินรวม</div>
-            <div id="sum-tot-baht" class="num" style="font-size:16px; font-weight:800; color:#047857; margin-top:2px;">฿0</div>
-            <div id="sum-avg-baht" style="font-size:10px; color:#059669;">เฉลี่ย ฿0/วัน</div>
-          </div>
-        </div>
-
-        <!-- 💬 Character Funny Roast Box (ข้อความแซวตลกๆ ตามตัวละครธีมที่เลือก) -->
-        <div id="insights-mascot-roast" style="display:flex; align-items:flex-start; gap:10px; background:var(--cream-bg); border:2px solid var(--line); border-radius:18px; padding:11px 12px; margin-bottom:12px;">
-          <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" style="width:44px; height:44px;" alt="Mascot" />
-          <div style="flex:1;">
-            <div id="roast-char-name" style="font-size:12px; font-weight:800; color:var(--green-dark); margin-bottom:2px;">☁️ Cinnamoroll ขอแซวหน่อย:</div>
-            <div id="roast-char-msg" style="font-size:12.5px; font-weight:700; color:var(--ink); line-height:1.45;">กำลังคำนวณความอิ่มของคุณอยู่นะ...</div>
-          </div>
-        </div>
-
-        <!-- 🐘 Funny Staircase Comparison (เปรียบเทียบตลกๆ เป็นขั้นบันได) -->
-        <div style="background:#F8FAFC; border:1.5px solid var(--line); border-radius:18px; padding:12px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-            <span style="font-size:13.5px; font-weight:800; color:var(--ink);">🐘 ขั้นบันไดเปรียบเทียบสุดฮา (กินไปหนักเท่าอะไร?)</span>
-            <span id="elephant-eq-badge" class="num" style="font-size:11px; font-weight:800; background:#FEF3C7; color:#B45309; padding:3px 8px; border-radius:99px;">0.00 ตัวช้าง</span>
-          </div>
-          <div id="funny-staircase-list" style="display:flex; flex-direction:column; gap:7px;"></div>
-          <div id="funny-money-compare" style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--line); font-size:12px; font-weight:700; color:#047857;"></div>
+          <div id="weight-history-list" style="display:flex; flex-direction:column; gap:8px;"></div>
         </div>
       </div>
 
-      <!-- 👟🗺️ Multi-Day Apple Health Step Explorer & Funny Step Distance Journey Card -->
-      <div class="card" id="insights-steps-journey-card" style="padding:16px; border:2px solid #93C5FD;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <img class="theme-mascot-buddy" src="pompompurin_avatar.jpg" alt="Mascot" />
-            <div>
-              <h3 style="font-size:15.5px; font-weight:900;">👟📊 สถิติเดินรายวัน (เลือกดูหลายวัน) & ขั้นบันได</h3>
-              <p style="font-size:11.5px; color:var(--sub);">แตะที่แท่งกราฟแต่ละวันเพื่อดูก้าวเดินรายวันเหมือนแอปสุขภาพ iPhone!</p>
+      <!-- INSIGHTS PANEL 4: SKINCARE & GLOW -->
+      <div class="ins-sec-panel" data-ins-sec="skin">
+        <!-- ✨ Skincare & Glow Summary Card in Insights -->
+        <div class="card" style="padding:16px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <img class="theme-mascot-buddy" src="mymelody_avatar.jpg" alt="Mascot" />
+              <div>
+                <h3 style="font-size:15.5px; font-weight:800;">✨ เช็กตารางผิวสวย & สกินแคร์</h3>
+                <p style="font-size:11.5px; color:var(--sub);">ติดตามวันขัดเกลือ วิตามิน มาร์กหน้า กันแดด & นับถอยหลังผิวใส</p>
+              </div>
             </div>
           </div>
-          <button type="button" class="meal-add-btn" onclick="openStepsModal()">+ แก้ก้าว</button>
-        </div>
 
-        <!-- 📊 Apple Health Style Multi-Day Interactive Bar Chart (เลือกดูหลายๆ วัน) -->
-        <div id="insights-multi-day-steps-chart" style="background:#18181B; color:#FFFFFF; border-radius:18px; padding:13px 12px; margin-bottom:12px; box-shadow:0 6px 16px rgba(0,0,0,0.14);"></div>
+          <div id="insights-beauty-status-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;"></div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:10px;">
-          <div style="background:#EFF6FF; border:1.5px solid #BFDBFE; border-radius:14px; padding:9px 6px; text-align:center;">
-            <div id="ins-steps-selected-label" style="font-size:10px; font-weight:800; color:#1E40AF;">👟 ก้าววันที่เลือก</div>
-            <div id="ins-steps-today" class="num" style="font-size:15.5px; font-weight:900; color:#1D4ED8; margin-top:2px;">0</div>
-            <div id="ins-km-today" style="font-size:10px; color:#2563EB; font-weight:700;">0.00 กม.</div>
+          <div id="insights-glow-banner" style="background:linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%); border:2px solid #F9A8D4; border-radius:16px; padding:12px; text-align:center;">
+            <div style="font-size:12px; font-weight:800; color:#9D174D;">🌟 นับถอยหลังผลัดเซลล์ผิวสวยออร่า (28-Day Cycle)</div>
+            <div id="ins-glow-days-big" class="num" style="font-size:22px; font-weight:900; color:#BE185D; margin:3px 0;">อีก 14 วัน ผิวสวยปิ๊ง! ✨</div>
+            <div id="ins-glow-sub" style="font-size:11.5px; color:#831843; font-weight:600;">รักษาความสม่ำเสมอ ทากันแดด+เติมวิตามินทุกวันนะ!</div>
           </div>
-          <div style="background:#FEF3C7; border:1.5px solid #FDE68A; border-radius:14px; padding:9px 6px; text-align:center;">
-            <div style="font-size:10px; font-weight:800; color:#92400E;">🗺️ ก้าวสะสมรวม</div>
-            <div id="ins-steps-period" class="num" style="font-size:15.5px; font-weight:900; color:#B45309; margin-top:2px;">0</div>
-            <div id="ins-km-period" style="font-size:10px; color:#D97706; font-weight:700;">0.0 กม.</div>
-          </div>
-          <div style="background:#FFF7ED; border:1.5px solid #FED7AA; border-radius:14px; padding:9px 6px; text-align:center;">
-            <div style="font-size:10px; font-weight:800; color:#9A3412;">🔥 เบิร์นสะสม</div>
-            <div id="ins-steps-cal" class="num" style="font-size:15.5px; font-weight:900; color:#EA580C; margin-top:2px;">0</div>
-            <div style="font-size:10px; color:#C2410C; font-weight:700;">kcal</div>
+
+          <div style="margin-top:10px;">
+            <div style="font-size:12.5px; font-weight:800; color:var(--ink); margin-bottom:6px;">🧂 ประวัติวันที่ขัดเกลือ / มาร์กหน้าล่าสุด:</div>
+            <div id="ins-scrub-history-chips" style="display:flex; gap:6px; flex-wrap:wrap; font-size:11.5px;"></div>
           </div>
         </div>
-
-        <div style="background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:16px; padding:10px 12px; margin-bottom:10px;">
-          <div id="ins-steps-roast-msg" style="font-size:12px; font-weight:700; color:#78350F; line-height:1.45;">กำลังคำนวณระยะทางเดินของคุณ...</div>
-        </div>
-
-        <div id="ins-steps-ladder-list" style="display:flex; flex-direction:column; gap:7px;"></div>
-      </div>
-
-      <!-- ✨ Skincare & Glow Summary Card in Insights (ขัดเกลือวันไหน วิตามิน มาร์กหน้า กันแดด นับถอยหลังผิวสวย) -->
-      <div class="card" style="padding:16px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <img class="theme-mascot-buddy" src="mymelody_avatar.jpg" alt="Mascot" />
-            <div>
-              <h3 style="font-size:15.5px; font-weight:800;">✨ เช็กตารางผิวสวย & สกินแคร์</h3>
-              <p style="font-size:11.5px; color:var(--sub);">ติดตามวันขัดเกลือ วิตามิน มาร์กหน้า กันแดด & นับถอยหลังผิวใส</p>
-            </div>
-          </div>
-        </div>
-
-        <div id="insights-beauty-status-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;"></div>
-
-        <div id="insights-glow-banner" style="background:linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%); border:2px solid #F9A8D4; border-radius:16px; padding:12px; text-align:center;">
-          <div style="font-size:12px; font-weight:800; color:#9D174D;">🌟 นับถอยหลังผลัดเซลล์ผิวสวยออร่า (28-Day Cycle)</div>
-          <div id="ins-glow-days-big" class="num" style="font-size:22px; font-weight:900; color:#BE185D; margin:3px 0;">อีก 14 วัน ผิวสวยปิ๊ง! ✨</div>
-          <div id="ins-glow-sub" style="font-size:11.5px; color:#831843; font-weight:600;">รักษาความสม่ำเสมอ ทากันแดด+เติมวิตามินทุกวันนะ!</div>
-        </div>
-
-        <div style="margin-top:10px;">
-          <div style="font-size:12.5px; font-weight:800; color:var(--ink); margin-bottom:6px;">🧂 ประวัติวันที่ขัดเกลือ / มาร์กหน้าล่าสุด:</div>
-          <div id="ins-scrub-history-chips" style="display:flex; gap:6px; flex-wrap:wrap; font-size:11.5px;"></div>
-        </div>
-      </div>
-
-      <!-- BMI Card -->
-      <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-          <div>
-            <span style="font-size:16px; font-weight:800;">BMI (ดัชนีมวลกาย)</span>
-            <div id="bmi-hw-sub" style="font-size:12px; color:var(--sub); font-weight:700;">ส่วนสูง 170 ซม.</div>
-          </div>
-          <button class="meal-add-btn" onclick="openWeightModal()">✏️ แก้ส่วนสูง/น้ำหนัก</button>
-        </div>
-        <div class="bmi-top">
-          <div id="bmi-val-num" class="bmi-number num">21.9</div>
-          <div id="bmi-status-badge" class="bmi-status-pill">สุขภาพดี</div>
-        </div>
-        <div class="bmi-bar-wrap">
-          <div id="bmi-pointer" class="bmi-pointer" style="left: 50%;"></div>
-          <div class="bmi-scale-bar">
-            <div style="background:#3B82F6;"></div>
-            <div style="background:#22C55E;"></div>
-            <div style="background:#EAB308;"></div>
-          </div>
-          <div class="bmi-labels num">
-            <span>15.0</span>
-            <span>18.5 (สมส่วน)</span>
-            <span>23.0 / 25.0+</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 7-Day Calorie Trend Chart -->
-      <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <span style="font-size:15.5px; font-weight:800;">แคลอรี่ 7 วันย้อนหลัง</span>
-          <span id="avg-cal-7d" class="num" style="font-size:12.5px; font-weight:700; color:var(--green-dark);">เฉลี่ย 0 kcal/วัน</span>
-        </div>
-        <div id="cal-7d-bars" style="display:grid; grid-template-columns:repeat(7,1fr); gap:8px; align-items:end; height:140px; padding-top:20px;"></div>
-      </div>
-
-      <!-- Weight History Log List -->
-      <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <span style="font-size:15.5px; font-weight:800;">ประวัติการชั่งน้ำหนัก</span>
-          <button class="meal-add-btn" onclick="openWeightModal()">+ บันทึกน้ำหนัก</button>
-        </div>
-        <div id="weight-history-list" style="display:flex; flex-direction:column; gap:8px;"></div>
       </div>
     </div>
 
@@ -3954,11 +4196,11 @@
       </div>
     </div>
 
-    <!-- ==================== TAB 5: โปรไฟล์ & ตั้งค่า (PROFILE - เข้าผ่านไอคอนขวาบน) ==================== -->
+    <!-- ==================== TAB 5: โปรไฟล์ & ตั้งค่า (PROFILE - CLEAN SUB-TABS v39) ==================== -->
     <div id="view-profile" class="view">
       <div class="top-header">
         <div class="greeting-box">
-          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v35</span></div>
+          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v39</span></div>
           <div class="greet-main">โปรไฟล์ & ตั้งค่า ⚙️</div>
         </div>
         <div style="display:flex; gap:6px; align-items:center;">
@@ -3967,287 +4209,312 @@
         </div>
       </div>
 
-      <!-- 👥 Multi-Profile Manager Card (สลับโปรไฟล์ คุณพอล & แฟน แยกข้อมูลของใครของมัน) -->
-      <div class="card" style="border: 2px solid var(--green);">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-          <div style="display:flex; align-items:center; gap:9px;">
-            <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" alt="Mascot" />
-            <div>
-              <h3 style="font-size:15px; font-weight:800;">👥 สลับโปรไฟล์ผู้ใช้งาน (แยกข้อมูล 2 คน)</h3>
-              <p style="font-size:11.5px; color:var(--sub);">ข้อมูลแคล น้ำหนัก ธีม และสกินแคร์จะถูกเซฟแยกของใครของมันอัตโนมัติ</p>
+      <!-- 🗂️ Sticky Segmented Category Bar for Profile & Settings -->
+      <div class="subtab-seg-bar" id="profile-subtab-bar">
+        <button type="button" class="subtab-seg-btn active" data-prof-tab="theme" onclick="switchProfileSubTab('theme')">
+          <span class="seg-ic">🎨</span><span>ธีม & โลโก้</span>
+        </button>
+        <button type="button" class="subtab-seg-btn" data-prof-tab="body" onclick="switchProfileSubTab('body')">
+          <span class="seg-ic">🎯</span><span>ร่างกาย & แคล</span>
+        </button>
+        <button type="button" class="subtab-seg-btn" data-prof-tab="system" onclick="switchProfileSubTab('system')">
+          <span class="seg-ic">🤖</span><span>AI & ซิงค์ข้อมูล</span>
+        </button>
+        <button type="button" class="subtab-seg-btn" data-prof-tab="all" onclick="switchProfileSubTab('all')">
+          <span class="seg-ic">📋</span><span>ทั้งหมด</span>
+        </button>
+      </div>
+
+      <!-- PROFILE PANEL 1: USERS, LOGOS & THEMES -->
+      <div class="prof-sec-panel active" data-prof-sec="theme">
+        <!-- 👥 Multi-Profile Manager Card (สลับโปรไฟล์ คุณพอล & แฟน แยกข้อมูลของใครของมัน) -->
+        <div class="card" style="border: 2px solid var(--green);">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+            <div style="display:flex; align-items:center; gap:9px;">
+              <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" alt="Mascot" />
+              <div>
+                <h3 style="font-size:15px; font-weight:800;">👥 สลับโปรไฟล์ผู้ใช้งาน (แยกข้อมูล 2 คน)</h3>
+                <p style="font-size:11.5px; color:var(--sub);">ข้อมูลแคล น้ำหนัก ธีม และสกินแคร์จะถูกเซฟแยกของใครของมันอัตโนมัติ</p>
+              </div>
             </div>
           </div>
+
+          <div class="profile-switcher-bar" style="margin-bottom:8px;">
+            <button type="button" id="prof-tab-btn-paul" class="prof-switch-btn active" data-prof-switch="paul" onclick="switchActiveUserProfile('paul')">
+              <img src="pompom_muscle_avatar.jpg" alt="" />
+              <span id="prof-tab-name-paul">คุณพอล 💪</span>
+            </button>
+            <button type="button" id="prof-tab-btn-partner" class="prof-switch-btn" data-prof-switch="partner" onclick="switchActiveUserProfile('partner')">
+              <img src="cinnamoroll_avatar.jpg" alt="" />
+              <span id="prof-tab-name-partner">คุณแฟน 🌸</span>
+            </button>
+          </div>
+          <button type="button" class="btn-secondary" style="font-size:12.5px; padding:9px;" onclick="openRenameProfileModal()">✏️ เปลี่ยนชื่อโปรไฟล์ทั้ง 2 คน</button>
         </div>
 
-        <div class="profile-switcher-bar" style="margin-bottom:8px;">
-          <button type="button" id="prof-tab-btn-paul" class="prof-switch-btn active" data-prof-switch="paul" onclick="switchActiveUserProfile('paul')">
-            <img src="pompom_muscle_avatar.jpg" alt="" />
-            <span id="prof-tab-name-paul">คุณพอล 💪</span>
-          </button>
-          <button type="button" id="prof-tab-btn-partner" class="prof-switch-btn" data-prof-switch="partner" onclick="switchActiveUserProfile('partner')">
-            <img src="cinnamoroll_avatar.jpg" alt="" />
-            <span id="prof-tab-name-partner">คุณแฟน 🌸</span>
-          </button>
+        <!-- 🖼️ App Icon Logo Selector Card (4 Custom Fitness Logos incl. Minimal Blue Weight-Loss Logo) -->
+        <div class="card" style="border: 2px solid var(--green-light);">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img id="profile-current-logo-preview" src="logo_cinnamoroll_diet.jpg" alt="App Logo" style="width:48px; height:48px; border-radius:12px; object-fit:cover; box-shadow:0 4px 10px rgba(0,0,0,0.12); border:2px solid #FFF;" />
+              <div>
+                <h3 style="font-size:15px; font-weight:800;">เลือกปุ่มโลโก้แอป (App Logo)</h3>
+                <p id="profile-current-logo-label" style="font-size:11.5px; color:var(--green-dark); font-weight:700;">กำลังใช้: ☁️ Cinnamoroll คุมน้ำหนัก</p>
+              </div>
+            </div>
+            <span style="font-size:10.5px; font-weight:800; background:var(--green-bg); color:var(--green-dark); padding:4px 8px; border-radius:99px;">4 ดีไซน์</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+            <button type="button" id="logo-btn-cleanfit-blue" class="theme-pill-btn" data-logo-val="logo_cleanfit_blue.jpg" style="flex-direction:column; align-items:center; justify-content:center; padding:10px 6px; border-radius:16px; gap:5px; text-align:center;" onclick="setAppLogo('logo_cleanfit_blue.jpg')">
+              <img src="logo_cleanfit_blue.jpg" alt="CleanFit Blue Weight Loss Logo" style="width:56px; height:56px; border-radius:14px; object-fit:cover; box-shadow:0 4px 12px rgba(2,132,199,0.22); border:2px solid #FFF;" />
+              <div style="font-size:11.5px; font-weight:800; line-height:1.2;">💎 CleanFit สีฟ้า<br><span style="font-size:9.5px; font-weight:600; opacity:0.85;">ลดความอ้วน (มินิมอล)</span></div>
+              <span class="logo-status-pill">แตะเพื่อเลือก</span>
+            </button>
+
+            <button type="button" id="logo-btn-cinnamoroll" class="theme-pill-btn active" data-logo-val="logo_cinnamoroll_diet.jpg" style="flex-direction:column; align-items:center; justify-content:center; padding:10px 6px; border-radius:16px; gap:5px; text-align:center;" onclick="setAppLogo('logo_cinnamoroll_diet.jpg')">
+              <img src="logo_cinnamoroll_diet.jpg" alt="Cinnamoroll Diet Logo" style="width:56px; height:56px; border-radius:14px; object-fit:cover; box-shadow:0 4px 12px rgba(0,0,0,0.12); border:2px solid #FFF;" />
+              <div style="font-size:11.5px; font-weight:800; line-height:1.2;">☁️ Cinnamoroll<br><span style="font-size:9.5px; font-weight:600; opacity:0.85;">คุมน้ำหนัก</span></div>
+              <span class="logo-status-pill">✅ กำลังใช้อันนี้</span>
+            </button>
+
+            <button type="button" id="logo-btn-pompompurin" class="theme-pill-btn" data-logo-val="logo_pompompurin_fit.jpg" style="flex-direction:column; align-items:center; justify-content:center; padding:10px 6px; border-radius:16px; gap:5px; text-align:center;" onclick="setAppLogo('logo_pompompurin_fit.jpg')">
+              <img src="logo_pompompurin_fit.jpg" alt="Pompompurin Fit Logo" style="width:56px; height:56px; border-radius:14px; object-fit:cover; box-shadow:0 4px 12px rgba(0,0,0,0.12); border:2px solid #FFF;" />
+              <div style="font-size:11.5px; font-weight:800; line-height:1.2;">🍮 Pompompurin<br><span style="font-size:9.5px; font-weight:600; opacity:0.85;">ฟิตหุ่น</span></div>
+              <span class="logo-status-pill">แตะเพื่อเลือก</span>
+            </button>
+
+            <button type="button" id="logo-btn-pompom-muscle" class="theme-pill-btn" data-logo-val="pompom_muscle_avatar.jpg" style="flex-direction:column; align-items:center; justify-content:center; padding:10px 6px; border-radius:16px; gap:5px; text-align:center;" onclick="setAppLogo('pompom_muscle_avatar.jpg')">
+              <img src="pompom_muscle_avatar.jpg" alt="Macho Pompom Logo" style="width:56px; height:56px; border-radius:14px; object-fit:cover; box-shadow:0 4px 12px rgba(0,0,0,0.12); border:2px solid #FFF;" />
+              <div style="font-size:11.5px; font-weight:800; line-height:1.2;">🍮💪 ปอมๆ กล้ามดุ<br><span style="font-size:9.5px; font-weight:600; opacity:0.85;">โหมดผู้ชาย</span></div>
+              <span class="logo-status-pill">แตะเพื่อเลือก</span>
+            </button>
+          </div>
+
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="btn-secondary" style="font-size:12px; padding:9px 12px; border-radius:12px;" onclick="downloadCurrentAppLogo()">📥 บันทึกรูปโลโก้นี้ลงเครื่อง (สำหรับตั้งไอคอน)</button>
+          </div>
+          <div style="font-size:10.5px; color:var(--sub); margin-top:6px; line-height:1.4;">
+            💡 เมื่อกดเลือกโลโก้แล้ว โลโก้มุมขวาบนของแอป หน้าล็อกรหัสผ่าน และไอคอนตอนกด <b>"เพิ่มไปยังหน้าจอโฮม"</b> บน Safari จะเปลี่ยนตามโลโก้ที่เลือกทันทีครับ
+          </div>
         </div>
-        <button type="button" class="btn-secondary" style="font-size:12.5px; padding:9px;" onclick="openRenameProfileModal()">✏️ เปลี่ยนชื่อโปรไฟล์ทั้ง 2 คน</button>
+
+        <!-- 🎨 Theme Switcher Card (9 Themes incl. Clean Minimal No-Character Theme & Sanrio Themes) -->
+        <div class="card" style="border: 2px solid var(--green);">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="font-size:22px;">🎨</span>
+              <div>
+                <h3 style="font-size:15px; font-weight:800;">เปลี่ยนธีมแอป (มินิมอลสีฟ้า + 8 ธีม Sanrio)</h3>
+                <p id="profile-current-theme-label" style="font-size:11.5px; color:var(--green-dark); font-weight:800;">กำลังใช้ธีม: ☁️ Cinnamoroll</p>
+              </div>
+            </div>
+            <span style="font-size:10.5px; font-weight:800; background:var(--green-bg); color:var(--green-dark); padding:4px 8px; border-radius:99px;">9 ธีม</span>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <button type="button" id="tp-cleanfit" class="theme-pill-btn" data-theme-val="cleanfit" style="grid-column:span 2; justify-content:space-between; padding:11px 14px; border-radius:14px; font-weight:800;" onclick="setAppTheme('cleanfit')">
+              <span>💎 ธีมปกติ มินิมอลคลีน โทนสีฟ้า (ไม่มีการ์ตูน)</span>
+              <span class="tp-status-badge">✅ ใช้อยู่</span>
+            </button>
+            <button type="button" id="tp-cinnamoroll" class="theme-pill-btn active" data-theme-val="cinnamoroll" style="justify-content:flex-start; padding:9px 10px; border-radius:14px;" onclick="setAppTheme('cinnamoroll')">
+              <img src="cinnamoroll_avatar.jpg" alt="Cinnamoroll" style="width:28px; height:28px;" />
+              <span>☁️ Cinnamoroll</span>
+              <span class="tp-status-badge">✅</span>
+            </button>
+            <button type="button" id="tp-pompompurin" class="theme-pill-btn" data-theme-val="pompompurin" style="justify-content:flex-start; padding:9px 10px; border-radius:14px;" onclick="setAppTheme('pompompurin')">
+              <img src="pompompurin_avatar.jpg" alt="Pompompurin" style="width:28px; height:28px;" />
+              <span>🍮 Pompompurin</span>
+              <span class="tp-status-badge">✅</span>
+            </button>
+            <button type="button" id="tp-pompom_muscle" class="theme-pill-btn" data-theme-val="pompom_muscle" style="grid-column:span 2; justify-content:space-between; padding:10px 12px; border-radius:14px;" onclick="setAppTheme('pompom_muscle')">
+              <span style="display:flex; align-items:center; gap:6px;"><img src="pompom_muscle_avatar.jpg" alt="Macho Pompom" style="width:28px; height:28px;" /> 🍮💪 โหมดผู้ชาย: ปอมๆ มีกล้ามดุๆ (Macho Gym)</span>
+              <span class="tp-status-badge">✅ ใช้อยู่</span>
+            </button>
+            <button type="button" id="tp-mymelody" class="theme-pill-btn" data-theme-val="mymelody" style="justify-content:flex-start; padding:9px 10px; border-radius:14px;" onclick="setAppTheme('mymelody')">
+              <img src="mymelody_avatar.jpg" alt="My Melody" style="width:28px; height:28px;" />
+              <span>🍓 My Melody</span>
+              <span class="tp-status-badge">✅</span>
+            </button>
+            <button type="button" id="tp-kuromi" class="theme-pill-btn" data-theme-val="kuromi" style="justify-content:flex-start; padding:9px 10px; border-radius:14px;" onclick="setAppTheme('kuromi')">
+              <img src="kuromi_avatar.jpg" alt="Kuromi" style="width:28px; height:28px;" />
+              <span>🖤 Kuromi</span>
+              <span class="tp-status-badge">✅</span>
+            </button>
+            <button type="button" id="tp-littletwinstars" class="theme-pill-btn" data-theme-val="littletwinstars" style="justify-content:flex-start; padding:9px 10px; border-radius:14px;" onclick="setAppTheme('littletwinstars')">
+              <img src="littletwinstars_avatar.jpg" alt="Little Twin Stars" style="width:28px; height:28px;" />
+              <span>🌟 Little Twin</span>
+              <span class="tp-status-badge">✅</span>
+            </button>
+            <button type="button" id="tp-allstars" class="theme-pill-btn" data-theme-val="allstars" style="justify-content:flex-start; padding:9px 10px; border-radius:14px;" onclick="setAppTheme('allstars')">
+              <img src="allstars_avatar.jpg" alt="All-Stars" style="width:28px; height:28px;" />
+              <span>🌈 รวมทุกตัวละคร</span>
+              <span class="tp-status-badge">✅</span>
+            </button>
+            <button type="button" id="tp-halloween" class="theme-pill-btn" data-theme-val="halloween" style="grid-column:span 2; justify-content:space-between; padding:10px 12px; border-radius:14px;" onclick="setAppTheme('halloween')">
+              <span style="display:flex; align-items:center; gap:6px;"><img src="halloween_avatar.jpg" alt="Halloween" style="width:28px; height:28px;" /> 🎃 ฮาโลวีนรวมแก๊ง (Spooky-Cute Party)</span>
+              <span class="tp-status-badge">✅ ใช้อยู่</span>
+            </button>
+          </div>
+        </div>
       </div>
 
-      <!-- 🖼️ App Icon Logo Selector Card (4 Custom Fitness Logos incl. Minimal Blue Weight-Loss Logo) -->
-      <div class="card" style="border: 2px solid var(--green-light);">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <img id="profile-current-logo-preview" src="logo_cinnamoroll_diet.jpg" alt="App Logo" style="width:48px; height:48px; border-radius:12px; object-fit:cover; box-shadow:0 4px 10px rgba(0,0,0,0.12); border:2px solid #FFF;" />
-            <div>
-              <h3 style="font-size:15px; font-weight:800;">เลือกปุ่มโลโก้แอป (App Logo)</h3>
-              <p id="profile-current-logo-label" style="font-size:11.5px; color:var(--green-dark); font-weight:700;">กำลังใช้: ☁️ Cinnamoroll คุมน้ำหนัก</p>
+      <!-- PROFILE PANEL 2: BODY STATS & CALORIE GOALS -->
+      <div class="prof-sec-panel" data-prof-sec="body">
+        <!-- Body & Automatic Calorie Goal Calculator -->
+        <div class="card">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+            <h3 style="font-size:15.5px; font-weight:800;">🎯 ข้อมูลร่างกาย & คำนวณแคลอัตโนมัติ</h3>
+            <span style="font-size:10.5px; font-weight:800; background:var(--green-bg); color:var(--green-dark); padding:3px 8px; border-radius:99px;">ซิงค์ทุกหน้าอัตโนมัติ</span>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>ชื่อเล่น</label>
+              <input type="text" id="prof-name" class="form-control" value="คุณพอล" onchange="saveProfileAndSettings(true)" />
+            </div>
+            <div class="form-group">
+              <label>เพศ</label>
+              <select id="prof-gender" class="form-control" onchange="saveProfileAndSettings(true)">
+                <option value="male">ชาย</option>
+                <option value="female">หญิง</option>
+              </select>
             </div>
           </div>
-          <span style="font-size:10.5px; font-weight:800; background:var(--green-bg); color:var(--green-dark); padding:4px 8px; border-radius:99px;">4 ดีไซน์</span>
-        </div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
-          <button type="button" id="logo-btn-cleanfit-blue" class="theme-pill-btn" data-logo-val="logo_cleanfit_blue.jpg" style="flex-direction:column; align-items:center; justify-content:center; padding:10px 6px; border-radius:16px; gap:5px; text-align:center;" onclick="setAppLogo('logo_cleanfit_blue.jpg')">
-            <img src="logo_cleanfit_blue.jpg" alt="CleanFit Blue Weight Loss Logo" style="width:56px; height:56px; border-radius:14px; object-fit:cover; box-shadow:0 4px 12px rgba(2,132,199,0.22); border:2px solid #FFF;" />
-            <div style="font-size:11.5px; font-weight:800; line-height:1.2;">💎 CleanFit สีฟ้า<br><span style="font-size:9.5px; font-weight:600; opacity:0.85;">ลดความอ้วน (มินิมอล)</span></div>
-            <span class="logo-status-pill">แตะเพื่อเลือก</span>
-          </button>
-
-          <button type="button" id="logo-btn-cinnamoroll" class="theme-pill-btn active" data-logo-val="logo_cinnamoroll_diet.jpg" style="flex-direction:column; align-items:center; justify-content:center; padding:10px 6px; border-radius:16px; gap:5px; text-align:center;" onclick="setAppLogo('logo_cinnamoroll_diet.jpg')">
-            <img src="logo_cinnamoroll_diet.jpg" alt="Cinnamoroll Diet Logo" style="width:56px; height:56px; border-radius:14px; object-fit:cover; box-shadow:0 4px 12px rgba(0,0,0,0.12); border:2px solid #FFF;" />
-            <div style="font-size:11.5px; font-weight:800; line-height:1.2;">☁️ Cinnamoroll<br><span style="font-size:9.5px; font-weight:600; opacity:0.85;">คุมน้ำหนัก</span></div>
-            <span class="logo-status-pill">✅ กำลังใช้อันนี้</span>
-          </button>
-
-          <button type="button" id="logo-btn-pompompurin" class="theme-pill-btn" data-logo-val="logo_pompompurin_fit.jpg" style="flex-direction:column; align-items:center; justify-content:center; padding:10px 6px; border-radius:16px; gap:5px; text-align:center;" onclick="setAppLogo('logo_pompompurin_fit.jpg')">
-            <img src="logo_pompompurin_fit.jpg" alt="Pompompurin Fit Logo" style="width:56px; height:56px; border-radius:14px; object-fit:cover; box-shadow:0 4px 12px rgba(0,0,0,0.12); border:2px solid #FFF;" />
-            <div style="font-size:11.5px; font-weight:800; line-height:1.2;">🍮 Pompompurin<br><span style="font-size:9.5px; font-weight:600; opacity:0.85;">ฟิตหุ่น</span></div>
-            <span class="logo-status-pill">แตะเพื่อเลือก</span>
-          </button>
-
-          <button type="button" id="logo-btn-pompom-muscle" class="theme-pill-btn" data-logo-val="pompom_muscle_avatar.jpg" style="flex-direction:column; align-items:center; justify-content:center; padding:10px 6px; border-radius:16px; gap:5px; text-align:center;" onclick="setAppLogo('pompom_muscle_avatar.jpg')">
-            <img src="pompom_muscle_avatar.jpg" alt="Macho Pompom Logo" style="width:56px; height:56px; border-radius:14px; object-fit:cover; box-shadow:0 4px 12px rgba(0,0,0,0.12); border:2px solid #FFF;" />
-            <div style="font-size:11.5px; font-weight:800; line-height:1.2;">🍮💪 ปอมๆ กล้ามดุ<br><span style="font-size:9.5px; font-weight:600; opacity:0.85;">โหมดผู้ชาย</span></div>
-            <span class="logo-status-pill">แตะเพื่อเลือก</span>
-          </button>
-        </div>
-
-        <div style="display:flex; gap:8px;">
-          <button type="button" class="btn-secondary" style="font-size:12px; padding:9px 12px; border-radius:12px;" onclick="downloadCurrentAppLogo()">📥 บันทึกรูปโลโก้นี้ลงเครื่อง (สำหรับตั้งไอคอน)</button>
-        </div>
-        <div style="font-size:10.5px; color:var(--sub); margin-top:6px; line-height:1.4;">
-          💡 เมื่อกดเลือกโลโก้แล้ว โลโก้มุมขวาบนของแอป หน้าล็อกรหัสผ่าน และไอคอนตอนกด <b>"เพิ่มไปยังหน้าจอโฮม"</b> บน Safari จะเปลี่ยนตามโลโก้ที่เลือกทันทีครับ
-        </div>
-      </div>
-
-      <!-- 🎨 Theme Switcher Card (9 Themes incl. Clean Minimal No-Character Theme & Sanrio Themes) -->
-      <div class="card" style="border: 2px solid var(--green);">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:22px;">🎨</span>
-            <div>
-              <h3 style="font-size:15px; font-weight:800;">เปลี่ยนธีมแอป (มินิมอลสีฟ้า + 8 ธีม Sanrio)</h3>
-              <p id="profile-current-theme-label" style="font-size:11.5px; color:var(--green-dark); font-weight:800;">กำลังใช้ธีม: ☁️ Cinnamoroll</p>
+          <div class="form-row-3">
+            <div class="form-group">
+              <label>อายุ (ปี)</label>
+              <input type="number" id="prof-age" class="form-control num" value="32" onchange="saveProfileAndSettings(true)" />
+            </div>
+            <div class="form-group">
+              <label>ส่วนสูง (ซม.)</label>
+              <input type="number" id="prof-height" class="form-control num" value="172" onchange="saveProfileAndSettings(true)" />
+            </div>
+            <div class="form-group">
+              <label>น้ำหนักเริ่ม (kg)</label>
+              <input type="number" step="0.1" id="prof-start-w" class="form-control num" value="68" onchange="saveProfileAndSettings(true)" />
             </div>
           </div>
-          <span style="font-size:10.5px; font-weight:800; background:var(--green-bg); color:var(--green-dark); padding:4px 8px; border-radius:99px;">9 ธีม</span>
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <button type="button" id="tp-cleanfit" class="theme-pill-btn" data-theme-val="cleanfit" style="grid-column:span 2; justify-content:space-between; padding:11px 14px; border-radius:14px; font-weight:800;" onclick="setAppTheme('cleanfit')">
-            <span>💎 ธีมปกติ มินิมอลคลีน โทนสีฟ้า (ไม่มีการ์ตูน)</span>
-            <span class="tp-status-badge">✅ ใช้อยู่</span>
-          </button>
-          <button type="button" id="tp-cinnamoroll" class="theme-pill-btn active" data-theme-val="cinnamoroll" style="justify-content:flex-start; padding:9px 10px; border-radius:14px;" onclick="setAppTheme('cinnamoroll')">
-            <img src="cinnamoroll_avatar.jpg" alt="Cinnamoroll" style="width:28px; height:28px;" />
-            <span>☁️ Cinnamoroll</span>
-            <span class="tp-status-badge">✅</span>
-          </button>
-          <button type="button" id="tp-pompompurin" class="theme-pill-btn" data-theme-val="pompompurin" style="justify-content:flex-start; padding:9px 10px; border-radius:14px;" onclick="setAppTheme('pompompurin')">
-            <img src="pompompurin_avatar.jpg" alt="Pompompurin" style="width:28px; height:28px;" />
-            <span>🍮 Pompompurin</span>
-            <span class="tp-status-badge">✅</span>
-          </button>
-          <button type="button" id="tp-pompom_muscle" class="theme-pill-btn" data-theme-val="pompom_muscle" style="grid-column:span 2; justify-content:space-between; padding:10px 12px; border-radius:14px;" onclick="setAppTheme('pompom_muscle')">
-            <span style="display:flex; align-items:center; gap:6px;"><img src="pompom_muscle_avatar.jpg" alt="Macho Pompom" style="width:28px; height:28px;" /> 🍮💪 โหมดผู้ชาย: ปอมๆ มีกล้ามดุๆ (Macho Gym)</span>
-            <span class="tp-status-badge">✅ ใช้อยู่</span>
-          </button>
-          <button type="button" id="tp-mymelody" class="theme-pill-btn" data-theme-val="mymelody" style="justify-content:flex-start; padding:9px 10px; border-radius:14px;" onclick="setAppTheme('mymelody')">
-            <img src="mymelody_avatar.jpg" alt="My Melody" style="width:28px; height:28px;" />
-            <span>🍓 My Melody</span>
-            <span class="tp-status-badge">✅</span>
-          </button>
-          <button type="button" id="tp-kuromi" class="theme-pill-btn" data-theme-val="kuromi" style="justify-content:flex-start; padding:9px 10px; border-radius:14px;" onclick="setAppTheme('kuromi')">
-            <img src="kuromi_avatar.jpg" alt="Kuromi" style="width:28px; height:28px;" />
-            <span>🖤 Kuromi</span>
-            <span class="tp-status-badge">✅</span>
-          </button>
-          <button type="button" id="tp-littletwinstars" class="theme-pill-btn" data-theme-val="littletwinstars" style="justify-content:flex-start; padding:9px 10px; border-radius:14px;" onclick="setAppTheme('littletwinstars')">
-            <img src="littletwinstars_avatar.jpg" alt="Little Twin Stars" style="width:28px; height:28px;" />
-            <span>🌟 Little Twin</span>
-            <span class="tp-status-badge">✅</span>
-          </button>
-          <button type="button" id="tp-allstars" class="theme-pill-btn" data-theme-val="allstars" style="justify-content:flex-start; padding:9px 10px; border-radius:14px;" onclick="setAppTheme('allstars')">
-            <img src="allstars_avatar.jpg" alt="All-Stars" style="width:28px; height:28px;" />
-            <span>🌈 รวมทุกตัวละคร</span>
-            <span class="tp-status-badge">✅</span>
-          </button>
-          <button type="button" id="tp-halloween" class="theme-pill-btn" data-theme-val="halloween" style="grid-column:span 2; justify-content:space-between; padding:10px 12px; border-radius:14px;" onclick="setAppTheme('halloween')">
-            <span style="display:flex; align-items:center; gap:6px;"><img src="halloween_avatar.jpg" alt="Halloween" style="width:28px; height:28px;" /> 🎃 ฮาโลวีนรวมแก๊ง (Spooky-Cute Party)</span>
-            <span class="tp-status-badge">✅ ใช้อยู่</span>
-          </button>
-        </div>
-      </div>
 
-      <!-- AI API Settings (Kie.ai & Gemini Direct) -->
-      <div class="card" style="border: 2px solid #D9F99D;">
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
-          <span style="font-size:20px;">🤖</span>
-          <div>
-            <h3 style="font-size:15px; font-weight:800;">ตั้งค่าเชื่อมต่อ AI (Kie.ai / Google Gemini)</h3>
-            <p style="font-size:11.5px; color:var(--sub);">ใช้สแกนรูปอาหารจริง อ่านเมนูร้าน และแชทโค้ช AI แบบไม่จำกัด</p>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>น้ำหนักปัจจุบัน (kg)</label>
+              <input type="number" step="0.1" id="prof-curr-w" class="form-control num" value="65" onchange="saveProfileAndSettings(true)" />
+            </div>
+            <div class="form-group">
+              <label>น้ำหนักเป้าหมาย (kg)</label>
+              <input type="number" step="0.1" id="prof-goal-w" class="form-control num" value="60" onchange="saveProfileAndSettings(true)" />
+            </div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <label>ผู้ให้บริการ API (Provider)</label>
-          <select id="cfg-provider" class="form-control" onchange="toggleProviderFields()">
-            <option value="kie">Kie.ai API (OpenAI-Compatible Gemini)</option>
-            <option value="google">Google AI Studio (Gemini API Key ตรง)</option>
-          </select>
-        </div>
-
-        <div class="form-group" id="kie-model-group">
-          <label>โมเดล Gemini บน Kie.ai</label>
-          <select id="cfg-kie-model" class="form-control">
-            <option value="gemini-2.5-flash">gemini-2.5-flash (แนะนำ - เร็วและประหยัด)</option>
-            <option value="gemini-3.6-flash-openai">gemini-3.6-flash-openai</option>
-            <option value="gemini-2.5-pro">gemini-2.5-pro</option>
-            <option value="gemini-3.1-pro">gemini-3.1-pro</option>
-            <option value="gemini-4-argon-openai">gemini-4-argon-openai</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>API Key ของคุณ (เก็บในเครื่อง iPhone เท่านั้น)</label>
-          <input type="password" id="cfg-api-key" class="form-control" placeholder="วาง API Key จาก kie.ai หรือ Google AI Studio..." />
-        </div>
-
-        <div style="display:flex; gap:8px;">
-          <button class="btn-primary" onclick="saveProfileAndSettings()">💾 บันทึกการตั้งค่า</button>
-          <button class="btn-secondary" style="width:auto; white-space:nowrap; padding:0 14px;" onclick="testAIConnection()">⚡ ทดสอบ AI</button>
-        </div>
-        <div id="ai-test-status" style="font-size:12px; margin-top:8px; font-weight:600;"></div>
-      </div>
-
-      <!-- Body & Automatic Calorie Goal Calculator -->
-      <div class="card">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-          <h3 style="font-size:15.5px; font-weight:800;">🎯 ข้อมูลร่างกาย & คำนวณแคลอัตโนมัติ</h3>
-          <span style="font-size:10.5px; font-weight:800; background:var(--green-bg); color:var(--green-dark); padding:3px 8px; border-radius:99px;">ซิงค์ทุกหน้าอัตโนมัติ</span>
-        </div>
-        <div class="form-row-2">
           <div class="form-group">
-            <label>ชื่อเล่น</label>
-            <input type="text" id="prof-name" class="form-control" value="คุณพอล" onchange="saveProfileAndSettings(true)" />
-          </div>
-          <div class="form-group">
-            <label>เพศ</label>
-            <select id="prof-gender" class="form-control" onchange="saveProfileAndSettings(true)">
-              <option value="male">ชาย</option>
-              <option value="female">หญิง</option>
+            <label>กิจกรรมประจำวัน</label>
+            <select id="prof-activity" class="form-control" onchange="saveProfileAndSettings(true)">
+              <option value="1.2">นั่งทำงานอยู่กับที่ แทบไม่ได้ออกกำลังกาย</option>
+              <option value="1.375" selected>ออกกำลังกายเบาๆ 1-3 วัน/สัปดาห์</option>
+              <option value="1.55">ออกกำลังกายปานกลาง 3-5 วัน/สัปดาห์</option>
+              <option value="1.725">ออกกำลังกายหนัก 6-7 วัน/สัปดาห์</option>
             </select>
           </div>
-        </div>
 
-        <div class="form-row-3">
-          <div class="form-group">
-            <label>อายุ (ปี)</label>
-            <input type="number" id="prof-age" class="form-control num" value="32" onchange="saveProfileAndSettings(true)" />
-          </div>
-          <div class="form-group">
-            <label>ส่วนสูง (ซม.)</label>
-            <input type="number" id="prof-height" class="form-control num" value="172" onchange="saveProfileAndSettings(true)" />
-          </div>
-          <div class="form-group">
-            <label>น้ำหนักเริ่ม (kg)</label>
-            <input type="number" step="0.1" id="prof-start-w" class="form-control num" value="68" onchange="saveProfileAndSettings(true)" />
-          </div>
-        </div>
+          <button class="btn-secondary" style="margin-bottom:12px; border-color:var(--green); color:var(--green-dark);" onclick="autoCalculateGoals()">
+            ✨ คำนวณเป้าหมายแคลอรี่และสารอาหารอัตโนมัติ (ตามส่วนสูง & น้ำหนัก)
+          </button>
 
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>น้ำหนักปัจจุบัน (kg)</label>
-            <input type="number" step="0.1" id="prof-curr-w" class="form-control num" value="65" onchange="saveProfileAndSettings(true)" />
-          </div>
-          <div class="form-group">
-            <label>น้ำหนักเป้าหมาย (kg)</label>
-            <input type="number" step="0.1" id="prof-goal-w" class="form-control num" value="60" onchange="saveProfileAndSettings(true)" />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>กิจกรรมประจำวัน</label>
-          <select id="prof-activity" class="form-control" onchange="saveProfileAndSettings(true)">
-            <option value="1.2">นั่งทำงานอยู่กับที่ แทบไม่ได้ออกกำลังกาย</option>
-            <option value="1.375" selected>ออกกำลังกายเบาๆ 1-3 วัน/สัปดาห์</option>
-            <option value="1.55">ออกกำลังกายปานกลาง 3-5 วัน/สัปดาห์</option>
-            <option value="1.725">ออกกำลังกายหนัก 6-7 วัน/สัปดาห์</option>
-          </select>
-        </div>
-
-        <button class="btn-secondary" style="margin-bottom:12px; border-color:var(--green); color:var(--green-dark);" onclick="autoCalculateGoals()">
-          ✨ คำนวณเป้าหมายแคลอรี่และสารอาหารอัตโนมัติ (ตามส่วนสูง & น้ำหนัก)
-        </button>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>เป้าหมายแคลอรี่/วัน (kcal)</label>
-            <input type="number" id="prof-cal-goal" class="form-control num" value="1600" onchange="saveProfileAndSettings(true)" />
-          </div>
-          <div class="form-group">
-            <label>โปรตีน/วัน (กรัม)</label>
-            <input type="number" id="prof-p-goal" class="form-control num" value="110" onchange="saveProfileAndSettings(true)" />
-          </div>
-        </div>
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>คาร์บ/วัน (กรัม)</label>
-            <input type="number" id="prof-c-goal" class="form-control num" value="160" onchange="saveProfileAndSettings(true)" />
-          </div>
-          <div class="form-group">
-            <label>ไขมัน/วัน (กรัม)</label>
-            <input type="number" id="prof-f-goal" class="form-control num" value="53" onchange="saveProfileAndSettings(true)" />
-          </div>
-        </div>
-
-        <button class="btn-primary" onclick="saveProfileAndSettings(false)">💾 บันทึกข้อมูลส่วนตัว & ซิงค์ทุกหน้า</button>
-      </div>
-
-      <!-- Backup & Restore Data + Private Mac Server Auto-Sync -->
-      <div class="card" style="border: 2px solid var(--line);">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:20px;">💻</span>
-            <div>
-              <h3 style="font-size:15px; font-weight:800;">เซิร์ฟเวอร์ส่วนตัวบนเครื่อง Mac (Auto-Sync)</h3>
-              <p id="prof-sync-sub" style="font-size:11.5px; color:var(--sub);">เมื่ออยู่นอกบ้าน มือถือจะเก็บข้อมูลไว้ก่อน และซิงค์เข้าคอมอัตโนมัติเมื่อต่อ Wi-Fi เดียวกัน</p>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>เป้าหมายแคลอรี่/วัน (kcal)</label>
+              <input type="number" id="prof-cal-goal" class="form-control num" value="1600" onchange="saveProfileAndSettings(true)" />
+            </div>
+            <div class="form-group">
+              <label>โปรตีน/วัน (กรัม)</label>
+              <input type="number" id="prof-p-goal" class="form-control num" value="110" onchange="saveProfileAndSettings(true)" />
             </div>
           </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label>คาร์บ/วัน (กรัม)</label>
+              <input type="number" id="prof-c-goal" class="form-control num" value="160" onchange="saveProfileAndSettings(true)" />
+            </div>
+            <div class="form-group">
+              <label>ไขมัน/วัน (กรัม)</label>
+              <input type="number" id="prof-f-goal" class="form-control num" value="53" onchange="saveProfileAndSettings(true)" />
+            </div>
+          </div>
+
+          <button class="btn-primary" onclick="saveProfileAndSettings(false)">💾 บันทึกข้อมูลส่วนตัว & ซิงค์ทุกหน้า</button>
         </div>
-        <div class="form-group">
-          <label>URL เซิร์ฟเวอร์เครื่อง Mac ของคุณพอล (Wi-Fi วงเดียวกัน)</label>
-          <input type="text" id="cfg-server-url" class="form-control num" value="http://192.168.1.38:8787" placeholder="http://192.168.1.38:8787" onchange="saveServerUrlSetting()" />
+      </div>
+
+      <!-- PROFILE PANEL 3: AI API & MAC SYNC & BACKUP -->
+      <div class="prof-sec-panel" data-prof-sec="system">
+        <!-- AI API Settings (Kie.ai & Gemini Direct) -->
+        <div class="card" style="border: 2px solid #D9F99D;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+            <span style="font-size:20px;">🤖</span>
+            <div>
+              <h3 style="font-size:15px; font-weight:800;">ตั้งค่าเชื่อมต่อ AI (Kie.ai / Google Gemini)</h3>
+              <p style="font-size:11.5px; color:var(--sub);">ใช้สแกนรูปอาหารจริง อ่านเมนูร้าน และแชทโค้ช AI แบบไม่จำกัด</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>ผู้ให้บริการ API (Provider)</label>
+            <select id="cfg-provider" class="form-control" onchange="toggleProviderFields()">
+              <option value="kie">Kie.ai API (OpenAI-Compatible Gemini)</option>
+              <option value="google">Google AI Studio (Gemini API Key ตรง)</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="kie-model-group">
+            <label>โมเดล Gemini บน Kie.ai</label>
+            <select id="cfg-kie-model" class="form-control">
+              <option value="gemini-2.5-flash">gemini-2.5-flash (แนะนำ - เร็วและประหยัด)</option>
+              <option value="gemini-3.6-flash-openai">gemini-3.6-flash-openai</option>
+              <option value="gemini-2.5-pro">gemini-2.5-pro</option>
+              <option value="gemini-3.1-pro">gemini-3.1-pro</option>
+              <option value="gemini-4-argon-openai">gemini-4-argon-openai</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>API Key ของคุณ (เก็บในเครื่อง iPhone เท่านั้น)</label>
+            <input type="password" id="cfg-api-key" class="form-control" placeholder="วาง API Key จาก kie.ai หรือ Google AI Studio..." />
+          </div>
+
+          <div style="display:flex; gap:8px;">
+            <button class="btn-primary" onclick="saveProfileAndSettings()">💾 บันทึกการตั้งค่า</button>
+            <button class="btn-secondary" style="width:auto; white-space:nowrap; padding:0 14px;" onclick="testAIConnection()">⚡ ทดสอบ AI</button>
+          </div>
+          <div id="ai-test-status" style="font-size:12px; margin-top:8px; font-weight:600;"></div>
         </div>
-        <div style="display:flex; gap:8px; margin-bottom:12px;">
-          <button class="btn-primary" onclick="syncWithMacServer(false)">🔄 ซิงค์ข้อมูลกับคอม Mac เดี๋ยวนี้</button>
+
+        <!-- Backup & Restore Data + Private Mac Server Auto-Sync -->
+        <div class="card" style="border: 2px solid var(--line);">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:20px;">💻</span>
+              <div>
+                <h3 style="font-size:15px; font-weight:800;">เซิร์ฟเวอร์ส่วนตัวบนเครื่อง Mac (Auto-Sync)</h3>
+                <p id="prof-sync-sub" style="font-size:11.5px; color:var(--sub);">เมื่ออยู่นอกบ้าน มือถือจะเก็บข้อมูลไว้ก่อน และซิงค์เข้าคอมอัตโนมัติเมื่อต่อ Wi-Fi เดียวกัน</p>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>URL เซิร์ฟเวอร์เครื่อง Mac ของคุณพอล (Wi-Fi วงเดียวกัน)</label>
+            <input type="text" id="cfg-server-url" class="form-control num" value="http://192.168.1.38:8787" placeholder="http://192.168.1.38:8787" onchange="saveServerUrlSetting()" />
+          </div>
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <button class="btn-primary" onclick="syncWithMacServer(false)">🔄 ซิงค์ข้อมูลกับคอม Mac เดี๋ยวนี้</button>
+          </div>
+          <hr style="border:none; border-top:1px solid var(--line); margin:12px 0;" />
+          <h3 style="font-size:14px; font-weight:800; margin-bottom:8px;">📦 สำรองเป็นไฟล์ JSON เก็บแยก</h3>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+            <button class="btn-secondary" onclick="exportDataJSON()">⬇️ ส่งออกไฟล์ Backup</button>
+            <button class="btn-secondary" onclick="document.getElementById('import-file').click()">⬆️ นำเข้าไฟล์ Backup</button>
+            <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importDataJSON(event)" />
+          </div>
+          <button class="btn-secondary" style="border-color:#FCA5A5; color:#DC2626;" onclick="lockCalorieApp()">🔒 ล็อกหน้าจอแอป (ต้องใส่รหัส PIN 6 หลักใหม่)</button>
         </div>
-        <hr style="border:none; border-top:1px solid var(--line); margin:12px 0;" />
-        <h3 style="font-size:14px; font-weight:800; margin-bottom:8px;">📦 สำรองเป็นไฟล์ JSON เก็บแยก</h3>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
-          <button class="btn-secondary" onclick="exportDataJSON()">⬇️ ส่งออกไฟล์ Backup</button>
-          <button class="btn-secondary" onclick="document.getElementById('import-file').click()">⬆️ นำเข้าไฟล์ Backup</button>
-          <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importDataJSON(event)" />
-        </div>
-        <button class="btn-secondary" style="border-color:#FCA5A5; color:#DC2626;" onclick="lockCalorieApp()">🔒 ล็อกหน้าจอแอป (ต้องใส่รหัส PIN 6 หลักใหม่)</button>
       </div>
     </div>
 
@@ -12606,10 +12873,11 @@
         });
       }
 
+      const foodQuickIcons = ["🔍", "✍️", "💬", "⭐"];
       [q1, q2, q3, q4].forEach((el, idx) => {
         if (el) {
           el.style.background = cfg.tiles[idx][0];
-          el.textContent = cfg.tiles[idx][1];
+          el.textContent = foodQuickIcons[idx] || cfg.tiles[idx][1];
         }
       });
 
@@ -12629,6 +12897,143 @@
         if (navProf) navProf.innerHTML = buildCharNavBadge(navAvs[4], cfg.navBadges[4]);
         if (navEars) navEars.innerHTML = cfg.fabHatSvg;
       }
+    }
+
+    // ==================== v39 CLEAN SUB-TABS, MINI GLANCE DASHBOARD & COLLAPSIBLE DRAWERS ====================
+    function switchHomeSubTab(tabId) {
+      const targetTab = tabId || "food";
+      window.__activeHomeSubTab = targetTab;
+      document.querySelectorAll("#home-subtab-bar [data-home-tab]").forEach((btn) => {
+        btn.classList.toggle("active", btn.getAttribute("data-home-tab") === targetTab);
+      });
+      document.querySelectorAll("#home-mini-glance-grid .mini-glance-item").forEach((pill) => {
+        const pillId = pill.id.replace("mg-card-", "");
+        pill.classList.toggle("active", targetTab === "all" ? false : pillId === targetTab);
+      });
+      document.querySelectorAll("#view-home .home-sec-panel").forEach((panel) => {
+        const sec = panel.getAttribute("data-home-sec");
+        const shouldShow = targetTab === "all" || sec === targetTab;
+        panel.classList.toggle("active", shouldShow);
+        panel.classList.toggle("sec-active", shouldShow);
+      });
+    }
+
+    function switchInsightsSubTab(tabId) {
+      const targetTab = tabId || "overview";
+      window.__activeInsightsSubTab = targetTab;
+      document.querySelectorAll("#insights-subtab-bar [data-ins-tab]").forEach((btn) => {
+        btn.classList.toggle("active", btn.getAttribute("data-ins-tab") === targetTab);
+      });
+      document.querySelectorAll("#view-insights .ins-sec-panel").forEach((panel) => {
+        const sec = panel.getAttribute("data-ins-sec");
+        const shouldShow = targetTab === "all" || sec === targetTab;
+        panel.classList.toggle("active", shouldShow);
+        panel.classList.toggle("sec-active", shouldShow);
+      });
+    }
+
+    function switchProfileSubTab(tabId) {
+      const targetTab = tabId || "theme";
+      window.__activeProfileSubTab = targetTab;
+      document.querySelectorAll("#profile-subtab-bar [data-prof-tab]").forEach((btn) => {
+        btn.classList.toggle("active", btn.getAttribute("data-prof-tab") === targetTab);
+      });
+      document.querySelectorAll("#view-profile .prof-sec-panel").forEach((panel) => {
+        const sec = panel.getAttribute("data-prof-sec");
+        const shouldShow = targetTab === "all" || sec === targetTab;
+        panel.classList.toggle("active", shouldShow);
+        panel.classList.toggle("sec-active", shouldShow);
+      });
+    }
+
+    function toggleDrawerBox(drawerId, btnEl) {
+      const box = document.getElementById(drawerId);
+      if (!box) return;
+      const isOpen = box.classList.toggle("open");
+      if (btnEl && btnEl.classList) {
+        btnEl.classList.toggle("open", isOpen);
+      } else {
+        document.querySelectorAll(`[onclick*="${drawerId}"]`).forEach((b) => {
+          if (b.classList.contains("collapsible-drawer-btn")) {
+            b.classList.toggle("open", isOpen);
+          }
+        });
+      }
+    }
+
+    function updateHomeMiniGlance() {
+      try {
+        const calLeftTxt = document.getElementById("cal-left-num")?.textContent?.trim() || "0";
+        const calLeftLbl = document.getElementById("cal-left-lbl")?.textContent?.trim() || "แคลคงเหลือ";
+        const waterTxt = document.getElementById("water-liters-badge")?.textContent?.trim() || "0.0 / 2.0L";
+        const mgCalVal = document.getElementById("mg-cal-val");
+        const mgWaterVal = document.getElementById("mg-water-val");
+        if (mgCalVal) {
+          mgCalVal.textContent = (calLeftLbl.includes("เกิน") ? "เกิน " : "") + calLeftTxt + " kcal";
+        }
+        if (mgWaterVal) {
+          const shortWater = waterTxt.split("(")[0].replace("ลิตร", "L").trim();
+          mgWaterVal.textContent = "💧 " + shortWater;
+        }
+
+        const questTxt = document.getElementById("quest-done-badge")?.textContent?.trim() || "0/7";
+        const mgQuestVal = document.getElementById("mg-quest-val");
+        if (mgQuestVal) {
+          const shortQ = questTxt.split("(")[0].trim();
+          mgQuestVal.textContent = shortQ + " ข้อ";
+        }
+
+        const stepsTxt = document.getElementById("steps-today-val")?.textContent?.trim() || "0";
+        const weightTxt = document.getElementById("w-curr-val")?.textContent?.trim() || "--";
+        const mgStepsVal = document.getElementById("mg-steps-val");
+        const mgWeightVal = document.getElementById("mg-weight-val");
+        if (mgStepsVal) mgStepsVal.textContent = `${stepsTxt} ก้าว`;
+        if (mgWeightVal) mgWeightVal.textContent = `⚖️ ${weightTxt} kg`;
+
+        const pillDayRaw = document.getElementById("pill-pack-day-badge")?.textContent?.trim() || "เม็ดที่ -";
+        const pillDayShort = pillDayRaw.split("(")[0].trim();
+        const pillMainTxt = document.getElementById("pill-status-main")?.textContent?.trim() || "";
+        const mgPillVal = document.getElementById("mg-pill-val");
+        const mgPeriodVal = document.getElementById("mg-period-val");
+        if (mgPillVal) {
+          const takenDone = pillMainTxt.includes("กินยาแล้ว") || pillMainTxt.includes("✅");
+          mgPillVal.textContent = (takenDone ? "✅ " : "⏳ ") + pillDayShort;
+        }
+        if (mgPeriodVal) {
+          const takenDone = pillMainTxt.includes("กินยาแล้ว") || pillMainTxt.includes("✅");
+          mgPeriodVal.textContent = takenDone ? "🌸 กินแล้ววันนี้" : "🌸 แตะเช็กแผงยา";
+        }
+      } catch (e) {}
+    }
+
+    function initMiniGlanceLiveSync() {
+      if (window.__miniGlanceObserverBound) return;
+      window.__miniGlanceObserverBound = true;
+      const watchedIds = [
+        "cal-left-num",
+        "water-liters-badge",
+        "quest-done-badge",
+        "glow-days-left",
+        "steps-today-val",
+        "w-curr-val",
+        "pill-pack-day-badge",
+        "pill-status-main",
+        "next-period-countdown"
+      ];
+      let rafId = null;
+      const scheduleGlanceSync = () => {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          updateHomeMiniGlance();
+        });
+      };
+      const obs = new MutationObserver(scheduleGlanceSync);
+      watchedIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          obs.observe(el, { childList: true, characterData: true, subtree: true });
+        }
+      });
     }
 
     function renderAll() {
@@ -12651,7 +13056,9 @@
         renderInsights,
         renderWorkoutStudio,
         renderScheduleTab,
-        updateSyncStatusUI
+        updateSyncStatusUI,
+        updateHomeMiniGlance,
+        initMiniGlanceLiveSync
       ];
       steps.forEach((fn) => {
         try {
@@ -12855,6 +13262,11 @@
     window.switchActiveUserProfile = switchActiveUserProfile;
     window.downloadCurrentAppLogo = downloadCurrentAppLogo;
     window.forceHealSafariCache = forceHealSafariCache;
+    window.switchHomeSubTab = switchHomeSubTab;
+    window.switchInsightsSubTab = switchInsightsSubTab;
+    window.switchProfileSubTab = switchProfileSubTab;
+    window.toggleDrawerBox = toggleDrawerBox;
+    window.updateHomeMiniGlance = updateHomeMiniGlance;
 
     try {
       bootCalorieApp();
