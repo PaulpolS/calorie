@@ -1148,6 +1148,194 @@
       animation-play-state: paused !important;
     }
 
+    /* ==================== SCREEN-EDGE CAMEO STAGE (v38) ==================== */
+    #mascot-screen-cameo {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9850;
+      overflow: hidden;
+      display: none;
+    }
+    #mascot-screen-cameo.active {
+      display: block;
+    }
+    .cameo-actor {
+      position: absolute;
+      left: 0;
+      top: 0;
+      will-change: transform, opacity;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+    }
+    .cameo-speech {
+      background: rgba(255, 255, 255, 0.96);
+      border: 2.2px solid #F59E0B;
+      color: #451A03;
+      font-size: 11.5px;
+      font-weight: 900;
+      padding: 5px 11px;
+      border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16);
+      white-space: nowrap;
+      margin-bottom: 6px;
+      position: relative;
+      transform-origin: center bottom;
+      animation: cameoBubblePop 0.55s ease-in-out infinite alternate;
+    }
+    .cameo-speech::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      width: 9px;
+      height: 9px;
+      background: rgba(255, 255, 255, 0.96);
+      border-right: 2.2px solid #F59E0B;
+      border-bottom: 2.2px solid #F59E0B;
+    }
+    .cameo-sprite-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cameo-sprite-img {
+      width: 132px;
+      height: auto;
+      max-height: 142px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 16px rgba(15, 23, 42, 0.22)) drop-shadow(0 0 3px rgba(255, 255, 255, 0.95));
+      will-change: transform;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .cameo-prop {
+      position: absolute;
+      font-size: 20px;
+      pointer-events: none;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+      animation: cameoPropFloat 0.9s ease-in-out infinite alternate;
+    }
+    .cameo-prop.cp1 { top: -8px; left: -16px; animation-delay: 0s; }
+    .cameo-prop.cp2 { top: -12px; right: -16px; animation-delay: -0.3s; }
+    .cameo-prop.cp3 { bottom: 8px; left: -20px; animation-delay: -0.55s; font-size: 17px; }
+    .cameo-prop.cp4 { bottom: 12px; right: -20px; animation-delay: -0.2s; font-size: 18px; }
+
+    @keyframes cameoBubblePop {
+      0% { transform: translate3d(0, 0, 0) scale3d(0.97, 0.97, 1); }
+      100% { transform: translate3d(0, -3px, 0) scale3d(1.03, 1.03, 1); }
+    }
+    @keyframes cameoPropFloat {
+      0% { transform: translate3d(0, 4px, 0) scale3d(0.9, 0.9, 1) rotate(-10deg); opacity: 0.85; }
+      100% { transform: translate3d(0, -8px, 0) scale3d(1.15, 1.15, 1) rotate(12deg); opacity: 1; }
+    }
+
+    /* 1. Pompompurin Dance Mode: Hops out from right edge, dances to Pop-ka-Purin in center-bottom, hops back out */
+    .cameo-actor.mode-purin-dance {
+      animation: cameoPurinDancePath var(--cameo-dur, 7.5s) cubic-bezier(0.34, 1.25, 0.64, 1) forwards;
+    }
+    @keyframes cameoPurinDancePath {
+      0%   { transform: translate3d(108vw, 64vh, 0) rotate(-10deg) scale3d(0.85, 0.85, 1); opacity: 0; }
+      6%   { opacity: 1; }
+      14%  { transform: translate3d(calc(50vw - 72px), 61vh, 0) rotate(6deg) scale3d(1.04, 0.96, 1); }
+      22%  { transform: translate3d(calc(50vw - 90px), 58vh, 0) rotate(-8deg) scale3d(0.97, 1.06, 1); }
+      30%  { transform: translate3d(calc(50vw - 54px), 61vh, 0) rotate(8deg) scale3d(1.05, 0.95, 1); }
+      38%  { transform: translate3d(calc(50vw - 88px), 57.5vh, 0) rotate(-9deg) scale3d(0.96, 1.07, 1); }
+      46%  { transform: translate3d(calc(50vw - 52px), 61vh, 0) rotate(9deg) scale3d(1.06, 0.95, 1); }
+      54%  { transform: translate3d(calc(50vw - 72px), 57vh, 0) rotate(-7deg) scale3d(0.97, 1.08, 1); }
+      62%  { transform: translate3d(calc(50vw - 56px), 61vh, 0) rotate(8deg) scale3d(1.05, 0.96, 1); }
+      70%  { transform: translate3d(calc(50vw - 86px), 58vh, 0) rotate(-8deg) scale3d(0.97, 1.06, 1); }
+      78%  { transform: translate3d(calc(50vw - 60px), 61vh, 0) rotate(7deg) scale3d(1.04, 0.96, 1); }
+      86%  { transform: translate3d(calc(50vw - 72px), 58.5vh, 0) rotate(-5deg) scale3d(1.02, 1.02, 1); opacity: 1; }
+      100% { transform: translate3d(112vw, 64vh, 0) rotate(12deg) scale3d(0.9, 0.9, 1); opacity: 0; }
+    }
+
+    /* 2. Pompompurin Walk & Nap Mode: Waddles out from screen edge -> flops down to sleep -> gets up & waddles out */
+    .cameo-actor.mode-purin-nap {
+      animation: cameoPurinNapPath var(--cameo-dur, 5.4s) ease-in-out forwards;
+    }
+    @keyframes cameoPurinNapPath {
+      0%   { transform: translate3d(108vw, 65vh, 0) rotate(-6deg); opacity: 0; }
+      5%   { opacity: 1; }
+      11%  { transform: translate3d(76vw, 63.5vh, 0) rotate(5deg); }
+      17%  { transform: translate3d(58vw, 65vh, 0) rotate(-5deg); }
+      23%  { transform: translate3d(calc(50vw - 76px), 64vh, 0) rotate(0deg) scale3d(1.05, 0.92, 1); }
+      35%  { transform: translate3d(calc(50vw - 76px), 65.5vh, 0) rotate(-1.5deg) scale3d(1.03, 0.97, 1); }
+      50%  { transform: translate3d(calc(50vw - 76px), 64.5vh, 0) rotate(1.5deg) scale3d(0.98, 1.03, 1); }
+      65%  { transform: translate3d(calc(50vw - 76px), 65.5vh, 0) rotate(-1deg) scale3d(1.03, 0.97, 1); }
+      77%  { transform: translate3d(calc(50vw - 76px), 64vh, 0) rotate(2deg) scale3d(1, 1, 1); }
+      85%  { transform: translate3d(68vw, 63vh, 0) rotate(-6deg); }
+      92%  { transform: translate3d(88vw, 65vh, 0) rotate(6deg); opacity: 1; }
+      100% { transform: translate3d(112vw, 64vh, 0) rotate(10deg); opacity: 0; }
+    }
+
+    /* 3. Cinnamoroll Fly Across Screen Mode: Flies from Left Edge -> Right Edge across the screen in a dreamy wave */
+    .cameo-actor.mode-cinna-fly {
+      animation: cameoCinnaFlyAcross var(--cameo-dur, 6.2s) ease-in-out forwards;
+    }
+    @keyframes cameoCinnaFlyAcross {
+      0%   { transform: translate3d(-170px, 60vh, 0) rotate(-8deg) scale3d(0.92, 0.92, 1); opacity: 0; }
+      6%   { opacity: 1; }
+      22%  { transform: translate3d(12vw, 53vh, 0) rotate(6deg) scale3d(1.03, 1.03, 1); }
+      42%  { transform: translate3d(calc(50vw - 82px), 60vh, 0) rotate(-5deg) scale3d(1.06, 1.06, 1); }
+      64%  { transform: translate3d(calc(50vw - 56px), 52vh, 0) rotate(5deg) scale3d(1.04, 1.04, 1); }
+      84%  { transform: translate3d(62vw, 58vh, 0) rotate(-6deg) scale3d(1.02, 1.02, 1); opacity: 1; }
+      100% { transform: translate3d(108vw, 50vh, 0) rotate(-12deg) scale3d(0.94, 0.94, 1); opacity: 0; }
+    }
+
+    /* 4. Cinnamoroll Side Edge Peek Mode: Peeks sideways from the right edge of the phone screen & waves */
+    .cameo-actor.mode-cinna-peek {
+      animation: cameoCinnaSidePeek var(--cameo-dur, 4.8s) cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
+    }
+    .cameo-actor.mode-cinna-peek .cameo-speech {
+      margin-right: 48px;
+    }
+    .cameo-actor.mode-left-hop .cameo-speech {
+      margin-left: 48px;
+    }
+    @keyframes cameoCinnaSidePeek {
+      0%   { transform: translate3d(108vw, 56vh, 0) rotate(-22deg); opacity: 0; }
+      14%  { transform: translate3d(calc(100vw - 168px), 56vh, 0) rotate(-12deg); opacity: 1; }
+      32%  { transform: translate3d(calc(100vw - 178px), 54.5vh, 0) rotate(-6deg) scale3d(1.05, 1.05, 1); }
+      52%  { transform: translate3d(calc(100vw - 166px), 56.5vh, 0) rotate(-13deg) scale3d(1.02, 1.02, 1); }
+      72%  { transform: translate3d(calc(100vw - 180px), 54.5vh, 0) rotate(-7deg) scale3d(1.05, 1.05, 1); }
+      86%  { transform: translate3d(calc(100vw - 168px), 56vh, 0) rotate(-12deg); opacity: 1; }
+      100% { transform: translate3d(110vw, 57vh, 0) rotate(-22deg); opacity: 0; }
+    }
+
+    /* 5. Muscle Purin Power Flex Mode: Pops up from bottom edge flexing biceps */
+    .cameo-actor.mode-muscle-flex {
+      animation: cameoMuscleFlexPop var(--cameo-dur, 6.5s) cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
+    }
+    @keyframes cameoMuscleFlexPop {
+      0%   { transform: translate3d(calc(50vw - 85px), 105vh, 0) scale3d(0.85, 0.85, 1); opacity: 0; }
+      12%  { transform: translate3d(calc(50vw - 85px), 60vh, 0) scale3d(1.08, 1.08, 1); opacity: 1; }
+      25%  { transform: translate3d(calc(50vw - 85px), 62vh, 0) scale3d(1.02, 1.02, 1) rotate(-3deg); }
+      40%  { transform: translate3d(calc(50vw - 85px), 59vh, 0) scale3d(1.1, 1.1, 1) rotate(3deg); }
+      55%  { transform: translate3d(calc(50vw - 85px), 61.5vh, 0) scale3d(1.03, 1.03, 1) rotate(-3deg); }
+      70%  { transform: translate3d(calc(50vw - 85px), 59vh, 0) scale3d(1.1, 1.1, 1) rotate(3deg); }
+      86%  { transform: translate3d(calc(50vw - 85px), 61vh, 0) scale3d(1.05, 1.05, 1); opacity: 1; }
+      100% { transform: translate3d(calc(50vw - 85px), 105vh, 0) scale3d(0.9, 0.9, 1); opacity: 0; }
+    }
+
+    /* 6. Left Edge Sweet Hop (My Melody) */
+    .cameo-actor.mode-left-hop {
+      animation: cameoLeftHop var(--cameo-dur, 4.8s) cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
+    }
+    @keyframes cameoLeftHop {
+      0%   { transform: translate3d(-160px, 56vh, 0) rotate(14deg); opacity: 0; }
+      15%  { transform: translate3d(18px, 54vh, 0) rotate(6deg); opacity: 1; }
+      35%  { transform: translate3d(26px, 51.5vh, 0) rotate(-4deg) scale3d(1.05, 1.05, 1); }
+      55%  { transform: translate3d(18px, 54vh, 0) rotate(5deg); }
+      75%  { transform: translate3d(28px, 51.5vh, 0) rotate(-3deg) scale3d(1.05, 1.05, 1); }
+      86%  { transform: translate3d(18px, 54vh, 0) rotate(6deg); opacity: 1; }
+      100% { transform: translate3d(-160px, 56vh, 0) rotate(-12deg); opacity: 0; }
+    }
+
     .mascot-caption-bar {
       display: flex;
       align-items: center;
@@ -5085,6 +5273,20 @@
       <ul id="rc-good-list" class="recap-list"></ul>
 
       <button class="btn-primary" style="margin-top:12px;" onclick="generateAIRecap()">🤖 ให้ AI วิเคราะห์สรุปสัปดาห์นี้ใหม่</button>
+    </div>
+  </div>
+
+  <!-- ==================== SCREEN-EDGE CHARACTER CAMEO STAGE (v38) ==================== -->
+  <div id="mascot-screen-cameo" aria-hidden="true">
+    <div id="cameo-actor" class="cameo-actor">
+      <div id="cameo-speech" class="cameo-speech">ポッポッポポムポム… ぼく、プリン！🍮🎶</div>
+      <div class="cameo-sprite-wrap">
+        <span id="cameo-prop-1" class="cameo-prop cp1">🎵</span>
+        <span id="cameo-prop-2" class="cameo-prop cp2">🍮</span>
+        <span id="cameo-prop-3" class="cameo-prop cp3">✨</span>
+        <span id="cameo-prop-4" class="cameo-prop cp4">🎶</span>
+        <img id="cameo-sprite-img" class="cameo-sprite-img" src="cameo_purin_dance_0.webp" alt="" />
+      </div>
     </div>
   </div>
 
@@ -11596,135 +11798,404 @@
       cinnamoroll: [
         {
           src: "voices/cinna_ig_song.mp3",
-          pill: "กำลังร้องเพลงชินนามอน 🎶",
-          toast: "☁️🎶 「ぼくはシナモン、うさぎじゃないもん、男の子の子犬だもん〜♪」 (เราคือชินนามอน ไม่ใช่กระต่ายนะ เป็นลูกหมาน้อยต่างหาก~♪)"
+          pill: "ชินนามอนบินร้องเพลง! ☁️🎶",
+          toast: "☁️🎶 「ぼくはシナモン、うさぎじゃないもん、男の子の子犬だもん〜♪」 (เราคือชินนามอน ไม่ใช่กระต่ายนะ เป็นลูกหมาน้อยต่างหาก~♪)",
+          cameo: {
+            mode: "mode-cinna-fly",
+            dur: 6.3,
+            frames: ["cameo_hero_cinnamoroll.webp", "cameo_cinna_fly_1.webp", "cameo_cinna_fly_0.webp", "cameo_cinna_fly_1.webp"],
+            speech: "ぼくはシナモン、うさぎじゃないもん〜♪ ☁️🎶",
+            color: "#38BDF8",
+            props: ["☁️", "🎶", "🩵", "✨"]
+          }
         },
         {
           src: "voices/cinna_konnichiwa.mp3",
-          pill: "ชินนามอนกำลังพูด... ☁️",
-          toast: "☁️📞 「こんにちは！シナモンです！」 (สวัสดีค้าบ! ชินนามอนเองนะค้าบ~✨)"
+          pill: "ชินนามอนโผล่มาทักทาย! ☁️📞",
+          toast: "☁️📞 「こんにちは！シナモンです！」 (สวัสดีค้าบ! ชินนามอนเองนะค้าบ~✨)",
+          cameo: {
+            mode: "mode-cinna-peek",
+            dur: 5.0,
+            frames: ["cameo_cinna_fly_0.webp", "cameo_cinna_fly_1.webp"],
+            speech: "こんにちは！シナモンです！☁️📞",
+            color: "#38BDF8",
+            props: ["📞", "☁️", "🩵", "✨"]
+          }
         },
         {
           src: "voices/cinna_1.mp3",
-          pill: "ชินนามอนหัวเราะคิกคัก ☁️",
-          toast: "☁️✨ 「ぼく、シナモン！えへへっ♪」 (เราชินนามอนเอง! อิอิ~ วันนี้คุมแคลสู้ๆ นะ!)"
+          pill: "ชินนามอนบินข้ามจอ! ☁️✨",
+          toast: "☁️✨ 「ぼく、シナモン！えへへっ♪」 (เราชินนามอนเอง! อิอิ~ วันนี้คุมแคลสู้ๆ นะ!)",
+          cameo: {
+            mode: "mode-cinna-fly",
+            dur: 3.8,
+            frames: ["cameo_cinna_fly_1.webp", "cameo_hero_cinnamoroll.webp"],
+            speech: "ぼく、シナモン！えへへっ♪ ☁️🩵",
+            color: "#38BDF8",
+            props: ["☁️", "🩵", "✨", "🎀"]
+          }
         },
         {
           src: "voices/cinna_happy.mp3",
-          pill: "ชินนามอนส่งความสุข 🍀",
-          toast: "☁️🍀 「しあわせのクローバー見つけた！」 (เจอใบโคลเวอร์แห่งความสุขแล้ว~!)"
+          pill: "ชินนามอนส่งใบโคลเวอร์ 🍀",
+          toast: "☁️🍀 「しあわせのクローバー見つけた！」 (เจอใบโคลเวอร์แห่งความสุขแล้ว~!)",
+          cameo: {
+            mode: "mode-cinna-peek",
+            dur: 3.6,
+            frames: ["cameo_cinna_fly_1.webp", "cameo_cinna_fly_0.webp"],
+            speech: "しあわせのクローバー見つけた！🍀✨",
+            color: "#10B981",
+            props: ["🍀", "☁️", "✨", "💚"]
+          }
         }
       ],
       pompompurin: [
         {
           src: "voices/purin_bokupurin.mp3",
-          pill: "ร้องเพลง ป๊อปกะปุ๊ริน~! 🍮🎶",
-          toast: "🍮🎶 「ポッポッポポムポム… ぼく、プリン！」 (ป๊อป-ป๊อป-ปอมปอม… โบคุ ปุริน~! เพลงประจำตัวปอมปอมปุรินของแท้!)"
-        },
-        {
-          src: "voices/purin_short.mp3",
-          pill: "โบคุ ปุริน~! 🍮🎵",
-          toast: "🍮🎵 「ぼく、プリン！ポム月ポム日ポム曜日、ぼく、プリン！」 (ปอมปอมปุรินมารายงานตัวแล้วค้าบ~!)"
+          pill: "ปอมๆ ออกมาเต้น ป๊อปกะปุ๊ริน~! 🍮🎶",
+          toast: "🍮🎶 「ポッポッポポムポム… ぼく、プリン！」 (ป๊อป-ป๊อป-ปอมปอม… โบคุ ปุริน~! ปอมๆ ออกมาเต้นโชว์แล้ว!)",
+          cameo: {
+            mode: "mode-purin-dance",
+            dur: 9.6,
+            frames: ["cameo_purin_dance_0.webp", "cameo_purin_dance_1.webp"],
+            speech: "ポッポッポポムポム… ぼく、プリン！🍮🎶",
+            color: "#F59E0B",
+            props: ["🎵", "🍮", "🎶", "✨"]
+          }
         },
         {
           src: "voices/purin_shiran.mp3",
-          pill: "ปอมปอมอ้อนดุ๊กดิ๊ก 🍮✨",
-          toast: "🍮💛 「むずかしいこと、しらんぷりん♪」 (เรื่องยากๆ ไม่รู้ด้วยแล้ว ชิรันปุริน~♪)"
+          pill: "ปอมๆ เดินมานอนพุงป่อง 🍮💤",
+          toast: "🍮💤 「むずかしいこと、しらんぷりん♪」 (ปอมๆ เดินเตาะแตะออกมาทิ้งตัวนอนพุงป่อง แล้วลุกเดินกลับไป~♪)",
+          cameo: {
+            mode: "mode-purin-nap",
+            dur: 5.2,
+            frames: ["cameo_purin_dance_0.webp", "cameo_purin_dance_1.webp"],
+            napFrames: ["cameo_purin_sleep_0.webp", "cameo_purin_sleep_1.webp"],
+            speech: "むずかしいこと、しらんぷりん♪ 🍮💤",
+            color: "#D97706",
+            props: ["💤", "🍮", "💛", "✨"]
+          }
+        },
+        {
+          src: "voices/purin_short.mp3",
+          pill: "ปอมๆ ออกมาเต้น โบคุ ปุริน~! 🍮🎵",
+          toast: "🍮🎵 「ぼく、プリン！ポム月ポム日ポム曜日、ぼく、プリン！」 (ปอมปอมปุรินออกมาเต้นดุ๊กดิ๊กแล้วค้าบ~!)",
+          cameo: {
+            mode: "mode-purin-dance",
+            dur: 6.3,
+            frames: ["cameo_purin_dance_0.webp", "cameo_purin_dance_1.webp"],
+            speech: "ポム月ポム日ポム曜日、ぼく、プリン！🍮🎵",
+            color: "#F59E0B",
+            props: ["🍮", "🎶", "🐾", "🎵"]
+          }
         },
         {
           src: "voices/purin_asobou.mp3",
-          pill: "ปอมปอมชวนไปเดินเล่น 🍮☀️",
-          toast: "🍮☀️ 「ほら、お外はいい天気！君もこっちで遊ぼうよ〜！」 (อากาศดีจังเลย มาขยับตัวออกกำลังกายด้วยกันเร็ว~!)"
+          pill: "ปอมๆ เดินมาชวนเล่นแล้วนอนกลิ้ง 🍮☀️",
+          toast: "🍮☀️ 「ほら、お外はいい天気！君もこっちで遊ぼうよ〜！」 (ปอมๆ เดินออกมาชวนเล่นแล้วนอนกลิ้งดุ๊กดิ๊ก~!)",
+          cameo: {
+            mode: "mode-purin-nap",
+            dur: 6.0,
+            frames: ["cameo_purin_dance_0.webp", "cameo_purin_dance_1.webp"],
+            napFrames: ["cameo_purin_sleep_1.webp", "cameo_purin_sleep_0.webp"],
+            speech: "君もこっちで遊ぼうよ〜！🍮☀️",
+            color: "#F59E0B",
+            props: ["☀️", "🍮", "🐾", "💛"]
+          }
         }
       ],
       pompom_muscle: [
         {
           src: "voices/muscle_pompow.mp3",
-          pill: "ปอมปอมเบ่งกล้าม ป๊อปปอมพาว!! 💪🔥",
-          toast: "🍮💪🔥 「ポッポッポム、ポムポムポッポッポー！！」 (ป๊อป-ป๊อป-ปอม พาวเวอร์!! ยกเวทเบิร์นไขมันลุยเลยลูกพี่!!)"
+          pill: "ปอมๆ โผล่มาเบ่งกล้าม ป๊อปปอมพาว!! 💪🔥",
+          toast: "🍮💪🔥 「ポッポッポム、ポムポムポッポッポー！！」 (ป๊อป-ป๊อป-ปอม พาวเวอร์!! ยกเวทเบิร์นไขมันลุยเลยลูกพี่!!)",
+          cameo: {
+            mode: "mode-muscle-flex",
+            dur: 8.2,
+            frames: ["cameo_hero_pompom_muscle.webp", "cameo_purin_dance_0.webp", "cameo_hero_pompom_muscle.webp", "cameo_purin_dance_1.webp"],
+            speech: "ポッポッポム、ポムポムポッポッポー！！💪🔥",
+            color: "#EA580C",
+            props: ["🔥", "💪", "⚡", "🍮"]
+          }
         },
         {
           src: "voices/purin_short.mp3",
-          pill: "โบคุ มัสเซิลปุริน! 💪🍮",
-          toast: "🍮💪 「ぼく、プリン！！」 (เห็นกล้ามแน่นแบบนี้ เสียงยังน่ารักปุ๊กปิ๊กเหมือนเดิมนะค้าบ!)"
+          pill: "ปอมๆ กล้ามดุออกมาเต้น! 💪🍮",
+          toast: "🍮💪 「ぼく、プリン！！」 (เห็นกล้ามแน่นแบบนี้ ออกมาเต้นน่ารักปุ๊กปิ๊กเหมือนเดิมนะค้าบ!)",
+          cameo: {
+            mode: "mode-purin-dance",
+            dur: 6.3,
+            frames: ["cameo_hero_pompom_muscle.webp", "cameo_purin_dance_1.webp"],
+            speech: "ぼく、マッスルプリン！！💪🍮",
+            color: "#EA580C",
+            props: ["💪", "🍮", "🔥", "🎶"]
+          }
         }
       ],
       mymelody: [
         {
           src: "voices/mymelody_yaaan.mp3",
-          pill: "มายเมโลดี้ส่งเสียงอ้อน 🍓🎀",
-          toast: "🍓🎀 「やぁ〜ん♪」 (ย๊า~ง♪ มายเมโลดี้เป็นกำลังใจให้คนเก่งนะคะ!)"
+          pill: "มายเมโลดี้โผล่มาอ้อน 🍓🎀",
+          toast: "🍓🎀 「やぁ〜ん♪」 (ย๊า~ง♪ มายเมโลดี้โผล่มาเป็นกำลังใจให้คนเก่งนะคะ!)",
+          cameo: {
+            mode: "mode-left-hop",
+            dur: 3.6,
+            frames: ["cameo_hero_mymelody.webp"],
+            speech: "やぁ〜ん♪ がんばってね！🍓🎀",
+            color: "#EC4899",
+            props: ["🍓", "🎀", "🌸", "💕"]
+          }
         },
         {
           src: "voices/mymelody_arigatou.mp3",
-          pill: "มายเมโลดี้พูดขอบคุณ 🍓🌸",
-          toast: "🍓🌸 「ありがとうね♪ 寄り添えるっていいな♪」 (ขอบคุณน้า~ ได้ดูแลสุขภาพไปด้วยกันแบบนี้ดีจังเลย♪)"
+          pill: "มายเมโลดี้เดินมาขอบคุณ 🍓🌸",
+          toast: "🍓🌸 「ありがとうね♪ 寄り添えるっていいな♪」 (ขอบคุณน้า~ ได้ดูแลสุขภาพไปด้วยกันแบบนี้ดีจังเลย♪)",
+          cameo: {
+            mode: "mode-left-hop",
+            dur: 8.8,
+            frames: ["cameo_hero_mymelody.webp"],
+            speech: "ありがとうね♪ 寄り添えるっていいな🍓🌸",
+            color: "#EC4899",
+            props: ["🌸", "🍓", "💖", "🎀"]
+          }
         }
       ],
       kuromi: [
         {
           src: "voices/kuromi_atai.mp3",
-          pill: "คุโรมิพูดเชียร์สุดซน 🖤💜",
-          toast: "🖤💜 「ほら、アタイがいるじゃないか！」 (นี่ไง! มีคุโรมิอยู่ข้างๆ ทั้งคน ไม่ต้องกลัวหลุดเป้าหรอกน่า!)"
+          pill: "คุโรมิโผล่มาเชียร์สุดซน 🖤💜",
+          toast: "🖤💜 「ほら、アタイがいるじゃないか！」 (นี่ไง! มีคุโรมิอยู่ข้างๆ ทั้งคน ไม่ต้องกลัวหลุดเป้าหรอกน่า!)",
+          cameo: {
+            mode: "mode-cinna-peek",
+            dur: 5.2,
+            frames: ["cameo_hero_kuromi.webp"],
+            speech: "ほら、アタイがいるじゃないか！🖤💜",
+            color: "#9333EA",
+            props: ["🖤", "💜", "✨", "🍒"]
+          }
         },
         {
           src: "voices/kuromi_iine.mp3",
-          pill: "คุโรมิชมว่าเริ่ดมาก! 🖤✨",
-          toast: "🖤✨ 「きゅるん♪ いいねぇ〜！」 (คิวรุน~♪ เริ่ดมากเลยนี่นา วันนี้คุมแคลเก่งสุดๆ!)"
+          pill: "คุโรมิโผล่มาชมว่าเริ่ดมาก! 🖤✨",
+          toast: "🖤✨ 「きゅるん♪ いいねぇ〜！」 (คิวรุน~♪ เริ่ดมากเลยนี่นา วันนี้คุมแคลเก่งสุดๆ!)",
+          cameo: {
+            mode: "mode-cinna-peek",
+            dur: 4.8,
+            frames: ["cameo_hero_kuromi.webp"],
+            speech: "きゅるん♪ いいねぇ〜！🖤✨",
+            color: "#9333EA",
+            props: ["💜", "🖤", "🎀", "✨"]
+          }
         }
       ],
       littletwinstars: [
         {
           src: "voices/twinstars_wish.mp3",
-          pill: "กิกิ & ลาล่า อธิษฐานดาวตก 🌟🌙",
-          toast: "🌟🌙 「流れ星お願い… いいよね！いいよね！えへへっ♪」 (อธิษฐานกับดาวตก ขอให้หุ่นสวยสุขภาพดี เพี้ยง~♪)"
+          pill: "กิกิ & ลาล่า ลอยข้ามจอ 🌟🌙",
+          toast: "🌟🌙 「流れ星お願い… いいよね！いいよね！えへへっ♪」 (อธิษฐานกับดาวตก ขอให้หุ่นสวยสุขภาพดี เพี้ยง~♪)",
+          cameo: {
+            mode: "mode-cinna-fly",
+            dur: 8.8,
+            frames: ["cameo_hero_littletwinstars.webp"],
+            speech: "流れ星お願い… いいよね！🌟🌙",
+            color: "#A855F7",
+            props: ["🌟", "🌙", "🌠", "✨"]
+          }
         },
         {
           src: "voices/twinstars_chime.mp3",
-          pill: "เสียงกล่องดนตรีแห่งดวงดาว 🌠🎶",
-          toast: "🌟🌠 เสียงระฆังดาวตกจาก กิกิ & ลาล่า ส่งพลังวิ้งๆ ให้วันนี้สดใส!"
+          pill: "กิกิ & ลาล่า โปรยละอองดาว 🌠🎶",
+          toast: "🌟🌠 เสียงระฆังดาวตกจาก กิกิ & ลาล่า ลอยผ่านหน้าจอส่งพลังวิ้งๆ!",
+          cameo: {
+            mode: "mode-cinna-fly",
+            dur: 6.4,
+            frames: ["cameo_hero_littletwinstars.webp"],
+            speech: "キラキラ〜☆ 今日もすてきな1日に！🌠✨",
+            color: "#38BDF8",
+            props: ["🌠", "🌟", "🌈", "✨"]
+          }
         }
       ],
       allstars: [
         {
           src: "voices/purin_bokupurin.mp3",
-          pill: "ปอมปอมร้องเพลง ป๊อปกะปุ๊ริน! 🍮🎶",
-          toast: "🌈🍮 「ポッポッポポムポム… ぼく、プリン！」 (ปอมปอมนำทีมแก๊ง Sanrio ร้องเพลงเชียร์!)"
+          pill: "ปอมปอมออกมาเต้น ป๊อปกะปุ๊ริน! 🍮🎶",
+          toast: "🌈🍮 「ポッポッポポムポム… ぼく、プリン！」 (ปอมปอมนำทีมแก๊ง Sanrio ออกมาเต้นเชียร์!)",
+          cameo: {
+            mode: "mode-purin-dance",
+            dur: 9.6,
+            frames: ["cameo_purin_dance_0.webp", "cameo_purin_dance_1.webp"],
+            speech: "ポッポッポポムポム… ぼく、プリン！🌈🍮",
+            color: "#F59E0B",
+            props: ["🌈", "🍮", "🎶", "✨"]
+          }
         },
         {
           src: "voices/cinna_ig_song.mp3",
-          pill: "ชินนามอนร้องเพลงสุดคิวท์ ☁️🎶",
-          toast: "🌈☁️ 「ぼくはシナモン、うさぎじゃないもん〜♪」 (ชินนามอนมาร้องเพลงให้กำลังใจ!)"
+          pill: "ชินนามอนบินข้ามจอร้องเพลง! ☁️🎶",
+          toast: "🌈☁️ 「ぼくはシナモン、うさぎじゃないもん〜♪」 (ชินนามอนกางหูบินข้ามจอมาร้องเพลงให้กำลังใจ!)",
+          cameo: {
+            mode: "mode-cinna-fly",
+            dur: 6.3,
+            frames: ["cameo_hero_allstars.webp", "cameo_cinna_fly_1.webp", "cameo_hero_cinnamoroll.webp"],
+            speech: "ぼくはシナモン、うさぎじゃないもん〜♪ ☁️🌈",
+            color: "#38BDF8",
+            props: ["🌈", "☁️", "🎶", "✨"]
+          }
         },
         {
           src: "voices/kuromi_iine.mp3",
-          pill: "คุโรมิชมว่าเริ่ดมาก! 🖤💜",
-          toast: "🌈🖤 「きゅるん♪ いいねぇ〜！」 (คุโรมิบอกว่าวันนี้ทำดีมาก!)"
+          pill: "คุโรมิโผล่มาชมว่าเริ่ดมาก! 🖤💜",
+          toast: "🌈🖤 「きゅるん♪ いいねぇ〜！」 (คุโรมิโผล่มาจากขอบจอบอกว่าวันนี้ทำดีมาก!)",
+          cameo: {
+            mode: "mode-cinna-peek",
+            dur: 4.8,
+            frames: ["cameo_hero_kuromi.webp"],
+            speech: "きゅるん♪ いいねぇ〜！🌈🖤",
+            color: "#9333EA",
+            props: ["🖤", "💜", "🌈", "✨"]
+          }
         },
         {
           src: "voices/mymelody_yaaan.mp3",
-          pill: "มายเมโลดี้ส่งเสียงเชียร์ 🍓🎀",
-          toast: "🌈🍓 「やぁ〜ん♪」 (มายเมโลดี้ส่งกำลังใจให้ทั้งแก๊งเลย!)"
+          pill: "มายเมโลดี้โผล่มาเชียร์ 🍓🎀",
+          toast: "🌈🍓 「やぁ〜ん♪」 (มายเมโลดี้โผล่มาส่งกำลังใจให้ทั้งแก๊งเลย!)",
+          cameo: {
+            mode: "mode-left-hop",
+            dur: 3.6,
+            frames: ["cameo_hero_mymelody.webp"],
+            speech: "やぁ〜ん♪ みんなで応援してるよ🍓🌈",
+            color: "#EC4899",
+            props: ["🍓", "🎀", "🌈", "💕"]
+          }
         }
       ],
       halloween: [
         {
           src: "voices/cinna_1.mp3",
-          pill: "ผีน้อยชินนามอนส่งเสียงหลอก! 🎃👻",
-          toast: "🎃👻 「ぼく、シナモン！えへへっ♪」 (แบร่~! ผีน้อยชินนามอนบินมาเชียร์ Trick or Treat!)"
+          pill: "ผีน้อยชินนามอนบินหลอกข้ามจอ! 🎃👻",
+          toast: "🎃👻 「ぼく、シナモン！えへへっ♪」 (แบร่~! ผีน้อยชินนามอนบินข้ามจอมาเชียร์ Trick or Treat!)",
+          cameo: {
+            mode: "mode-cinna-fly",
+            dur: 4.2,
+            frames: ["cameo_hero_halloween.webp", "cameo_cinna_fly_1.webp"],
+            speech: "Trick or Treat! ぼく、おばけシナモン！🎃👻",
+            color: "#F97316",
+            props: ["🎃", "👻", "🍬", "🦇"]
+          }
         },
         {
           src: "voices/kuromi_atai.mp3",
-          pill: "แม่มดคุโรมิร่ายมนตร์ 🎃🖤",
-          toast: "🎃🖤 「ほら、アタイがいるじゃないか！」 (แม่มดคุโรมิมาเสกให้เบิร์นแคลรัวๆ แล้ว!)"
+          pill: "แม่มดคุโรมิโผล่มาร่ายมนตร์ 🎃🖤",
+          toast: "🎃🖤 「ほら、アタイがいるじゃないか！」 (แม่มดคุโรมิโผล่มาจากขอบจอเสกให้เบิร์นแคลรัวๆ!)",
+          cameo: {
+            mode: "mode-cinna-peek",
+            dur: 5.2,
+            frames: ["cameo_hero_kuromi.webp"],
+            speech: "ほら、アタイがいるじゃないか！🎃🖤",
+            color: "#9333EA",
+            props: ["🎃", "🖤", "🦇", "💜"]
+          }
         },
         {
           src: "voices/purin_shiran.mp3",
-          pill: "ปอมปอมฟักทองอ้อนขนม 🎃🍮",
-          toast: "🎃🍮 「むずかしいこと、しらんぷりん♪」 (ฮาโลวีนนี้กินคลีนแบบแฮปปี้ ชิรันปุริน~♪)"
+          pill: "ปอมปอมเดินมานอนอ้อนขนมฮาโลวีน 🎃🍮",
+          toast: "🎃🍮 「むずかしいこと、しらんぷりん♪」 (ฮาโลวีนนี้กินคลีนแบบแฮปปี้ ชิรันปุริน~♪)",
+          cameo: {
+            mode: "mode-purin-nap",
+            dur: 5.2,
+            frames: ["cameo_purin_dance_0.webp", "cameo_purin_dance_1.webp"],
+            napFrames: ["cameo_purin_sleep_0.webp", "cameo_purin_sleep_1.webp"],
+            speech: "むずかしいこと、しらんぷりん♪ 🎃🍮",
+            color: "#F97316",
+            props: ["🎃", "🍮", "💤", "🍬"]
+          }
         }
       ]
     };
+
+    function stopMascotScreenCameo() {
+      clearInterval(window.__cameoFrameTimer);
+      clearTimeout(window.__cameoHideTimer);
+      clearTimeout(window.__cameoNapPhase1);
+      clearTimeout(window.__cameoNapPhase2);
+      const wrap = document.getElementById("mascot-screen-cameo");
+      const actor = document.getElementById("cameo-actor");
+      if (actor) {
+        actor.className = "cameo-actor";
+      }
+      if (wrap) {
+        wrap.classList.remove("active");
+      }
+    }
+
+    function playMascotScreenCameo(clip) {
+      if (!clip || !clip.cameo) return;
+      stopMascotScreenCameo();
+
+      const wrap = document.getElementById("mascot-screen-cameo");
+      const actor = document.getElementById("cameo-actor");
+      const speech = document.getElementById("cameo-speech");
+      const img = document.getElementById("cameo-sprite-img");
+      const p1 = document.getElementById("cameo-prop-1");
+      const p2 = document.getElementById("cameo-prop-2");
+      const p3 = document.getElementById("cameo-prop-3");
+      const p4 = document.getElementById("cameo-prop-4");
+      if (!wrap || !actor || !img) return;
+
+      const c = clip.cameo;
+      const durSec = c.dur || 5.2;
+      actor.style.setProperty("--cameo-dur", `${durSec}s`);
+
+      if (speech) {
+        speech.textContent = c.speech || "✨";
+        speech.style.borderColor = c.color || "#F59E0B";
+      }
+      const props = c.props || ["✨", "🎵", "💛", "🎶"];
+      if (p1) p1.textContent = props[0] || "✨";
+      if (p2) p2.textContent = props[1] || "🎵";
+      if (p3) p3.textContent = props[2] || "💛";
+      if (p4) p4.textContent = props[3] || "🎶";
+
+      let activeFrames = (c.frames && c.frames.length > 0) ? c.frames.slice() : ["cameo_purin_dance_0.webp"];
+      let fIdx = 0;
+      img.src = activeFrames[0];
+
+      wrap.classList.add("active");
+      void actor.offsetWidth;
+      actor.classList.add(c.mode || "mode-purin-dance");
+
+      // Alternate frames for lively 2-frame step/dance/ear-flap animation
+      window.__cameoFrameTimer = setInterval(() => {
+        if (!activeFrames || activeFrames.length <= 1) return;
+        fIdx = (fIdx + 1) % activeFrames.length;
+        img.src = activeFrames[fIdx];
+      }, 240);
+
+      // Special 3-stage choreography for Pompompurin Walk -> Nap -> Walk Out!
+      if (c.mode === "mode-purin-nap" && c.napFrames && c.napFrames.length > 0) {
+        const walkInMs = Math.round(durSec * 1000 * 0.21);
+        const wakeUpMs = Math.round(durSec * 1000 * 0.76);
+        if (speech) speech.textContent = "เตาะแตะ~ เดินมาหาแล้วค้าบ 🍮🐾";
+        window.__cameoNapPhase1 = setTimeout(() => {
+          activeFrames = c.napFrames.slice();
+          fIdx = 0;
+          img.src = activeFrames[0];
+          if (speech) speech.textContent = c.speech || "ขอนอนพุงป่องแป๊บนึงนะ~ 🍮💤";
+        }, walkInMs);
+        window.__cameoNapPhase2 = setTimeout(() => {
+          activeFrames = c.frames.slice();
+          fIdx = 0;
+          img.src = activeFrames[0];
+          if (speech) speech.textContent = "ตื่นแล้ว~ ไปก่อนน้า บ๊ายบาย! 🍮👋";
+        }, wakeUpMs);
+      }
+
+      window.__cameoHideTimer = setTimeout(() => {
+        stopMascotScreenCameo();
+      }, Math.round(durSec * 1000) + 150);
+    }
 
     function stopMascotHeroVoice() {
       try {
@@ -11733,6 +12204,7 @@
           window.__mascotHeroAudio.currentTime = 0;
         }
       } catch (_) {}
+      stopMascotScreenCameo();
       const stage = document.getElementById("mascot-hero-stage");
       if (stage) stage.classList.remove("speaking-active");
       const pillText = document.getElementById("mascot-hero-live-pill-text");
@@ -11758,6 +12230,8 @@
         const idx = (window.__mascotVoiceIdxMap[th] || 0) % clips.length;
         window.__mascotVoiceIdxMap[th] = idx + 1;
         const clip = clips[idx];
+
+        playMascotScreenCameo(clip);
 
         try {
           if (!window.__mascotHeroAudio) {
