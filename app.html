@@ -11968,6 +11968,7 @@
 
     function saveProfileAndSettings(silent = false) {
       const newName = document.getElementById("prof-name").value.trim() || "คุณพอล";
+      const prevCurrW = Number(state.profile?.currWeight) || 0;
       const newCurrW = parseFloat(document.getElementById("prof-curr-w").value) || 65;
       const newHeight = Number(document.getElementById("prof-height").value) || 172;
 
@@ -11988,12 +11989,12 @@
         waterCupMl: state.profile.waterCupMl || 300
       };
 
-      // Sync today's weight into weightHistory so Insights chart & history list stay 100% synced!
+      // Only add to weightHistory when user explicitly changes weight or already has a history entry for today
       if (!Array.isArray(state.weightHistory)) state.weightHistory = [];
       const todayEntry = state.weightHistory.find(h => h.date === currentSelectedDate);
       if (todayEntry) {
         todayEntry.weight = newCurrW;
-      } else {
+      } else if (!silent && Math.abs(newCurrW - prevCurrW) > 0.01) {
         state.weightHistory.push({ date: currentSelectedDate, weight: newCurrW });
       }
 
