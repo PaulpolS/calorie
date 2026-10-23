@@ -3551,6 +3551,10 @@
         </div>
 
         <!-- 4 Meal Logging Cards (อยู่ใกล้มือทันที ไม่ต้องเลื่อนหา!) -->
+        <div style="display:flex; align-items:center; justify-content:space-between; margin:2px 2px 8px;">
+          <span style="font-size:13px; font-weight:800; color:var(--ink);">🍽️ รายการมื้ออาหารวันนี้</span>
+          <button type="button" onclick="clearSelectedDayMeals()" style="border:1px solid #FECACA; background:#FEF2F2; color:#DC2626; border-radius:99px; padding:4px 10px; font-size:11px; font-weight:800; cursor:pointer;">🗑️ ล้างอาหารวันนี้</button>
+        </div>
         <div id="meals-container"></div>
 
         <!-- Water Tracker Card -->
@@ -3559,6 +3563,7 @@
             <h3>💧 น้ำดื่ม <span id="water-cup-size-lbl">(1 แก้ว = 300 ml)</span></h3>
             <div style="display:flex; align-items:center; gap:6px;">
               <span id="water-liters-badge" class="water-total-pill num">0.0 / 2.4 L</span>
+              <button onclick="resetSelectedDayWater()" title="รีเซ็ตน้ำวันนี้เป็น 0" style="background:#FEF2F2; border:1px solid #FECACA; border-radius:999px; padding:4px 8px; font-size:10.5px; font-weight:800; color:#DC2626; cursor:pointer;">🗑️ ล้าง</button>
               <button onclick="openWaterGoalModal()" style="background:var(--green-soft); border:1px solid var(--line); border-radius:999px; padding:4px 9px; font-size:11px; font-weight:800; color:var(--green-dark); cursor:pointer;">⚙️ ตั้งเป้า</button>
             </div>
           </div>
@@ -3618,18 +3623,19 @@
           <div id="beauty-routine-alert-box" style="background:linear-gradient(135deg,#FDF2F8 0%,#F0F9FF 100%); border:1.5px solid #F9A8D4; border-radius:14px; padding:10px 12px; margin-bottom:8px;">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px; flex-wrap:wrap;">
               <div style="font-size:12px; font-weight:800; color:#9D174D;">🔔 ตารางมาส์กหน้า & ขัดผิวของคุณ</div>
-              <div style="display:flex; gap:4px; align-items:center;">
+              <div style="display:flex; gap:4px; align-items:center; flex-wrap:wrap;">
                 <button type="button" onclick="openBeautyRoutineModal()" style="border:1px solid #F472B6; background:#FFFFFF; color:#BE185D; border-radius:8px; padding:3px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">⚙️ ตั้งวันเตือน</button>
                 <button type="button" onclick="toggleBeautyTask('mask')" style="border:none; background:#8B5CF6; color:#FFF; border-radius:8px; padding:4px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">🧖‍♀️ มาส์กวันนี้</button>
                 <button type="button" onclick="toggleBeautyTask('scrub')" style="border:none; background:#EC4899; color:#FFF; border-radius:8px; padding:4px 8px; font-size:10.5px; font-weight:800; cursor:pointer;">🧂 ขัดวันนี้!</button>
+                <button type="button" onclick="clearAllBeautyHistory()" title="ล้างประวัติสกินแคร์ทั้งหมด" style="border:1px solid #FECACA; background:#FEF2F2; color:#DC2626; border-radius:8px; padding:3px 7px; font-size:10px; font-weight:800; cursor:pointer;">🗑️ ล้างประวัติ</button>
               </div>
             </div>
             <div id="beauty-routine-summary-txt" style="font-size:11px; color:#475569; font-weight:700; line-height:1.45;">
               🧖‍♀️ มาส์กหน้า: ทุกวันจันทร์, พุธ · 🧂 ขัดผิว: ทุกวันพุธ
             </div>
             <div style="font-size:10.5px; color:#831843; margin-top:4px; display:flex; gap:10px; flex-wrap:wrap;">
-              <span>🧖‍♀️ ล่าสุด: <strong id="last-mask-date-txt" style="color:#BE185D;">ยังไม่ได้บันทึก</strong></span>
-              <span>🧂 ล่าสุด: <strong id="last-scrub-date-txt" style="color:#BE185D;">ยังไม่ได้บันทึก</strong></span>
+              <span>🧖‍♀️ ล่าสุด: <strong id="last-mask-date-txt" style="color:#BE185D;">ยังไม่มีประวัติ</strong></span>
+              <span>🧂 ล่าสุด: <strong id="last-scrub-date-txt" style="color:#BE185D;">ยังไม่มีประวัติ</strong></span>
             </div>
             <div id="beauty-routine-today-due" style="margin-top:6px; display:none;"></div>
           </div>
@@ -3654,8 +3660,9 @@
                 <div id="health-sync-sub" style="font-size:11px; color:var(--sub);">แสดงก้าวเดินเฉพาะ 1 วัน (ดูย้อนหลังหลายวันได้ที่หน้าสรุปผล)</div>
               </div>
             </div>
-            <div style="display:flex; gap:6px;">
+            <div style="display:flex; gap:5px; flex-wrap:wrap;">
               <button type="button" class="meal-add-btn" onclick="openStepsModal()">👟 อัพเดทก้าว</button>
+              <button type="button" class="meal-add-btn" style="background:#FEF2F2; color:#DC2626; border:1px solid #FECACA;" onclick="clearSelectedDaySteps()" title="ลบ/รีเซ็ตก้าวของวันที่เลือก">🗑️ ล้างก้าว</button>
               <button type="button" class="meal-add-btn" style="background:#FFE4E6; color:#E11D48;" onclick="openModal('modal-apple-health')">🍎 วิธีเชื่อม</button>
             </div>
           </div>
@@ -3732,11 +3739,23 @@
           <div class="w-spark-row">
             <span class="w-spark-lbl">7 วันล่าสุด</span>
             <svg id="w-mini-spark" width="160" height="28" viewBox="0 0 160 28"></svg>
-            <span id="w-diff-pill" class="w-diff-badge num">-1.5 kg</span>
+            <span id="w-diff-pill" class="w-diff-badge num">0.0 kg</span>
           </div>
 
           <div id="w-countdown-bar" class="goal-countdown-bar" onclick="openWeightModal()" style="cursor:pointer;">
             เป้าหมายอีก 55 วัน · สู้ไปด้วยกันนะ ✨
+          </div>
+
+          <!-- 📋 Inline Weight History & Delete Controls on Home Card (ลบประวัติน้ำหนักได้ทันทีจากหน้าแรก!) -->
+          <div style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--line);">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:7px; gap:6px; flex-wrap:wrap;">
+              <span style="font-size:12.5px; font-weight:800; color:var(--ink);">📋 ประวัติน้ำหนักที่บันทึกไว้</span>
+              <div style="display:flex; gap:5px;">
+                <button type="button" onclick="openWeightModal()" style="border:1px solid var(--line); background:var(--green-soft); color:var(--green-dark); border-radius:99px; padding:3px 9px; font-size:10.5px; font-weight:800; cursor:pointer;">+ บันทึกเพิ่ม</button>
+                <button type="button" id="btn-clear-home-weight-hist" onclick="clearAllWeightHistory()" style="border:1px solid #FECACA; background:#FEF2F2; color:#DC2626; border-radius:99px; padding:3px 9px; font-size:10.5px; font-weight:800; cursor:pointer;">🗑️ ล้างประวัติทั้งหมด</button>
+              </div>
+            </div>
+            <div id="home-weight-history-list" style="display:flex; flex-direction:column; gap:6px;"></div>
           </div>
         </div>
 
@@ -3767,8 +3786,9 @@
                 <div id="cycle-sub-status" style="font-size:11px; color:#BE185D; font-weight:700;">แตะที่เม็ดยาบนแผงเพื่อแกะเม็ดยา · มีวันที่จริงกำกับทุกเม็ด</div>
               </div>
             </div>
-            <div style="display:flex; gap:5px;">
+            <div style="display:flex; gap:5px; flex-wrap:wrap;">
               <button type="button" class="meal-add-btn" style="background:#FCE7F3; color:#9D174D; border-color:#F9A8D4; font-weight:800;" onclick="openCycleSettingsModal()">📦 เลือกยี่ห้อ / ตั้งค่า</button>
+              <button type="button" class="meal-add-btn" style="background:#FEF2F2; color:#DC2626; border:1px solid #FECACA; font-weight:800;" onclick="clearAllCycleHistory()" title="ล้างประวัติการแกะยาและวันประจำเดือนทั้งหมด">🗑️ ล้างประวัติ</button>
               <button type="button" class="meal-add-btn" style="background:#FFE4E6; color:#E11D48; border-color:#FECDD3;" onclick="openModal('modal-apple-health')">🍎</button>
             </div>
           </div>
@@ -3841,7 +3861,7 @@
       <div class="ins-sec-panel active" data-ins-sec="overview">
         <!-- 📊 Period Summary Card: 1 Week / 1 Month / 3 Months / 6 Months / 1 Year + Funny Elephant Ladder -->
         <div class="card" style="padding:16px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; gap:6px; flex-wrap:wrap;">
             <div style="display:flex; align-items:center; gap:8px;">
               <img class="theme-mascot-buddy" src="cinnamoroll_avatar.jpg" alt="Mascot" />
               <div>
@@ -3849,6 +3869,7 @@
                 <p style="font-size:11.5px; color:var(--sub);">เลือกดูตามช่วงเวลา พร้อมเทียบน้ำหนักแบบขั้นบันไดสุดฮา!</p>
               </div>
             </div>
+            <button type="button" onclick="clearAllFoodHistory()" style="border:1px solid #FECACA; background:#FEF2F2; color:#DC2626; border-radius:99px; padding:5px 10px; font-size:11px; font-weight:800; cursor:pointer; white-space:nowrap;">🗑️ ล้างประวัติอาหาร</button>
           </div>
 
           <!-- 5 Period Tabs -->
@@ -3921,7 +3942,10 @@
                 <p style="font-size:11.5px; color:var(--sub);">แตะที่แท่งกราฟแต่ละวันเพื่อดูก้าวเดินรายวันเหมือนแอปสุขภาพ iPhone!</p>
               </div>
             </div>
-            <button type="button" class="meal-add-btn" onclick="openStepsModal()">+ แก้ก้าว</button>
+            <div style="display:flex; gap:5px; flex-wrap:wrap;">
+              <button type="button" class="meal-add-btn" onclick="openStepsModal()">+ แก้ก้าว</button>
+              <button type="button" class="meal-add-btn" style="background:#FEF2F2; color:#DC2626; border:1px solid #FECACA;" onclick="clearAllStepsHistory()">🗑️ ล้างประวัติก้าว</button>
+            </div>
           </div>
 
           <!-- 📊 Apple Health Style Multi-Day Interactive Bar Chart (เลือกดูหลายๆ วัน) -->
@@ -3985,9 +4009,12 @@
 
         <!-- Weight History Log List -->
         <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <span style="font-size:15.5px; font-weight:800;">ประวัติการชั่งน้ำหนัก</span>
-            <button class="meal-add-btn" onclick="openWeightModal()">+ บันทึกน้ำหนัก</button>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:6px; flex-wrap:wrap;">
+            <span style="font-size:15.5px; font-weight:800;">⚖️ ประวัติการชั่งน้ำหนัก</span>
+            <div style="display:flex; gap:6px;">
+              <button class="meal-add-btn" onclick="openWeightModal()">+ บันทึกน้ำหนัก</button>
+              <button type="button" class="meal-add-btn" style="background:#FEF2F2; color:#DC2626; border:1px solid #FECACA;" onclick="clearAllWeightHistory()">🗑️ ล้างทั้งหมด</button>
+            </div>
           </div>
           <div id="weight-history-list" style="display:flex; flex-direction:column; gap:8px;"></div>
         </div>
@@ -3997,7 +4024,7 @@
       <div class="ins-sec-panel" data-ins-sec="skin">
         <!-- ✨ Skincare & Glow Summary Card in Insights -->
         <div class="card" style="padding:16px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; gap:6px; flex-wrap:wrap;">
             <div style="display:flex; align-items:center; gap:8px;">
               <img class="theme-mascot-buddy" src="mymelody_avatar.jpg" alt="Mascot" />
               <div>
@@ -4005,6 +4032,7 @@
                 <p style="font-size:11.5px; color:var(--sub);">ติดตามวันขัดเกลือ วิตามิน มาร์กหน้า กันแดด & นับถอยหลังผิวใส</p>
               </div>
             </div>
+            <button type="button" onclick="clearAllBeautyHistory()" style="border:1px solid #FECACA; background:#FEF2F2; color:#DC2626; border-radius:99px; padding:5px 10px; font-size:11px; font-weight:800; cursor:pointer; white-space:nowrap;">🗑️ ล้างประวัติสกินแคร์</button>
           </div>
 
           <div id="insights-beauty-status-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;"></div>
@@ -4089,9 +4117,12 @@
 
       <!-- Upcoming Appointments List -->
       <div class="card" style="padding:16px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; gap:6px; flex-wrap:wrap;">
           <h3 style="font-size:15px; font-weight:800;">📌 รายการกำหนดการ & นัดหมาย</h3>
-          <button class="meal-add-btn" onclick="openAddScheduleModal()">+ เพิ่มกำหนดการ</button>
+          <div style="display:flex; gap:6px;">
+            <button class="meal-add-btn" onclick="openAddScheduleModal()">+ เพิ่มกำหนดการ</button>
+            <button type="button" class="meal-add-btn" style="background:#FEF2F2; color:#DC2626; border:1px solid #FECACA;" onclick="clearAllSchedules()">🗑️ ล้างทั้งหมด</button>
+          </div>
         </div>
         <div id="schedule-items-list" style="display:flex; flex-direction:column; gap:8px;"></div>
       </div>
@@ -4196,11 +4227,11 @@
       </div>
     </div>
 
-    <!-- ==================== TAB 5: โปรไฟล์ & ตั้งค่า (PROFILE - CLEAN SUB-TABS v39) ==================== -->
+    <!-- ==================== TAB 5: โปรไฟล์ & ตั้งค่า (PROFILE - CLEAN SUB-TABS v40) ==================== -->
     <div id="view-profile" class="view">
       <div class="top-header">
         <div class="greeting-box">
-          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v39</span></div>
+          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v40</span></div>
           <div class="greet-main">โปรไฟล์ & ตั้งค่า ⚙️</div>
         </div>
         <div style="display:flex; gap:6px; align-items:center;">
@@ -4513,6 +4544,7 @@
             <button class="btn-secondary" onclick="document.getElementById('import-file').click()">⬆️ นำเข้าไฟล์ Backup</button>
             <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importDataJSON(event)" />
           </div>
+          <button class="btn-secondary" style="border-color:#F87171; background:#FEF2F2; color:#B91C1C; font-weight:800; margin-bottom:10px;" onclick="resetAllAppHistoryClean()">🧹 ล้างประวัติทั้งหมดในแอป (เริ่มนับหนึ่งใหม่คลีนๆ)</button>
           <button class="btn-secondary" style="border-color:#FCA5A5; color:#DC2626;" onclick="lockCalorieApp()">🔒 ล็อกหน้าจอแอป (ต้องใส่รหัส PIN 6 หลักใหม่)</button>
         </div>
       </div>
@@ -4921,6 +4953,15 @@
         BMI ปัจจุบัน: 21.9 (สมส่วน) · ซิงค์เข้าหน้าโปรไฟล์และหน้าสรุปผลอัตโนมัติ
       </div>
       <button class="btn-primary" onclick="saveWeightEntry()">✅ บันทึกน้ำหนัก & ส่วนสูง (ซิงค์ทุกหน้าทันที)</button>
+
+      <!-- Weight History inside Modal so user can also delete entries right here -->
+      <div style="margin-top:14px; padding-top:12px; border-top:1px dashed var(--line);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="font-size:13px; font-weight:800; color:var(--ink);">📋 ประวัติการชั่งน้ำหนัก</span>
+          <button type="button" onclick="clearAllWeightHistory()" style="border:1px solid #FECACA; background:#FEF2F2; color:#DC2626; border-radius:99px; padding:3px 9px; font-size:10.5px; font-weight:800; cursor:pointer;">🗑️ ล้างประวัติทั้งหมด</button>
+        </div>
+        <div id="modal-weight-history-list" style="display:flex; flex-direction:column; gap:6px; max-height:180px; overflow-y:auto;"></div>
+      </div>
     </div>
   </div>
 
@@ -5703,23 +5744,11 @@
       let pillBrand = raw.pillBrand || "yasmin_21";
       let pillPackType = Number(raw.pillPackType ?? raw.pillType ?? 21);
       let pillBreakDays = Number(raw.pillBreakDays ?? (pillPackType === 21 ? 7 : 0));
-      let pillPackStartDate = raw.pillPackStartDate || raw.pillStartDate || raw.lastPeriodStart || raw.lastPeriodDate || defStart;
-      let pillBrandMigratedV33 = Boolean(raw.pillBrandMigratedV33);
-
-      // Migrate default unconfigured state to the user's real Yasmin 21 pack (started Mon 19 Oct 2026 with Mon/Tue/Wed taken)
-      if (!pillBrandMigratedV33) {
-        pillBrand = "yasmin_21";
-        pillPackType = 21;
-        pillBreakDays = 7;
-        pillPackStartDate = "2026-10-19";
-        takenMap["2026-10-19"] = true;
-        takenMap["2026-10-20"] = true;
-        takenMap["2026-10-21"] = true;
-        pillBrandMigratedV33 = true;
-      }
+      let pillPackStartDate = raw.pillPackStartDate || raw.pillStartDate || raw.lastPeriodStart || raw.lastPeriodDate || getTodayStr();
+      let pillBrandMigratedV33 = true;
 
       return {
-        lastPeriodStart: raw.lastPeriodStart || raw.lastPeriodDate || pillPackStartDate || defStart,
+        lastPeriodStart: raw.lastPeriodStart || raw.lastPeriodDate || "",
         cycleLength: Number(raw.cycleLength) || 28,
         periodDuration: Number(raw.periodDuration) || 5,
         pillBrand,
@@ -5735,7 +5764,7 @@
         appleHealthPeriodSyncedAt: Number(raw.appleHealthPeriodSyncedAt) || 0,
         packHistory: Array.isArray(raw.packHistory) ? raw.packHistory : [],
         pillBrandMigratedV33,
-        periodLogs: Array.isArray(raw.periodLogs) ? raw.periodLogs : (Array.isArray(raw.periodDates) ? raw.periodDates : [defStart])
+        periodLogs: Array.isArray(raw.periodLogs) ? raw.periodLogs : (Array.isArray(raw.periodDates) ? raw.periodDates : [])
       };
     }
 
@@ -5776,8 +5805,8 @@
       });
       const rc = (raw.routineConfig && typeof raw.routineConfig === "object") ? raw.routineConfig : {};
       return {
-        lastSaltScrubDate: raw.lastSaltScrubDate || getOffsetDateStr(-2),
-        lastMaskDate: raw.lastMaskDate || getOffsetDateStr(-2),
+        lastSaltScrubDate: typeof raw.lastSaltScrubDate === "string" ? raw.lastSaltScrubDate : "",
+        lastMaskDate: typeof raw.lastMaskDate === "string" ? raw.lastMaskDate : "",
         glowTargetDays: Number(raw.glowTargetDays) || 28,
         routineConfig: {
           mask: normalizeBeautyRuleObj(rc.mask, [1, 3], 2),
@@ -5843,35 +5872,28 @@
           { id: 201, name: "สลัดอกไก่ไข่ต้ม + น้ำสลัดงา", cal: 290, p: 27, c: 16, f: 12, price: 69, unit: "1 ชาม", icon: "🥗" },
           { id: 202, name: "มัทฉะลาเต้หวานน้อย", cal: 130, p: 3, c: 19, f: 4, price: 65, unit: "1 แก้ว", icon: "🍵" }
         ],
-        days: {
-          [today]: {
-            waterGlasses: 3,
-            steps: 4200,
-            burned: 160,
-            meals: { "มื้อเช้า": [], "มื้อกลางวัน": [], "มื้อเย็น": [], "ของว่าง": [] }
-          }
-        },
-        weightHistory: [
-          { date: getOffsetDateStr(-4), weight: 52.5 },
-          { date: today, weight: 52.0 }
-        ],
+        days: {},
+        weightHistory: [],
         beautyLogs: {
-          lastSaltScrubDate: getOffsetDateStr(-2),
+          lastSaltScrubDate: "",
+          lastMaskDate: "",
           glowTargetDays: 28,
-          daily: {
-            [getOffsetDateStr(-2)]: { sunscreen: true, vitamin: true, mask: true, scrub: true },
-            [today]: { sunscreen: true, vitamin: false, mask: false, scrub: false }
-          }
+          daily: {}
         },
         cycleData: {
-          lastPeriodStart: getOffsetDateStr(-14),
+          lastPeriodStart: "",
           cycleLength: 28,
           periodDuration: 5,
-          pillPackType: 28,
+          pillBrand: "yasmin_21",
+          pillPackType: 21,
+          pillBreakDays: 7,
           pillReminderTime: "21:00",
-          pillPackStartDate: getOffsetDateStr(-14),
-          pillTakenDates: { [getOffsetDateStr(-2)]: true, [getOffsetDateStr(-1)]: true },
-          periodLogs: [getOffsetDateStr(-14)]
+          pillPackStartDate: today,
+          pillTakenDates: {},
+          periodFlowDates: {},
+          appleHealthPeriodDates: [],
+          packHistory: [],
+          periodLogs: []
         }
       };
     }
@@ -5908,63 +5930,41 @@
           { id: 102, name: "อเมริกาโน่เย็น (ไม่หวาน)", cal: 15, p: 1, c: 2, f: 0, price: 35, unit: "1 แก้ว", icon: "☕" },
           { id: 103, name: "กะเพราอกไก่คลีน + ไข่ดาวน้ำ", cal: 380, p: 42, c: 36, f: 7, price: 65, unit: "1 จาน", icon: "🌿" }
         ],
-        days: {
-          [today]: {
-            waterGlasses: 4,
-            steps: 5420,
-            burned: 215,
-            meals: {
-              "มื้อเช้า": [
-                { id: 1, name: "ไข่ดาว", cal: 110, p: 7, c: 1, f: 9, price: 12, unit: "1 ฟอง (50g)", icon: "🍳" },
-                { id: 2, name: "อกไก่นุ่ม CP 7-Eleven", cal: 120, p: 23, c: 2, f: 2, price: 40, unit: "1 ซอง (90g)", icon: "🍗" }
-              ],
-              "มื้อกลางวัน": [
-                { id: 3, name: "กะเพราอกไก่สับคลีน (ไม่ใช้น้ำมัน)", cal: 310, p: 35, c: 34, f: 3.5, price: 65, unit: "1 กล่อง", icon: "🌿" }
-              ],
-              "มื้อเย็น": [],
-              "ของว่าง": [
-                { id: 4, name: "อเมริกาโน่เย็น All Cafe 7-Eleven (ไม่หวาน)", cal: 15, p: 1, c: 2, f: 0, price: 35, unit: "1 แก้ว", icon: "☕" }
-              ]
-            }
-          }
-        },
-        weightHistory: [
-          { date: getOffsetDateStr(-6), weight: 66.2 },
-          { date: getOffsetDateStr(-4), weight: 65.8 },
-          { date: getOffsetDateStr(-2), weight: 65.4 },
-          { date: today, weight: 65.0 }
-        ],
+        days: {},
+        weightHistory: [],
         beautyLogs: {
-          lastSaltScrubDate: getOffsetDateStr(-3),
+          lastSaltScrubDate: "",
+          lastMaskDate: "",
           glowTargetDays: 28,
-          daily: {
-            [getOffsetDateStr(-3)]: { sunscreen: true, vitamin: true, mask: true, scrub: true },
-            [today]: { sunscreen: true, vitamin: true, mask: false, scrub: false }
-          }
+          daily: {}
         },
         cycleData: {
-          lastPeriodStart: getOffsetDateStr(-14),
+          lastPeriodStart: "",
           cycleLength: 28,
           periodDuration: 5,
-          pillPackType: 28,
+          pillBrand: "yasmin_21",
+          pillPackType: 21,
+          pillBreakDays: 7,
           pillReminderTime: "21:00",
-          pillPackStartDate: getOffsetDateStr(-14),
-          pillTakenDates: { [getOffsetDateStr(-2)]: true, [getOffsetDateStr(-1)]: true },
-          periodLogs: [getOffsetDateStr(-14)]
+          pillPackStartDate: today,
+          pillTakenDates: {},
+          periodFlowDates: {},
+          appleHealthPeriodDates: [],
+          packHistory: [],
+          periodLogs: []
         }
       };
 
       return {
         ...paulDefault,
+        cleanRealStartV41: true,
+        lastHistoryClearedAt: 0,
         activeProfileId: "paul",
         profilesMap: {
           paul: JSON.parse(JSON.stringify(paulDefault)),
           partner: buildDefaultPartnerSlot()
         },
-        schedules: [
-          { id: 901, title: "🦷 นัดไปขูดหินปูน / ตรวจฟัน", cat: "🦷 ทำฟัน / ขูดหินปูน", who: "both", date: getOffsetDateStr(5), time: "14:00", locationName: "สยามพารากอน (Siam Paragon)", mapUrl: "https://www.google.com/maps/search/?api=1&query=Siam+Paragon", note: "คลินิกทันตกรรมชั้น 4" },
-          { id: 902, title: "🧂 วันขัดเกลือสครับผิว + มาส์กหน้า", cat: "🧂 ขัดเกลือสครับผิว", who: "partner", date: getOffsetDateStr(2), time: "20:00", locationName: "", mapUrl: "", note: "สครับผิวใส" }
-        ],
+        schedules: [],
         customScheduleCategories: [...DEFAULT_SCHEDULE_CATEGORIES],
         savedSchedulePlaces: [
           { name: "สยามพารากอน (Siam Paragon)", mapUrl: "https://www.google.com/maps/search/?api=1&query=Siam+Paragon" },
@@ -6061,6 +6061,60 @@
       if (!merged.theme) {
         merged.theme = "cinnamoroll";
       }
+
+      // 🧹 ONE-TIME CLEAN SLATE MIGRATION (v41): Wipe all pre-populated demo/test histories so user starts 100% clean!
+      if (!merged.cleanRealStartV41) {
+        const cleanNowTs = sanitizeSyncTimestamp(Date.now());
+        merged.cleanRealStartV41 = true;
+        merged.lastHistoryClearedAt = cleanNowTs;
+        merged.updatedAt = Math.max(merged.updatedAt || 0, cleanNowTs);
+        merged.days = {};
+        merged.weightHistory = [];
+        merged.schedules = [];
+        merged.beautyLogs = normalizeBeautyLogsObj({
+          lastSaltScrubDate: "",
+          lastMaskDate: "",
+          glowTargetDays: 28,
+          routineConfig: merged.beautyLogs?.routineConfig,
+          daily: {}
+        });
+        merged.cycleData = normalizeCycleDataObj({
+          ...(merged.cycleData || {}),
+          lastPeriodStart: "",
+          pillPackStartDate: getTodayStr(),
+          pillTakenDates: {},
+          periodFlowDates: {},
+          appleHealthPeriodDates: [],
+          appleHealthPeriodSyncedAt: 0,
+          packHistory: [],
+          periodLogs: []
+        });
+        ["paul", "partner"].forEach(pid => {
+          if (merged.profilesMap[pid]) {
+            merged.profilesMap[pid].days = {};
+            merged.profilesMap[pid].weightHistory = [];
+            merged.profilesMap[pid].beautyLogs = normalizeBeautyLogsObj({
+              lastSaltScrubDate: "",
+              lastMaskDate: "",
+              glowTargetDays: 28,
+              routineConfig: merged.profilesMap[pid].beautyLogs?.routineConfig,
+              daily: {}
+            });
+            merged.profilesMap[pid].cycleData = normalizeCycleDataObj({
+              ...(merged.profilesMap[pid].cycleData || {}),
+              lastPeriodStart: "",
+              pillPackStartDate: getTodayStr(),
+              pillTakenDates: {},
+              periodFlowDates: {},
+              appleHealthPeriodDates: [],
+              appleHealthPeriodSyncedAt: 0,
+              packHistory: [],
+              periodLogs: []
+            });
+          }
+        });
+      }
+
       backfillPricesOnDaysAndBookmarks(merged.days, merged.bookmarks);
       ["paul", "partner"].forEach(pid => {
         const slot = merged.profilesMap[pid];
@@ -6318,16 +6372,16 @@
       const pri = cdT >= sdT ? cd : sd;
       const sec = cdT >= sdT ? sd : cd;
 
-      // Smart field-by-field merge so Safari Apple Health steps and Home Screen App meals NEVER overwrite each other!
+      // Authoritative merge from newer state (pri) so deleted meals, reset water, or cleared steps stay deleted!
       const sStepsT = sanitizeSyncTimestamp(sd.stepsUpdatedAt || 0);
       const cStepsT = sanitizeSyncTimestamp(cd.stepsUpdatedAt || 0);
-      let mergedSteps = Math.max(Number(sd.steps || 0), Number(cd.steps || 0));
-      let mergedBurned = Math.max(Number(sd.burned || 0), Number(cd.burned || 0));
+      let mergedSteps = Number(pri.steps || 0);
+      let mergedBurned = Number(pri.burned || 0);
       if (sStepsT > 0 || cStepsT > 0) {
-        if (cStepsT >= sStepsT && Number(cd.steps || 0) > 0) {
+        if (cStepsT >= sStepsT) {
           mergedSteps = Number(cd.steps || 0);
           mergedBurned = Number(cd.burned || 0);
-        } else if (sStepsT > cStepsT && Number(sd.steps || 0) > 0) {
+        } else {
           mergedSteps = Number(sd.steps || 0);
           mergedBurned = Number(sd.burned || 0);
         }
@@ -6335,8 +6389,8 @@
 
       const sWaterT = sanitizeSyncTimestamp(sd.waterUpdatedAt || 0);
       const cWaterT = sanitizeSyncTimestamp(cd.waterUpdatedAt || 0);
-      let mergedWater = Math.max(Number(sd.waterGlasses || 0), Number(cd.waterGlasses || 0));
-      let mergedExtraWater = Math.max(Number(sd.extraWaterMl || 0), Number(cd.extraWaterMl || 0));
+      let mergedWater = Number(pri.waterGlasses || 0);
+      let mergedExtraWater = Number(pri.extraWaterMl || 0);
       if (sWaterT > 0 || cWaterT > 0) {
         if (cWaterT >= sWaterT) {
           mergedWater = Number(cd.waterGlasses || 0);
@@ -6347,37 +6401,11 @@
         }
       }
 
-      // Merge meals by slot (supports Thai meal keys "มื้อเช้า", "มื้อกลางวัน", "มื้อเย็น", "ของว่าง")
       const mergedMeals = {};
-      const mealKeys = new Set([
-        "มื้อเช้า", "มื้อกลางวัน", "มื้อเย็น", "ของว่าง",
-        ...Object.keys(pri.meals || {}),
-        ...Object.keys(sec.meals || {})
-      ]);
-      mealKeys.forEach(slot => {
-        const pArr = Array.isArray(pri.meals?.[slot]) ? pri.meals[slot] : [];
-        const sArr = Array.isArray(sec.meals?.[slot]) ? sec.meals[slot] : [];
-        if (pArr.length === 0 && sArr.length > 0) {
-          mergedMeals[slot] = sArr;
-        } else if (sArr.length === 0) {
-          mergedMeals[slot] = pArr;
-        } else {
-          const itemMap = new Map();
-          sArr.forEach(it => { if (it) itemMap.set(it.id || JSON.stringify(it), it); });
-          pArr.forEach(it => { if (it) itemMap.set(it.id || JSON.stringify(it), it); });
-          mergedMeals[slot] = Array.from(itemMap.values());
+      ["มื้อเช้า", "มื้อกลางวัน", "มื้อเย็น", "ของว่าง", "breakfast", "lunch", "dinner", "snack", ...Object.keys(pri.meals || {})].forEach(slot => {
+        if (Array.isArray(pri.meals?.[slot])) {
+          mergedMeals[slot] = pri.meals[slot];
         }
-      });
-
-      // Union exercises by id
-      const exMap = new Map();
-      (Array.isArray(sec.exercises) ? sec.exercises : []).forEach(ex => { if (ex) exMap.set(ex.id || ex.name, ex); });
-      (Array.isArray(pri.exercises) ? pri.exercises : []).forEach(ex => { if (ex) exMap.set(ex.id || ex.name, ex); });
-
-      // Union missions true flags
-      const mergedMissions = { ...(sec.missions || {}), ...(pri.missions || {}) };
-      Object.keys(mergedMissions).forEach(k => {
-        mergedMissions[k] = Boolean(sec.missions?.[k] || pri.missions?.[k]);
       });
 
       return {
@@ -6390,26 +6418,34 @@
         extraWaterMl: mergedExtraWater,
         waterUpdatedAt: Math.max(sWaterT, cWaterT),
         meals: mergedMeals,
-        exercises: Array.from(exMap.values()),
-        missions: mergedMissions,
         dayUpdatedAt: Math.max(sdT, cdT)
       };
     }
 
-    function mergeDaysDict(sDaysObj, cDaysObj, sTime, cTime) {
-      const mergedDays = {};
+    function mergeDaysDict(sDaysObj, cDaysObj, sTime, cTime, sClearedAt = 0, cClearedAt = 0) {
       const sDays = sDaysObj || {};
       const cDays = cDaysObj || {};
-      const allDates = new Set([...Object.keys(sDays), ...Object.keys(cDays)]);
-      allDates.forEach(dStr => {
-        mergedDays[dStr] = mergeSingleDayObj(sDays[dStr], cDays[dStr], sTime, cTime);
-      });
-      return mergedDays;
+      // If one side cleared history more recently, only keep dates from the newer cleared side
+      if (cClearedAt > sClearedAt && cTime >= sTime) {
+        return JSON.parse(JSON.stringify(cDays));
+      }
+      if (sClearedAt > cClearedAt && sTime > cTime) {
+        return JSON.parse(JSON.stringify(sDays));
+      }
+      // Also if primary (newer state) explicitly deleted a date or has empty days while secondary has old dates before primary.updatedAt, respect primary!
+      const primaryDays = cTime >= sTime ? cDays : sDays;
+      return JSON.parse(JSON.stringify(primaryDays));
     }
 
     function mergeClientAndServerStates(serverState, clientState) {
       if (!serverState || typeof serverState !== "object") return clientState;
       if (!clientState || typeof clientState !== "object") return serverState;
+
+      // If one side has cleanRealStartV41 and the other does not, the v41 clean state always wins!
+      const sClean = Boolean(serverState.cleanRealStartV41);
+      const cClean = Boolean(clientState.cleanRealStartV41);
+      if (cClean && !sClean) return normalizeFullState(clientState);
+      if (sClean && !cClean) return normalizeFullState(serverState);
 
       const sTime = sanitizeSyncTimestamp(serverState.updatedAt || 0);
       const cTime = sanitizeSyncTimestamp(clientState.updatedAt || 0);
@@ -6417,6 +6453,8 @@
       const secondary = cTime >= sTime ? serverState : clientState;
 
       const merged = { ...primary };
+      merged.cleanRealStartV41 = true;
+      merged.lastHistoryClearedAt = Math.max(Number(primary.lastHistoryClearedAt || 0), Number(secondary.lastHistoryClearedAt || 0));
 
       // NEVER allow Cloud/Server sync to overwrite this device's chosen Theme, App Logo, or Active Profile!
       const localTheme = safeLocalGet(DEVICE_THEME_KEY) || clientState.theme;
@@ -6437,21 +6475,13 @@
       }
       merged.aiConfig = pAi;
 
-      // Smart field-by-field merge of days dictionary
-      merged.days = mergeDaysDict(serverState.days, clientState.days, sTime, cTime);
-
-      // Merge weightHistory by date
-      const wMap = {};
-      (secondary.weightHistory || []).forEach(it => {
-        if (it && it.date) wMap[it.date] = it;
-      });
-      (primary.weightHistory || []).forEach(it => {
-        if (it && it.date) wMap[it.date] = it;
-      });
-      merged.weightHistory = Object.values(wMap).sort((a, b) => String(a.date).localeCompare(String(b.date)));
-
-      merged.bookmarks = (primary.bookmarks && primary.bookmarks.length > 0) ? primary.bookmarks : (secondary.bookmarks || []);
-      merged.schedules = (primary.schedules && primary.schedules.length > 0) ? primary.schedules : (secondary.schedules || []);
+      // Primary (newer updatedAt) is authoritative for deletions on days, weightHistory, schedules, bookmarks, beautyLogs, and cycleData!
+      merged.days = mergeDaysDict(serverState.days, clientState.days, sTime, cTime, Number(serverState.lastHistoryClearedAt || 0), Number(clientState.lastHistoryClearedAt || 0));
+      merged.weightHistory = Array.isArray(primary.weightHistory)
+        ? [...primary.weightHistory].sort((a, b) => String(a.date).localeCompare(String(b.date)))
+        : [];
+      merged.bookmarks = Array.isArray(primary.bookmarks) ? primary.bookmarks : (secondary.bookmarks || []);
+      merged.schedules = Array.isArray(primary.schedules) ? primary.schedules : [];
       const catSet = new Set([
         ...(primary.customScheduleCategories || []),
         ...(secondary.customScheduleCategories || []),
@@ -6465,68 +6495,31 @@
         }
       });
       merged.savedSchedulePlaces = Array.from(placeMap.values());
-      merged.beautyLogs = {
-        ...(secondary.beautyLogs || {}),
-        ...(primary.beautyLogs || {}),
-        routineConfig: (primary.beautyLogs?.routineConfig || secondary.beautyLogs?.routineConfig),
-        daily: {
-          ...(secondary.beautyLogs?.daily || {}),
-          ...(primary.beautyLogs?.daily || {})
-        }
-      };
-      const rawSecCycle = secondary.cycleData || {};
-      const rawPriCycle = primary.cycleData || {};
-      const sCycle = normalizeCycleDataObj(rawSecCycle);
-      const pCycle = normalizeCycleDataObj(rawPriCycle);
-      const preferSecCycle = Boolean(rawSecCycle.pillBrandMigratedV33 && !rawPriCycle.pillBrandMigratedV33);
-      const baseCycle = preferSecCycle ? { ...pCycle, ...sCycle } : { ...sCycle, ...pCycle };
-      const mergedAhDates = Array.from(new Set([...(sCycle.appleHealthPeriodDates || []), ...(pCycle.appleHealthPeriodDates || [])])).sort();
-      const mergedAhSyncedAt = Math.max(Number(sCycle.appleHealthPeriodSyncedAt || 0), Number(pCycle.appleHealthPeriodSyncedAt || 0));
-      merged.cycleData = {
-        ...baseCycle,
-        pillTakenDates: {
-          ...(sCycle.pillTakenDates || {}),
-          ...(pCycle.pillTakenDates || {})
-        },
-        periodFlowDates: {
-          ...(sCycle.periodFlowDates || {}),
-          ...(pCycle.periodFlowDates || {})
-        },
-        appleHealthPeriodDates: mergedAhDates,
-        appleHealthPeriodSyncedAt: mergedAhSyncedAt,
-        packHistory: (pCycle.packHistory && pCycle.packHistory.length > 0)
-          ? pCycle.packHistory
-          : (sCycle.packHistory || [])
-      };
+      merged.beautyLogs = normalizeBeautyLogsObj(primary.beautyLogs || {});
+      merged.cycleData = normalizeCycleDataObj(primary.cycleData || {});
 
       const pProfiles = { ...(primary.profilesMap || {}) };
       const sProfiles = { ...(secondary.profilesMap || {}) };
       ["paul", "partner"].forEach(pid => {
-        if (pProfiles[pid] && sProfiles[pid]) {
-          const sSlotC = normalizeCycleDataObj(sProfiles[pid].cycleData);
-          const pSlotC = normalizeCycleDataObj(pProfiles[pid].cycleData);
+        if (pProfiles[pid]) {
           pProfiles[pid] = {
-            ...sProfiles[pid],
+            ...(sProfiles[pid] || {}),
             ...pProfiles[pid],
-            days: mergeDaysDict(sProfiles[pid].days, pProfiles[pid].days, sTime, cTime),
-            cycleData: {
-              ...sSlotC,
-              ...pSlotC,
-              pillTakenDates: { ...(sSlotC.pillTakenDates || {}), ...(pSlotC.pillTakenDates || {}) },
-              periodFlowDates: { ...(sSlotC.periodFlowDates || {}), ...(pSlotC.periodFlowDates || {}) },
-              appleHealthPeriodDates: Array.from(new Set([...(sSlotC.appleHealthPeriodDates || []), ...(pSlotC.appleHealthPeriodDates || []), ...mergedAhDates])).sort(),
-              appleHealthPeriodSyncedAt: Math.max(Number(sSlotC.appleHealthPeriodSyncedAt || 0), Number(pSlotC.appleHealthPeriodSyncedAt || 0), mergedAhSyncedAt)
-            }
+            days: pProfiles[pid].days || {},
+            weightHistory: Array.isArray(pProfiles[pid].weightHistory) ? pProfiles[pid].weightHistory : [],
+            beautyLogs: normalizeBeautyLogsObj(pProfiles[pid].beautyLogs || {}),
+            cycleData: normalizeCycleDataObj(pProfiles[pid].cycleData || {})
           };
-        } else if (!pProfiles[pid] && sProfiles[pid]) {
+        } else if (sProfiles[pid]) {
           pProfiles[pid] = sProfiles[pid];
         }
       });
-      // Also make sure active profile's merged days are reflected inside profilesMap[activeProfileId]
+      // Also make sure active profile's merged data is reflected inside profilesMap[activeProfileId]
       const activePid = merged.activeProfileId || "paul";
       if (pProfiles[activePid]) {
         pProfiles[activePid].days = merged.days;
         pProfiles[activePid].weightHistory = merged.weightHistory;
+        pProfiles[activePid].beautyLogs = merged.beautyLogs;
         pProfiles[activePid].cycleData = merged.cycleData;
       }
       if (Object.keys(pProfiles).length > 0) {
@@ -6916,18 +6909,22 @@
       // Sparkline SVG
       const hist = (state.weightHistory || []).slice(-7);
       const svg = document.getElementById("w-mini-spark");
-      if (hist.length >= 2) {
-        const vals = hist.map(h => h.weight);
-        const minV = Math.min(...vals) - 0.3;
-        const maxV = Math.max(...vals) + 0.3;
-        const pts = vals.map((v, idx) => {
-          const x = (idx / (vals.length - 1)) * 150 + 5;
-          const y = 24 - ((v - minV) / Math.max(0.1, maxV - minV)) * 18;
-          return `${x},${y}`;
-        }).join(" ");
-        svg.innerHTML = `
-          <polyline fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" points="${pts}" />
-        `;
+      if (svg) {
+        if (hist.length >= 2) {
+          const vals = hist.map(h => h.weight);
+          const minV = Math.min(...vals) - 0.3;
+          const maxV = Math.max(...vals) + 0.3;
+          const pts = vals.map((v, idx) => {
+            const x = (idx / (vals.length - 1)) * 150 + 5;
+            const y = 24 - ((v - minV) / Math.max(0.1, maxV - minV)) * 18;
+            return `${x},${y}`;
+          }).join(" ");
+          svg.innerHTML = `
+            <polyline fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" points="${pts}" />
+          `;
+        } else {
+          svg.innerHTML = "";
+        }
       }
 
       const remainKg = Math.max(0, currW - goalW);
@@ -6939,6 +6936,8 @@
         remainKg > 0
           ? `เป้าหมายอีก ${estDays} วัน · ${targetDate.getDate()} ${monthNames[targetDate.getMonth()]} ${targetDate.getFullYear() + 543}`
           : `🎉 คุณถึงน้ำหนักเป้าหมายแล้ว! ยอดเยี่ยมมาก`;
+
+      renderWeightHistoryLists();
     }
 
     function renderWaterCard() {
@@ -7427,7 +7426,7 @@
 
     // ==================== DAILY MISSIONS (BEAUTY GLOW VS MACHO POMPOM) & SKINCARE COUNTDOWN ====================
     function ensureBeautyDayLog(dateStr) {
-      if (!state.beautyLogs) state.beautyLogs = { lastSaltScrubDate: getOffsetDateStr(-2), glowTargetDays: 28, daily: {} };
+      if (!state.beautyLogs) state.beautyLogs = { lastSaltScrubDate: "", lastMaskDate: "", glowTargetDays: 28, daily: {} };
       if (!state.beautyLogs.daily) state.beautyLogs.daily = {};
       if (!state.beautyLogs.daily[dateStr]) {
         state.beautyLogs.daily[dateStr] = {
@@ -7720,23 +7719,23 @@
           if (log.sunscreen || log.vitamin || log.mask || log.scrub) activeBeautyDays++;
         }
       }
-      const lastScrub = (scrubDates.length > 0 ? scrubDates[scrubDates.length - 1] : null) || state.beautyLogs.lastSaltScrubDate || getOffsetDateStr(-2);
-      const lastMask = (maskDates.length > 0 ? maskDates[maskDates.length - 1] : null) || state.beautyLogs.lastMaskDate || getOffsetDateStr(-2);
+      const lastScrub = (scrubDates.length > 0 ? scrubDates[scrubDates.length - 1] : "") || state.beautyLogs.lastSaltScrubDate || "";
+      const lastMask = (maskDates.length > 0 ? maskDates[maskDates.length - 1] : "") || state.beautyLogs.lastMaskDate || "";
       state.beautyLogs.lastSaltScrubDate = lastScrub;
       state.beautyLogs.lastMaskDate = lastMask;
-      if (!scrubDates.includes(lastScrub)) scrubDates.push(lastScrub);
+      if (lastScrub && !scrubDates.includes(lastScrub)) scrubDates.push(lastScrub);
       const todayZero = new Date(getTodayStr() + "T00:00:00");
-      const daysSinceScrub = Math.max(0, Math.round((todayZero - new Date(lastScrub + "T00:00:00")) / 86400000));
-      const daysSinceMask = Math.max(0, Math.round((todayZero - new Date(lastMask + "T00:00:00")) / 86400000));
+      const daysSinceScrub = lastScrub ? Math.max(0, Math.round((todayZero - new Date(lastScrub + "T00:00:00")) / 86400000)) : null;
+      const daysSinceMask = lastMask ? Math.max(0, Math.round((todayZero - new Date(lastMask + "T00:00:00")) / 86400000)) : null;
       const maskDueInfo = getNextBeautyDueInfo(currentSelectedDate, rc.mask, lastMask);
       const scrubDueInfo = getNextBeautyDueInfo(currentSelectedDate, rc.scrub, lastScrub);
-      const nextScrubIn = scrubDueInfo.isDueToday ? 0 : Math.max(1, 3 - daysSinceScrub);
+      const nextScrubIn = scrubDueInfo.isDueToday ? 0 : (daysSinceScrub !== null ? Math.max(1, 3 - daysSinceScrub) : 0);
       const countdownDays = Math.max(1, 14 - Math.min(13, activeBeautyDays));
       const glowPct = Math.min(100, Math.max(25, Math.round(((14 - countdownDays) / 14) * 100)));
       return {
         sunDays, vitDays, maskDays, activeBeautyDays,
         lastScrub, lastMask, daysSinceScrub, daysSinceMask,
-        nextScrubIn, countdownDays, glowPct, scrubDates,
+        nextScrubIn, countdownDays, glowPct, scrubDates, maskDates,
         maskRuleDesc: describeBeautyRule(rc.mask),
         scrubRuleDesc: describeBeautyRule(rc.scrub),
         maskDueInfo,
@@ -7900,11 +7899,15 @@
 
       const lastMaskEl = document.getElementById("last-mask-date-txt");
       if (lastMaskEl) {
-        lastMaskEl.textContent = glow.daysSinceMask === 0 ? "วันนี้! ✨" : `${glow.daysSinceMask} วันที่แล้ว (${glow.lastMask.slice(5)}) · ${glow.maskDueInfo.nextLabel}`;
+        lastMaskEl.textContent = !glow.lastMask
+          ? `ยังไม่มีประวัติ · ${glow.maskDueInfo.nextLabel}`
+          : (glow.daysSinceMask === 0 ? "วันนี้! ✨" : `${glow.daysSinceMask} วันที่แล้ว (${glow.lastMask.slice(5)}) · ${glow.maskDueInfo.nextLabel}`);
       }
       const lastScrubEl = document.getElementById("last-scrub-date-txt");
       if (lastScrubEl) {
-        lastScrubEl.textContent = glow.daysSinceScrub === 0 ? "วันนี้! ✨" : `${glow.daysSinceScrub} วันที่แล้ว (${glow.lastScrub.slice(5)}) · ${glow.scrubDueInfo.nextLabel}`;
+        lastScrubEl.textContent = !glow.lastScrub
+          ? `ยังไม่มีประวัติ · ${glow.scrubDueInfo.nextLabel}`
+          : (glow.daysSinceScrub === 0 ? "วันนี้! ✨" : `${glow.daysSinceScrub} วันที่แล้ว (${glow.lastScrub.slice(5)}) · ${glow.scrubDueInfo.nextLabel}`);
       }
       const cdTxtEl = document.getElementById("skin-glow-countdown-txt");
       if (cdTxtEl) cdTxtEl.textContent = `⏳ นับถอยหลังอีก ${glow.countdownDays} วัน ผิวจะสวยใสออร่าพุ่ง! ✨`;
@@ -9024,9 +9027,9 @@
               const dObj = new Date(dStr + "T00:00:00");
               const lbl = isNaN(dObj.getTime()) ? dStr : `${DOW_TH_ARR[dObj.getDay()]} ${formatShortThaiDate(dObj)}`;
               const fromAh = ahDates.includes(dStr);
-              return `<span style="background:${fromAh ? '#DCFCE7' : '#FFE4E6'}; color:${fromAh ? '#166534' : '#BE123C'}; border:1px solid ${fromAh ? '#86EFAC' : '#FDA4AF'}; font-size:10px; font-weight:900; padding:2px 7px; border-radius:99px; display:inline-flex; align-items:center; gap:3px;">${fromAh ? '🍎🩸' : '🩸'} ${lbl}</span>`;
+              return `<span style="background:${fromAh ? '#DCFCE7' : '#FFE4E6'}; color:${fromAh ? '#166534' : '#BE123C'}; border:1px solid ${fromAh ? '#86EFAC' : '#FDA4AF'}; font-size:10px; font-weight:900; padding:2px 7px; border-radius:99px; display:inline-flex; align-items:center; gap:4px;">${fromAh ? '🍎🩸' : '🩸'} ${lbl} <button type="button" onclick="deletePeriodDateEntry('${dStr}')" title="ลบวันนี้" style="border:none; background:transparent; color:#9D174D; font-weight:900; font-size:10px; cursor:pointer; padding:0 2px;">✕</button></span>`;
             }).join("")
-          : `<span style="font-size:10.5px; color:#64748B;">ยังไม่มีประวัติวันประจำเดือนที่ซิงค์เข้ามา</span>`;
+          : `<span style="font-size:10.5px; color:#64748B;">ยังไม่มีประวัติวันประจำเดือน (กดบันทึกหรือดึงจากสุขภาพได้เลย)</span>`;
 
         ahPeriodBox.innerHTML = `
           <div style="background:#FFF5F7; border:1.5px solid #FBCFE8; border-radius:14px; padding:9px 11px;">
@@ -9082,9 +9085,10 @@
         if (hist.length > 0) {
           histWrap.style.display = "block";
           histList.innerHTML = hist.map((h, idx) => `
-            <div style="display:flex; justify-content:space-between; align-items:center; background:#FFF; padding:5px 8px; border-radius:8px; border:1px solid #E2E8F0;">
-              <span>📦 กล่องก่อนหน้า #${hist.length - idx}: <strong>${escapeHtml(h.brandName || 'Yasmin')}</strong> (เริ่ม ${h.startDate})</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#FFF; padding:5px 8px; border-radius:8px; border:1px solid #E2E8F0; gap:6px;">
+              <span style="flex:1;">📦 กล่องก่อนหน้า #${hist.length - idx}: <strong>${escapeHtml(h.brandName || 'Yasmin')}</strong> (เริ่ม ${h.startDate})</span>
               <button type="button" onclick="setPackStartDateQuick('${h.startDate}')" style="border:none; background:#F1F5F9; color:#334155; border-radius:6px; padding:2px 6px; font-size:10px; font-weight:800; cursor:pointer;">เรียกดู</button>
+              <button type="button" onclick="deletePackHistoryEntry(${idx})" style="border:1px solid #FECACA; background:#FEF2F2; color:#DC2626; border-radius:6px; padding:2px 6px; font-size:10px; font-weight:800; cursor:pointer;">🗑️ ลบ</button>
             </div>
           `).join("");
         } else {
@@ -9343,8 +9347,8 @@
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const allSchedules = state.schedules || [];
       const todayStr = getTodayStr();
-      const lastMask = state.beautyLogs?.lastMaskDate || getOffsetDateStr(-2);
-      const lastScrub = state.beautyLogs?.lastSaltScrubDate || getOffsetDateStr(-2);
+      const lastMask = state.beautyLogs?.lastMaskDate || "";
+      const lastScrub = state.beautyLogs?.lastSaltScrubDate || "";
 
       let cellsHtml = "";
       for (let i = 0; i < firstDow; i++) {
@@ -10044,7 +10048,7 @@
       const bGrid = document.getElementById("insights-beauty-status-grid");
       if (bGrid) {
         const items = [
-          { icon: "🧂", title: "ขัดเกลือสครับผิว", val: glow.daysSinceScrub === 0 ? "ขัดวันนี้แล้ว ✨" : `ล่าสุด ${glow.daysSinceScrub} วันที่แล้ว`, ok: glow.daysSinceScrub <= 3, key: "scrub" },
+          { icon: "🧂", title: "ขัดเกลือสครับผิว", val: !glow.lastScrub ? "ยังไม่มีประวัติ" : (glow.daysSinceScrub === 0 ? "ขัดวันนี้แล้ว ✨" : `ล่าสุด ${glow.daysSinceScrub} วันที่แล้ว`), ok: glow.daysSinceScrub !== null && glow.daysSinceScrub <= 3, key: "scrub" },
           { icon: "🍒", title: "เติมวิตามินผิว", val: bLogToday.vitamin ? "✅ วันนี้กินแล้ว" : `เดือนนี้กิน ${glow.vitDays} วัน`, ok: bLogToday.vitamin, key: "vitamin" },
           { icon: "🧖‍♀️", title: "มาส์กหน้าฉ่ำ", val: bLogToday.mask ? "✅ วันนี้มาส์กแล้ว" : `เดือนนี้มาส์ก ${glow.maskDays} ครั้ง`, ok: bLogToday.mask, key: "mask" },
           { icon: "☀️", title: "ทากันแดดสม่ำเสมอ", val: `${glow.sunDays}/28 วัน (${bLogToday.sunscreen ? 'วันนี้ทาแล้ว' : 'วันนี้ยังไม่ทา'})`, ok: bLogToday.sunscreen || glow.sunDays >= 10, key: "sunscreen" }
@@ -10063,9 +10067,21 @@
       if (subGlowEl) subGlowEl.textContent = `คุณดูแลผิวต่อเนื่องมาแล้ว ${glow.activeBeautyDays} วัน · ความฉ่ำออร่า ${glow.glowPct}%`;
       const chipsEl = document.getElementById("ins-scrub-history-chips");
       if (chipsEl) {
-        chipsEl.innerHTML = glow.scrubDates.slice(-5).reverse().map(d => `
-          <span style="font-size:10.5px; font-weight:800; background:#FCE7F3; color:#BE185D; padding:3px 9px; border-radius:99px;">🧂 ${d}</span>
-        `).join("");
+        const allBeautyHistDates = Array.from(new Set([...(glow.scrubDates || []), ...(glow.maskDates || [])])).filter(Boolean).sort().reverse();
+        if (allBeautyHistDates.length === 0) {
+          chipsEl.innerHTML = `<span style="font-size:11px; color:#64748B; font-weight:700;">ยังไม่มีประวัติวันขัดผิว/มาส์กหน้า (เริ่มติ๊กเมื่อทำจริงได้เลย)</span>`;
+        } else {
+          chipsEl.innerHTML = allBeautyHistDates.slice(0, 8).map(d => {
+            const logD = state.beautyLogs?.daily?.[d] || {};
+            const ic = `${logD.scrub || state.beautyLogs?.lastSaltScrubDate === d ? '🧂' : ''}${logD.mask || state.beautyLogs?.lastMaskDate === d ? '🧖‍♀️' : ''}` || '✨';
+            return `
+              <span style="font-size:10.5px; font-weight:800; background:#FCE7F3; color:#BE185D; padding:3px 9px; border-radius:99px; display:inline-flex; align-items:center; gap:4px;">
+                ${ic} ${d}
+                <button type="button" onclick="deleteBeautyHistoryDate('${d}')" title="ลบประวัติวันนี้" style="border:none; background:transparent; color:#9D174D; font-weight:900; font-size:10px; cursor:pointer; padding:0 2px;">✕</button>
+              </span>
+            `;
+          }).join("");
+        }
       }
 
       renderStepsJourneyAndFunnyCompare();
@@ -10076,29 +10092,254 @@
     let selectedInsightsStepRange = 7;
 
     function ensureCleanDailyStepsV34() {
-      if (!state || !state.days) return;
-      const realWeekSeed = {
-        "2026-10-15": { steps: 1420, burned: 57 },
-        "2026-10-16": { steps: 1180, burned: 47 },
-        "2026-10-17": { steps: 45, burned: 2 },
-        "2026-10-18": { steps: 80, burned: 3 },
-        "2026-10-19": { steps: 85, burned: 3 },
-        "2026-10-20": { steps: 4350, burned: 174 },
-        "2026-10-21": { steps: 92, burned: 4 }
-      };
-      const mockVals = [6800, 4200, 5420, 140];
-      Object.keys(realWeekSeed).forEach(dStr => {
-        const dl = ensureDayLog(dStr);
-        if (!dl.steps || mockVals.includes(Number(dl.steps))) {
-          dl.steps = realWeekSeed[dStr].steps;
-          dl.burned = realWeekSeed[dStr].burned;
-        }
-      });
-      // Always clean 6800/5420 mock value on 2026-10-22 even if pulled from Cloud Bridge
-      if (state.days["2026-10-22"] && mockVals.includes(Number(state.days["2026-10-22"].steps))) {
-        state.days["2026-10-22"].steps = 92;
-        state.days["2026-10-22"].burned = 4;
+      // v40 Clean Real-Use Mode: Do NOT inject any pre-populated/demo step seeds
+    }
+
+    // ==================== 🗑️ HISTORY DELETE & CLEAR HANDLERS (v40 CLEAN REAL-USE) ====================
+    function escapeHtml(str) {
+      return String(str == null ? "" : str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function renderWeightHistoryLists() {
+      const list = Array.isArray(state.weightHistory) ? state.weightHistory.slice().sort((a, b) => String(b.date).localeCompare(String(a.date))) : [];
+      const emptyHtml = `<div style="padding:10px 12px; background:#F8FAFC; border:1px dashed #CBD5E1; border-radius:10px; font-size:11.5px; color:#64748B; font-weight:700; text-align:center;">ยังไม่มีประวัติการชั่งน้ำหนัก · กดปุ่ม "+ บันทึกน้ำหนักวันนี้" เมื่อชั่งจริงได้เลย</div>`;
+
+      const buildItemHtml = (item, compact = false) => `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:${compact ? '6px 10px' : '9px 12px'}; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; font-size:${compact ? '12px' : '13px'};">
+          <span style="color:var(--sub); font-weight:700;">📅 ${escapeHtml(item.date)}</span>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <strong class="num" style="color:var(--ink); font-size:${compact ? '12.5px' : '13.5px'};">${Number(item.weight).toFixed(1)} kg</strong>
+            <button type="button" onclick="deleteWeightHistoryByDate('${escapeHtml(item.date)}')" title="ลบประวัติน้ำหนักวันนี้" style="border:1px solid #FECACA; background:#FEF2F2; color:#DC2626; border-radius:7px; padding:2px 7px; font-size:10.5px; font-weight:800; cursor:pointer;">🗑️ ลบ</button>
+          </div>
+        </div>
+      `;
+
+      const homeListEl = document.getElementById("home-weight-history-list");
+      if (homeListEl) {
+        homeListEl.innerHTML = list.length > 0 ? list.slice(0, 7).map(it => buildItemHtml(it, true)).join("") : emptyHtml;
       }
+      const insListEl = document.getElementById("weight-history-list");
+      if (insListEl) {
+        insListEl.innerHTML = list.length > 0 ? list.slice(0, 15).map(it => buildItemHtml(it, false)).join("") : emptyHtml;
+      }
+      const modalListEl = document.getElementById("modal-weight-history-list");
+      if (modalListEl) {
+        modalListEl.innerHTML = list.length > 0 ? list.slice(0, 12).map(it => buildItemHtml(it, true)).join("") : emptyHtml;
+      }
+    }
+
+    function deleteWeightHistoryByDate(dStr) {
+      if (!Array.isArray(state.weightHistory)) state.weightHistory = [];
+      const beforeLen = state.weightHistory.length;
+      state.weightHistory = state.weightHistory.filter(h => h && h.date !== dStr);
+      if (state.weightHistory.length === beforeLen) return;
+      if (state.weightHistory.length > 0) {
+        const sorted = state.weightHistory.slice().sort((a, b) => String(a.date).localeCompare(String(b.date)));
+        state.profile.currWeight = Number(sorted[sorted.length - 1].weight) || state.profile.currWeight;
+      }
+      saveState();
+      renderAll();
+      renderWeightHistoryLists();
+      showToast(`🗑️ ลบประวัติน้ำหนักวันที่ ${dStr} เรียบร้อยแล้ว`);
+    }
+
+    function clearAllWeightHistory() {
+      if (!Array.isArray(state.weightHistory) || state.weightHistory.length === 0) {
+        showToast("ไม่มีประวัติน้ำหนักให้ลบค่ะ");
+        return;
+      }
+      if (!confirm("ต้องการล้างประวัติน้ำหนักทั้งหมดใช่ไหมคะ?")) return;
+      state.weightHistory = [];
+      saveState();
+      renderAll();
+      renderWeightHistoryLists();
+      showToast("🗑️ ล้างประวัติน้ำหนักทั้งหมดเรียบร้อย!");
+    }
+
+    function clearSelectedDayMeals() {
+      const dayLog = ensureDayLog(currentSelectedDate);
+      const tot = calculateDayTotals(currentSelectedDate);
+      if (tot.count === 0) {
+        showToast("วันนี้ยังไม่มีรายการอาหารให้ลบค่ะ");
+        return;
+      }
+      if (!confirm(`ต้องการลบรายการอาหารทั้งหมดของวันที่ ${currentSelectedDate} (${tot.count} รายการ) ใช่ไหมคะ?`)) return;
+      dayLog.meals = { "มื้อเช้า": [], "มื้อกลางวัน": [], "มื้อเย็น": [], "ของว่าง": [] };
+      saveState();
+      renderAll();
+      showToast(`🗑️ ล้างรายการอาหารวันที่ ${currentSelectedDate} เรียบร้อยแล้ว`);
+    }
+
+    function clearAllFoodHistory() {
+      if (!confirm("ต้องการล้างประวัติอาหารและน้ำดื่มของทุกวันทั้งหมดใช่ไหมคะ?")) return;
+      if (state.days && typeof state.days === "object") {
+        Object.keys(state.days).forEach(dStr => {
+          const d = state.days[dStr];
+          if (d) {
+            d.meals = { "มื้อเช้า": [], "มื้อกลางวัน": [], "มื้อเย็น": [], "ของว่าง": [] };
+            d.waterGlasses = 0;
+            d.extraWaterMl = 0;
+            d.customBeverages = [];
+          }
+        });
+      }
+      saveState();
+      renderAll();
+      showToast("🗑️ ล้างประวัติอาหารและน้ำดื่มทั้งหมดเรียบร้อย!");
+    }
+
+    function resetSelectedDayWater() {
+      const dayLog = ensureDayLog(currentSelectedDate);
+      if (!dayLog.waterGlasses && !dayLog.extraWaterMl && (!dayLog.customBeverages || dayLog.customBeverages.length === 0)) {
+        showToast("น้ำดื่มวันนี้เป็น 0 อยู่แล้วค่ะ");
+        return;
+      }
+      dayLog.waterGlasses = 0;
+      dayLog.extraWaterMl = 0;
+      dayLog.customBeverages = [];
+      if (state.beautyLogs?.daily?.[currentSelectedDate]) {
+        state.beautyLogs.daily[currentSelectedDate].water8 = false;
+      }
+      saveState();
+      renderAll();
+      showToast(`🗑️ รีเซ็ตน้ำดื่มวันที่ ${currentSelectedDate} เป็น 0 แก้วแล้ว`);
+    }
+
+    function clearSelectedDaySteps() {
+      const dayLog = ensureDayLog(currentSelectedDate);
+      dayLog.steps = 0;
+      dayLog.burned = 0;
+      saveState();
+      renderAll();
+      showToast(`🗑️ ล้างก้าวเดินและแคลเผาผลาญวันที่ ${currentSelectedDate} เป็น 0 แล้ว`);
+    }
+
+    function clearAllStepsHistory() {
+      if (!confirm("ต้องการล้างประวัติก้าวเดินและแคลเผาผลาญของทุกวันทั้งหมดใช่ไหมคะ?")) return;
+      if (state.days && typeof state.days === "object") {
+        Object.keys(state.days).forEach(dStr => {
+          if (state.days[dStr]) {
+            state.days[dStr].steps = 0;
+            state.days[dStr].burned = 0;
+          }
+        });
+      }
+      saveState();
+      renderAll();
+      showToast("🗑️ ล้างประวัติก้าวเดินทุกวันเป็น 0 เรียบร้อย!");
+    }
+
+    function deleteBeautyHistoryDate(dStr) {
+      if (!state.beautyLogs) return;
+      if (state.beautyLogs.daily && state.beautyLogs.daily[dStr]) {
+        state.beautyLogs.daily[dStr].scrub = false;
+        state.beautyLogs.daily[dStr].mask = false;
+        delete state.beautyLogs.daily[dStr];
+      }
+      if (state.beautyLogs.lastSaltScrubDate === dStr) state.beautyLogs.lastSaltScrubDate = "";
+      if (state.beautyLogs.lastMaskDate === dStr) state.beautyLogs.lastMaskDate = "";
+      saveState();
+      renderAll();
+      showToast(`🗑️ ลบประวัติสกินแคร์วันที่ ${dStr} แล้ว`);
+    }
+
+    function clearAllBeautyHistory() {
+      if (!confirm("ต้องการล้างประวัติสกินแคร์/มาส์กหน้า/ขัดผิวและภารกิจรายวันทั้งหมดใช่ไหมคะ?")) return;
+      const keepCfg = state.beautyLogs?.routineConfig;
+      state.beautyLogs = normalizeBeautyLogsObj({ routineConfig: keepCfg });
+      state.beautyLogs.lastSaltScrubDate = "";
+      state.beautyLogs.lastMaskDate = "";
+      state.beautyLogs.daily = {};
+      saveState();
+      renderAll();
+      showToast("🗑️ ล้างประวัติสกินแคร์และภารกิจทั้งหมดเรียบร้อย!");
+    }
+
+    function deletePeriodDateEntry(dStr) {
+      if (!state.cycleData) return;
+      if (state.cycleData.periodFlowDates && state.cycleData.periodFlowDates[dStr]) {
+        delete state.cycleData.periodFlowDates[dStr];
+      }
+      if (Array.isArray(state.cycleData.appleHealthPeriodDates)) {
+        state.cycleData.appleHealthPeriodDates = state.cycleData.appleHealthPeriodDates.filter(d => d !== dStr);
+      }
+      if (state.cycleData.lastPeriodStart === dStr) {
+        const rem = Object.keys(state.cycleData.periodFlowDates || {}).filter(k => state.cycleData.periodFlowDates[k]).sort();
+        state.cycleData.lastPeriodStart = rem.length > 0 ? rem[rem.length - 1] : "";
+      }
+      saveState();
+      renderCycleAndPillCard();
+      showToast(`🗑️ ลบประวัติประจำเดือนวันที่ ${dStr} แล้ว`);
+    }
+
+    function deletePackHistoryEntry(idx) {
+      if (!state.cycleData || !Array.isArray(state.cycleData.packHistory)) return;
+      state.cycleData.packHistory.splice(idx, 1);
+      saveState();
+      renderCycleAndPillCard();
+      showToast("🗑️ ลบประวัติแผงยาคุมก่อนหน้าแล้ว");
+    }
+
+    function clearAllCycleHistory() {
+      if (!confirm("ต้องการล้างประวัติการแกะยาคุมและวันประจำเดือนทั้งหมด (เพื่อเริ่มบันทึกใหม่เอง) ใช่ไหมคะ?")) return;
+      if (!state.cycleData) state.cycleData = normalizeCycleDataObj({});
+      state.cycleData.pillTakenDates = {};
+      state.cycleData.periodFlowDates = {};
+      state.cycleData.appleHealthPeriodDates = [];
+      state.cycleData.appleHealthPeriodSyncedAt = 0;
+      state.cycleData.packHistory = [];
+      state.cycleData.periodLogs = [];
+      state.cycleData.lastPeriodStart = "";
+      saveState();
+      renderCycleAndPillCard();
+      showToast("🗑️ ล้างประวัติยาคุมและวันประจำเดือนทั้งหมดเรียบร้อย!");
+    }
+
+    function clearAllSchedules() {
+      if (!Array.isArray(state.schedules) || state.schedules.length === 0) {
+        showToast("ยังไม่มีนัดหมายในตารางให้ลบค่ะ");
+        return;
+      }
+      if (!confirm(`ต้องการลบนัดหมายทั้งหมด (${state.schedules.length} รายการ) ใช่ไหมคะ?`)) return;
+      state.schedules = [];
+      saveState();
+      renderScheduleTab();
+      showToast("🗑️ ล้างนัดหมายทั้งหมดเรียบร้อย!");
+    }
+
+    function resetAllAppHistoryClean() {
+      if (!confirm("🧹 ยืนยันล้างประวัติทั้งหมดในแอป (น้ำหนัก, อาหาร, น้ำดื่ม, ก้าวเดิน, สกินแคร์, ยาคุม, นัดหมาย) เพื่อเริ่มใช้งานจริงแบบคลีนๆ 100% ใช่ไหมคะ?\n(ชื่อโปรไฟล์ ธีม และเป้าหมายแคลจะยังอยู่ครบ)")) return;
+      const cleanSlot = (slot) => {
+        if (!slot) return;
+        slot.days = {};
+        slot.weightHistory = [];
+        slot.schedules = [];
+        slot.beautyLogs = normalizeBeautyLogsObj({ routineConfig: slot.beautyLogs?.routineConfig });
+        slot.beautyLogs.lastSaltScrubDate = "";
+        slot.beautyLogs.lastMaskDate = "";
+        slot.beautyLogs.daily = {};
+        slot.cycleData = normalizeCycleDataObj({
+          pillBrand: slot.cycleData?.pillBrand || "yasmin21",
+          pillType: slot.cycleData?.pillType || 21,
+          pillReminderTime: slot.cycleData?.pillReminderTime || "21:00"
+        });
+      };
+      cleanSlot(state);
+      if (state.profilesMap) {
+        cleanSlot(state.profilesMap.paul);
+        cleanSlot(state.profilesMap.partner);
+      }
+      state.cleanRealStartV41 = true;
+      state.lastHistoryClearedAt = sanitizeSyncTimestamp(Date.now());
+      saveState();
+      renderAll();
+      renderWeightHistoryLists();
+      showToast("✨ ล้างประวัติทั้งหมดคลีน 100% พร้อมเริ่มใช้งานจริงแล้ว!");
     }
 
     function selectStepDayFromHomeOrChart(dStr, openEdit = false) {
@@ -10382,14 +10623,8 @@
       const avg = countDays > 0 ? Math.round(sumCal / countDays) : 0;
       document.getElementById("avg-cal-7d").textContent = `เฉลี่ย ${avg.toLocaleString()} kcal/วัน`;
 
-      // Weight history list
-      const wList = document.getElementById("weight-history-list");
-      wList.innerHTML = (state.weightHistory || []).slice().reverse().slice(0, 10).map(item => `
-        <div style="display:flex; justify-content:space-between; padding:10px 12px; background:#F8FAFC; border-radius:12px; font-size:13.5px;">
-          <span style="color:var(--sub); font-weight:600;">📅 ${item.date}</span>
-          <strong class="num">${Number(item.weight).toFixed(1)} kg</strong>
-        </div>
-      `).join("");
+      // Weight history list with delete buttons
+      renderWeightHistoryLists();
     }
 
     // ==================== CLEAN RECAP RENDERING ====================
@@ -10590,6 +10825,7 @@
       if (swIn) swIn.value = state.profile.startWeight || 68;
       if (gwIn) gwIn.value = state.profile.goalWeight || 60;
       previewWeightModalBmi();
+      renderWeightHistoryLists();
       openModal("modal-weight");
     }
 
