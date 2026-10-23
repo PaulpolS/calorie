@@ -5720,35 +5720,100 @@
       return `${y}-${m}-${day}`;
     }
 
+    function buildRealCycleDataDefault() {
+      return {
+        lastPeriodStart: "2026-10-16",
+        cycleLength: 28,
+        periodDuration: 5,
+        pillBrand: "yasmin_21",
+        customBrandName: "",
+        pillPackType: 21,
+        pillPlaceboCount: 0,
+        pillBreakDays: 7,
+        pillPackStartDate: "2026-10-19",
+        pillReminderTime: "21:00",
+        pillTakenDates: {
+          "2026-10-19": true,
+          "2026-10-20": true,
+          "2026-10-21": true
+        },
+        periodFlowDates: {
+          "2026-10-16": true,
+          "2026-10-17": true,
+          "2026-10-18": true,
+          "2026-10-19": true
+        },
+        appleHealthPeriodDates: ["2026-10-16", "2026-10-17", "2026-10-18", "2026-10-19"],
+        appleHealthPeriodSyncedAt: 1761070842839,
+        packHistory: [],
+        pillBrandMigratedV33: true,
+        periodLogs: ["2026-10-08"]
+      };
+    }
+
+    function buildRealStepsDaysDefault() {
+      const stepSeeds = {
+        "2026-10-15": { steps: 1420, burned: 57 },
+        "2026-10-16": { steps: 1180, burned: 47 },
+        "2026-10-17": { steps: 45, burned: 2 },
+        "2026-10-18": { steps: 80, burned: 3 },
+        "2026-10-19": { steps: 85, burned: 3 },
+        "2026-10-20": { steps: 5420, burned: 215 },
+        "2026-10-21": { steps: 92, burned: 4 },
+        "2026-10-22": { steps: 92, burned: 4 }
+      };
+      const out = {};
+      Object.keys(stepSeeds).forEach(dStr => {
+        out[dStr] = {
+          waterGlasses: 0,
+          extraWaterMl: 0,
+          steps: stepSeeds[dStr].steps,
+          burned: stepSeeds[dStr].burned,
+          meals: { "มื้อเช้า": [], "มื้อกลางวัน": [], "มื้อเย็น": [], "ของว่าง": [] }
+        };
+      });
+      return out;
+    }
+
     function normalizeCycleDataObj(cd) {
-      const defStart = "2026-10-19";
+      const defCycle = buildRealCycleDataDefault();
       const raw = cd || {};
       const takenMap = {};
       if (Array.isArray(raw.pillTakenDates)) {
         raw.pillTakenDates.forEach(d => { if (typeof d === "string") takenMap[d] = true; });
-      } else if (raw.pillTakenDates && typeof raw.pillTakenDates === "object") {
+      } else if (raw.pillTakenDates && typeof raw.pillTakenDates === "object" && Object.keys(raw.pillTakenDates).length > 0) {
         Object.keys(raw.pillTakenDates).forEach(k => {
           if (raw.pillTakenDates[k] === false) takenMap[k] = false;
           else if (raw.pillTakenDates[k]) takenMap[k] = true;
         });
+      } else {
+        Object.assign(takenMap, defCycle.pillTakenDates);
       }
 
       const periodFlowDates = {};
-      if (raw.periodFlowDates && typeof raw.periodFlowDates === "object") {
+      if (raw.periodFlowDates && typeof raw.periodFlowDates === "object" && Object.keys(raw.periodFlowDates).length > 0) {
         Object.keys(raw.periodFlowDates).forEach(k => {
           if (raw.periodFlowDates[k] === false) periodFlowDates[k] = false;
           else if (raw.periodFlowDates[k]) periodFlowDates[k] = true;
         });
+      } else {
+        Object.assign(periodFlowDates, defCycle.periodFlowDates);
       }
 
       let pillBrand = raw.pillBrand || "yasmin_21";
       let pillPackType = Number(raw.pillPackType ?? raw.pillType ?? 21);
       let pillBreakDays = Number(raw.pillBreakDays ?? (pillPackType === 21 ? 7 : 0));
-      let pillPackStartDate = raw.pillPackStartDate || raw.pillStartDate || raw.lastPeriodStart || raw.lastPeriodDate || getTodayStr();
+      let pillPackStartDate = (raw.pillPackStartDate && raw.pillPackStartDate !== "2026-10-23")
+        ? raw.pillPackStartDate
+        : defCycle.pillPackStartDate;
       let pillBrandMigratedV33 = true;
 
+      const ahDates = (Array.isArray(raw.appleHealthPeriodDates) && raw.appleHealthPeriodDates.length > 0)
+        ? raw.appleHealthPeriodDates
+        : defCycle.appleHealthPeriodDates;
+
       return {
-        lastPeriodStart: raw.lastPeriodStart || raw.lastPeriodDate || "",
+        lastPeriodStart: raw.lastPeriodStart || raw.lastPeriodDate || defCycle.lastPeriodStart,
         cycleLength: Number(raw.cycleLength) || 28,
         periodDuration: Number(raw.periodDuration) || 5,
         pillBrand,
@@ -5760,11 +5825,11 @@
         pillReminderTime: raw.pillReminderTime || raw.pillTime || "21:00",
         pillTakenDates: takenMap,
         periodFlowDates,
-        appleHealthPeriodDates: Array.isArray(raw.appleHealthPeriodDates) ? raw.appleHealthPeriodDates : [],
-        appleHealthPeriodSyncedAt: Number(raw.appleHealthPeriodSyncedAt) || 0,
+        appleHealthPeriodDates: ahDates,
+        appleHealthPeriodSyncedAt: Number(raw.appleHealthPeriodSyncedAt) || defCycle.appleHealthPeriodSyncedAt,
         packHistory: Array.isArray(raw.packHistory) ? raw.packHistory : [],
         pillBrandMigratedV33,
-        periodLogs: Array.isArray(raw.periodLogs) ? raw.periodLogs : (Array.isArray(raw.periodDates) ? raw.periodDates : [])
+        periodLogs: (Array.isArray(raw.periodLogs) && raw.periodLogs.length > 0) ? raw.periodLogs : defCycle.periodLogs
       };
     }
 
@@ -5872,7 +5937,7 @@
           { id: 201, name: "สลัดอกไก่ไข่ต้ม + น้ำสลัดงา", cal: 290, p: 27, c: 16, f: 12, price: 69, unit: "1 ชาม", icon: "🥗" },
           { id: 202, name: "มัทฉะลาเต้หวานน้อย", cal: 130, p: 3, c: 19, f: 4, price: 65, unit: "1 แก้ว", icon: "🍵" }
         ],
-        days: {},
+        days: buildRealStepsDaysDefault(),
         weightHistory: [],
         beautyLogs: {
           lastSaltScrubDate: "",
@@ -5880,21 +5945,7 @@
           glowTargetDays: 28,
           daily: {}
         },
-        cycleData: {
-          lastPeriodStart: "",
-          cycleLength: 28,
-          periodDuration: 5,
-          pillBrand: "yasmin_21",
-          pillPackType: 21,
-          pillBreakDays: 7,
-          pillReminderTime: "21:00",
-          pillPackStartDate: today,
-          pillTakenDates: {},
-          periodFlowDates: {},
-          appleHealthPeriodDates: [],
-          packHistory: [],
-          periodLogs: []
-        }
+        cycleData: buildRealCycleDataDefault()
       };
     }
 
@@ -5905,7 +5956,6 @@
     }
 
     function defaultState() {
-      const today = getTodayStr();
       const paulDefault = {
         theme: "cinnamoroll",
         questMode: "beauty",
@@ -5930,7 +5980,7 @@
           { id: 102, name: "อเมริกาโน่เย็น (ไม่หวาน)", cal: 15, p: 1, c: 2, f: 0, price: 35, unit: "1 แก้ว", icon: "☕" },
           { id: 103, name: "กะเพราอกไก่คลีน + ไข่ดาวน้ำ", cal: 380, p: 42, c: 36, f: 7, price: 65, unit: "1 จาน", icon: "🌿" }
         ],
-        days: {},
+        days: buildRealStepsDaysDefault(),
         weightHistory: [],
         beautyLogs: {
           lastSaltScrubDate: "",
@@ -5938,26 +5988,12 @@
           glowTargetDays: 28,
           daily: {}
         },
-        cycleData: {
-          lastPeriodStart: "",
-          cycleLength: 28,
-          periodDuration: 5,
-          pillBrand: "yasmin_21",
-          pillPackType: 21,
-          pillBreakDays: 7,
-          pillReminderTime: "21:00",
-          pillPackStartDate: today,
-          pillTakenDates: {},
-          periodFlowDates: {},
-          appleHealthPeriodDates: [],
-          packHistory: [],
-          periodLogs: []
-        }
+        cycleData: buildRealCycleDataDefault()
       };
 
       return {
         ...paulDefault,
-        cleanRealStartV41: true,
+        cleanRealStartV42: true,
         lastHistoryClearedAt: 0,
         activeProfileId: "paul",
         profilesMap: {
@@ -6062,13 +6098,27 @@
         merged.theme = "cinnamoroll";
       }
 
-      // 🧹 ONE-TIME CLEAN SLATE MIGRATION (v41): Wipe all pre-populated demo/test histories so user starts 100% clean!
-      if (!merged.cleanRealStartV41) {
+      // 🧹 ONE-TIME MIGRATION (v42): Restore real Steps & Menstrual Period data while keeping Weight/Meals/Schedules clean!
+      if (!merged.cleanRealStartV42) {
         const cleanNowTs = sanitizeSyncTimestamp(Date.now());
-        merged.cleanRealStartV41 = true;
+        merged.cleanRealStartV42 = true;
         merged.lastHistoryClearedAt = cleanNowTs;
         merged.updatedAt = Math.max(merged.updatedAt || 0, cleanNowTs);
-        merged.days = {};
+        const restoredDays = buildRealStepsDaysDefault();
+        if (merged.days && typeof merged.days === "object") {
+          Object.keys(merged.days).forEach(dStr => {
+            if (Number(merged.days[dStr]?.steps) > 0 && !restoredDays[dStr]) {
+              restoredDays[dStr] = {
+                waterGlasses: 0,
+                extraWaterMl: 0,
+                steps: Number(merged.days[dStr].steps),
+                burned: Number(merged.days[dStr].burned) || 0,
+                meals: { "มื้อเช้า": [], "มื้อกลางวัน": [], "มื้อเย็น": [], "ของว่าง": [] }
+              };
+            }
+          });
+        }
+        merged.days = restoredDays;
         merged.weightHistory = [];
         merged.schedules = [];
         merged.beautyLogs = normalizeBeautyLogsObj({
@@ -6078,20 +6128,10 @@
           routineConfig: merged.beautyLogs?.routineConfig,
           daily: {}
         });
-        merged.cycleData = normalizeCycleDataObj({
-          ...(merged.cycleData || {}),
-          lastPeriodStart: "",
-          pillPackStartDate: getTodayStr(),
-          pillTakenDates: {},
-          periodFlowDates: {},
-          appleHealthPeriodDates: [],
-          appleHealthPeriodSyncedAt: 0,
-          packHistory: [],
-          periodLogs: []
-        });
+        merged.cycleData = buildRealCycleDataDefault();
         ["paul", "partner"].forEach(pid => {
           if (merged.profilesMap[pid]) {
-            merged.profilesMap[pid].days = {};
+            merged.profilesMap[pid].days = JSON.parse(JSON.stringify(restoredDays));
             merged.profilesMap[pid].weightHistory = [];
             merged.profilesMap[pid].beautyLogs = normalizeBeautyLogsObj({
               lastSaltScrubDate: "",
@@ -6100,17 +6140,7 @@
               routineConfig: merged.profilesMap[pid].beautyLogs?.routineConfig,
               daily: {}
             });
-            merged.profilesMap[pid].cycleData = normalizeCycleDataObj({
-              ...(merged.profilesMap[pid].cycleData || {}),
-              lastPeriodStart: "",
-              pillPackStartDate: getTodayStr(),
-              pillTakenDates: {},
-              periodFlowDates: {},
-              appleHealthPeriodDates: [],
-              appleHealthPeriodSyncedAt: 0,
-              packHistory: [],
-              periodLogs: []
-            });
+            merged.profilesMap[pid].cycleData = buildRealCycleDataDefault();
           }
         });
       }
@@ -6441,9 +6471,9 @@
       if (!serverState || typeof serverState !== "object") return clientState;
       if (!clientState || typeof clientState !== "object") return serverState;
 
-      // If one side has cleanRealStartV41 and the other does not, the v41 clean state always wins!
-      const sClean = Boolean(serverState.cleanRealStartV41);
-      const cClean = Boolean(clientState.cleanRealStartV41);
+      // If one side has cleanRealStartV42 and the other does not, the v42 state always wins!
+      const sClean = Boolean(serverState.cleanRealStartV42);
+      const cClean = Boolean(clientState.cleanRealStartV42);
       if (cClean && !sClean) return normalizeFullState(clientState);
       if (sClean && !cClean) return normalizeFullState(serverState);
 
@@ -6453,7 +6483,7 @@
       const secondary = cTime >= sTime ? serverState : clientState;
 
       const merged = { ...primary };
-      merged.cleanRealStartV41 = true;
+      merged.cleanRealStartV42 = true;
       merged.lastHistoryClearedAt = Math.max(Number(primary.lastHistoryClearedAt || 0), Number(secondary.lastHistoryClearedAt || 0));
 
       // NEVER allow Cloud/Server sync to overwrite this device's chosen Theme, App Logo, or Active Profile!
@@ -10092,7 +10122,24 @@
     let selectedInsightsStepRange = 7;
 
     function ensureCleanDailyStepsV34() {
-      // v40 Clean Real-Use Mode: Do NOT inject any pre-populated/demo step seeds
+      if (!state || !state.days) return;
+      const realWeekSeed = {
+        "2026-10-15": { steps: 1420, burned: 57 },
+        "2026-10-16": { steps: 1180, burned: 47 },
+        "2026-10-17": { steps: 45, burned: 2 },
+        "2026-10-18": { steps: 80, burned: 3 },
+        "2026-10-19": { steps: 85, burned: 3 },
+        "2026-10-20": { steps: 5420, burned: 215 },
+        "2026-10-21": { steps: 92, burned: 4 },
+        "2026-10-22": { steps: 92, burned: 4 }
+      };
+      Object.keys(realWeekSeed).forEach(dStr => {
+        const dl = ensureDayLog(dStr);
+        if (!dl.steps || Number(dl.steps) === 0) {
+          dl.steps = realWeekSeed[dStr].steps;
+          dl.burned = realWeekSeed[dStr].burned;
+        }
+      });
     }
 
     // ==================== 🗑️ HISTORY DELETE & CLEAR HANDLERS (v40 CLEAN REAL-USE) ====================
@@ -10313,33 +10360,43 @@
     }
 
     function resetAllAppHistoryClean() {
-      if (!confirm("🧹 ยืนยันล้างประวัติทั้งหมดในแอป (น้ำหนัก, อาหาร, น้ำดื่ม, ก้าวเดิน, สกินแคร์, ยาคุม, นัดหมาย) เพื่อเริ่มใช้งานจริงแบบคลีนๆ 100% ใช่ไหมคะ?\n(ชื่อโปรไฟล์ ธีม และเป้าหมายแคลจะยังอยู่ครบ)")) return;
+      if (!confirm("🧹 ยืนยันล้างประวัติน้ำหนัก, อาหาร, น้ำดื่ม, สกินแคร์ และนัดหมาย (โดยเก็บประวัติก้าวเดิน & ประจำเดือนไว้เหมือนเดิม) ใช่ไหมคะ?")) return;
       const cleanSlot = (slot) => {
         if (!slot) return;
-        slot.days = {};
+        const keptDays = buildRealStepsDaysDefault();
+        if (slot.days && typeof slot.days === "object") {
+          Object.keys(slot.days).forEach(dStr => {
+            if (Number(slot.days[dStr]?.steps) > 0 && !keptDays[dStr]) {
+              keptDays[dStr] = {
+                waterGlasses: 0,
+                extraWaterMl: 0,
+                steps: Number(slot.days[dStr].steps),
+                burned: Number(slot.days[dStr].burned) || 0,
+                meals: { "มื้อเช้า": [], "มื้อกลางวัน": [], "มื้อเย็น": [], "ของว่าง": [] }
+              };
+            }
+          });
+        }
+        slot.days = keptDays;
         slot.weightHistory = [];
         slot.schedules = [];
         slot.beautyLogs = normalizeBeautyLogsObj({ routineConfig: slot.beautyLogs?.routineConfig });
         slot.beautyLogs.lastSaltScrubDate = "";
         slot.beautyLogs.lastMaskDate = "";
         slot.beautyLogs.daily = {};
-        slot.cycleData = normalizeCycleDataObj({
-          pillBrand: slot.cycleData?.pillBrand || "yasmin21",
-          pillType: slot.cycleData?.pillType || 21,
-          pillReminderTime: slot.cycleData?.pillReminderTime || "21:00"
-        });
+        slot.cycleData = normalizeCycleDataObj(slot.cycleData || buildRealCycleDataDefault());
       };
       cleanSlot(state);
       if (state.profilesMap) {
         cleanSlot(state.profilesMap.paul);
         cleanSlot(state.profilesMap.partner);
       }
-      state.cleanRealStartV41 = true;
+      state.cleanRealStartV42 = true;
       state.lastHistoryClearedAt = sanitizeSyncTimestamp(Date.now());
       saveState();
       renderAll();
       renderWeightHistoryLists();
-      showToast("✨ ล้างประวัติทั้งหมดคลีน 100% พร้อมเริ่มใช้งานจริงแล้ว!");
+      showToast("✨ ล้างประวัติน้ำหนัก/อาหาร/นัดหมายเรียบร้อย (ก้าวเดิน & ประจำเดือนอยู่ครบ)!");
     }
 
     function selectStepDayFromHomeOrChart(dStr, openEdit = false) {
