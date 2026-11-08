@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Calorie</title>
   <script>
-    // 🛡️ Safari Self-Healing Bootstrapper (v44): clears any stale SW caches while preserving 100% of user data
+    // 🛡️ Safari Self-Healing Bootstrapper (v45): clears any stale SW caches while preserving 100% of user data
     (function() {
       try {
-        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v44") !== "1") {
-          localStorage.setItem("calorie_safari_healed_v44", "1");
+        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v45") !== "1") {
+          localStorage.setItem("calorie_safari_healed_v45", "1");
           caches.keys().then(function(keys) {
             keys.forEach(function(k) {
-              if (k !== "calorie-pwa-v44") caches.delete(k);
+              if (k !== "calorie-pwa-v45") caches.delete(k);
             });
           }).catch(function() {});
         }
@@ -5233,8 +5233,9 @@
           <div style="font-size:11.5px; color:#334155; margin-bottom:9px; background:rgba(255,255,255,0.85); border-radius:10px; padding:8px 10px; border:1px solid #FBCFE8;">
             <div style="font-weight:900; color:#BE185D; margin-bottom:3px;">📱 วิธีติดตั้งลง iPhone (ทำครั้งแรกครั้งเดียว):</div>
             <div><b>ขั้นที่ 1:</b> กดปุ่มสีชมพูด้านล่าง ➔ เลือก <b>"บันทึกไปยังแอปไฟล์ (Save to Files)"</b></div>
-            <div><b>ขั้นที่ 2:</b> เปิดแอป <b>"ไฟล์ (Files)"</b> บน iPhone ➔ แตะไฟล์ <b><code>CalorieHealthSync</code></b> ➔ กดปุ่มสีฟ้า <b>"เพิ่มคำสั่งลัด (Add Shortcut)"</b> (ถ้ามีตัวเก่าให้เลือก <b>"แทนที่ (Replace)"</b> เพื่อใช้ตัวใหม่ที่ดึงก้าว 14 วัน!)</div>
-            <div style="margin-top:5px; padding-top:5px; border-top:1px dashed #F9A8D4; color:#047857;"><b>💡 ทริคให้ดึงเองอัตโนมัติทุกวันไม่ต้องกดเอง:</b> ในแอปคำสั่งลัด แตะแท็บ <b>"การทำงานอัตโนมัติ (Automation)"</b> ด้านล่าง ➔ กด <b>+</b> ➔ เลือก <b>"เวลาของวัน (เช่น 21:00 น.)"</b> หรือ <b>"เมื่อเปิดแอปสุขภาพ"</b> ➔ เลือก <b>"รันทันที (Run Immediately)"</b> ➔ เลือก <b><code>CalorieHealthSync</code></b> แค่นี้มันจะซิงค์ให้เองทุกวันเลยครับ!</div>
+            <div><b>ขั้นที่ 2:</b> เปิดแอป <b>"ไฟล์ (Files)"</b> บน iPhone ➔ แตะไฟล์ <b><code>CalorieHealthSyncV2</code></b> ➔ กดปุ่มสีฟ้า <b>"เพิ่มคำสั่งลัด (Add Shortcut)"</b> (ตัวใหม่ชื่อ V2 ไม่ชนกับตัวเก่า · ลบ <code>CalorieHealthSync</code> ตัวเก่าทิ้งได้เลย)</div>
+            <div style="margin-top:5px; padding:6px 8px; background:#FEF2F2; border:1px solid #FECACA; border-radius:8px; color:#B91C1C;"><b>🔐 สำคัญ! เปิดสิทธิ์ก่อนรันครั้งแรก:</b> การตั้งค่า ➔ สุขภาพ ➔ การเข้าถึงข้อมูลและอุปกรณ์ ➔ คำสั่งลัด ➔ เปิด <b>ก้าวเดิน</b> (และ <b>ประจำเดือน</b>) ไม่งั้นจะได้ 0 ก้าว</div>
+            <div style="margin-top:5px; padding-top:5px; border-top:1px dashed #F9A8D4; color:#047857;"><b>💡 ทริคให้ดึงเองอัตโนมัติทุกวันไม่ต้องกดเอง:</b> ในแอปคำสั่งลัด แตะแท็บ <b>"การทำงานอัตโนมัติ (Automation)"</b> ด้านล่าง ➔ กด <b>+</b> ➔ เลือก <b>"เวลาของวัน (เช่น 21:00 น.)"</b> หรือ <b>"เมื่อเปิดแอปสุขภาพ"</b> ➔ เลือก <b>"รันทันที (Run Immediately)"</b> ➔ เลือก <b><code>CalorieHealthSyncV2</code></b> แค่นี้มันจะซิงค์ให้เองทุกวันเลยครับ!</div>
           </div>
           <button type="button" id="btn-install-shortcut-safe" onclick="installAppleHealthShortcut()" style="width:100%; border:none; cursor:pointer; background:linear-gradient(135deg,#E11D48 0%,#DB2777 100%); color:#FFF; font-weight:900; font-size:13.5px; padding:11px 14px; border-radius:12px; box-shadow:0 6px 16px rgba(225,29,72,0.28); margin-bottom:7px;">
             📲 1. กดส่งไฟล์คำสั่งลัด (รุ่นดึงก้าว 14 วัน + ประจำเดือน) เข้าแอปไฟล์
@@ -11257,21 +11258,24 @@
       showToast(`👟 บันทึก ${stepsVal.toLocaleString()} ก้าว (เผาผลาญ ${burnedVal} kcal) 🔥`);
     }
 
+    const HEALTH_SHORTCUT_NAME = "CalorieHealthSyncV2";
+    const HEALTH_SHORTCUT_FILE = "CalorieHealthSyncV2.shortcut";
+
     async function installAppleHealthShortcut() {
       const btn = document.getElementById("btn-install-shortcut-safe");
       const origTxt = btn ? btn.textContent : "";
       try {
         if (btn) btn.textContent = "⏳ กำลังเตรียมไฟล์คำสั่งลัด...";
-        const res = await fetch("CalorieHealthSync.shortcut?dl=" + Date.now(), { cache: "no-store" });
+        const res = await fetch(HEALTH_SHORTCUT_FILE + "?dl=" + Date.now(), { cache: "no-store" });
         if (!res.ok) throw new Error("fetch_failed");
         const blob = await res.blob();
-        const file = new File([blob], "CalorieHealthSync.shortcut", { type: "application/octet-stream" });
+        const file = new File([blob], HEALTH_SHORTCUT_FILE, { type: "application/octet-stream" });
 
         // Use native iOS Share Sheet so Safari/PWA never navigates to the raw binary AEA1 text page!
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           await navigator.share({
             files: [file],
-            title: "CalorieHealthSync.shortcut",
+            title: HEALTH_SHORTCUT_FILE,
             text: "เลือก 'บันทึกไปยังแอปไฟล์ (Save to Files)' แล้วแตะไฟล์ในแอปไฟล์เพื่อเพิ่มเข้าคำสั่งลัดครับ"
           });
           showToast("✅ เลือก 'บันทึกไปยังแอปไฟล์' แล้วแตะไฟล์ในแอปไฟล์ได้เลยครับ!");
@@ -11280,14 +11284,14 @@
           const objUrl = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = objUrl;
-          a.download = "CalorieHealthSync.shortcut";
+          a.download = HEALTH_SHORTCUT_FILE;
           document.body.appendChild(a);
           a.click();
           setTimeout(() => {
             a.remove();
             URL.revokeObjectURL(objUrl);
           }, 1500);
-          showToast("📥 ดาวน์โหลด CalorieHealthSync.shortcut แล้ว เปิดจากแอปไฟล์ได้เลยครับ!");
+          showToast("📥 ดาวน์โหลด " + HEALTH_SHORTCUT_FILE + " แล้ว เปิดจากแอปไฟล์ได้เลยครับ!");
         }
       } catch (e) {
         if (e && e.name === "AbortError") {
@@ -11301,8 +11305,9 @@
     }
 
     function runAppleHealthShortcutNow() {
-      showToast("▶️ กำลังรันคำสั่งลัด CalorieHealthSync เพื่อดึงก้าวเดิน 14 วัน + ประจำเดือน...");
-      window.location.href = "shortcuts://run-shortcut?name=CalorieHealthSync";
+      showToast("▶️ กำลังรันคำสั่งลัด CalorieHealthSyncV2 เพื่อดึงก้าวเดิน 14 วัน + วันนี้ + ประจำเดือน...");
+      // V2 name avoids colliding with the old 6-action "CalorieHealthSync" still installed on iPhone
+      window.location.href = "shortcuts://run-shortcut?name=" + encodeURIComponent(HEALTH_SHORTCUT_NAME);
     }
 
     // ==================== EASY STEP SYNC 1: IN-APP MOTION SENSOR AUTO-PEDOMETER (ไม่ต้องลงคำสั่งลัด!) ====================
@@ -11596,12 +11601,40 @@
       `;
     }
 
+    function showHealthStepsPermissionHelp() {
+      let box = document.getElementById("health-steps-perm-help");
+      if (!box) {
+        box = document.createElement("div");
+        box.id = "health-steps-perm-help";
+        box.className = "modal-backdrop";
+        box.style.cssText = "display:flex; z-index:99999; align-items:center; justify-content:center;";
+        box.onclick = (e) => { if (e.target === box) box.remove(); };
+        box.innerHTML = `
+          <div style="background:#FFF; border-radius:20px; max-width:380px; width:calc(100% - 32px); padding:18px 16px; box-shadow:0 12px 30px rgba(0,0,0,0.25); font-size:13px; line-height:1.55; color:#1F2937;">
+            <div style="font-size:16px; font-weight:900; color:#B91C1C; margin-bottom:6px;">⚠️ คำสั่งลัดยังอ่าน "ก้าวเดิน" ไม่ได้</div>
+            <div style="margin-bottom:8px;">แอปสุขภาพส่งค่าว่างกลับมา (ยังไม่ได้ให้สิทธิ์) เลยยังไม่บันทึกเป็น 0 ก้าวทับข้อมูลเดิมให้ครับ</div>
+            <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:12px; padding:10px 12px; font-weight:800; color:#991B1B;">
+              1. เปิด <b>การตั้งค่า</b> ⚙️<br>2. แตะ <b>สุขภาพ</b> ❤️<br>3. แตะ <b>การเข้าถึงข้อมูลและอุปกรณ์</b><br>4. แตะ <b>คำสั่งลัด</b><br>5. เปิด <b>ก้าวเดิน</b> 👟 (และ <b>ประจำเดือน</b> 🩸)
+            </div>
+            <div style="font-size:11.5px; color:#6B7280; margin-top:8px;">English: Settings ➔ Health ➔ Data Access &amp; Devices ➔ Shortcuts ➔ turn on Steps<br>ถ้าไม่เจอ "คำสั่งลัด" ในรายการ ให้รันคำสั่งลัด <b>${HEALTH_SHORTCUT_NAME}</b> 1 ครั้งก่อน แล้วกด "อนุญาต" ครับ</div>
+            <div style="display:flex; gap:8px; margin-top:12px;">
+              <button type="button" onclick="document.getElementById('health-steps-perm-help').remove(); runAppleHealthShortcutNow();" style="flex:1; border:none; background:linear-gradient(135deg,#059669,#10B981); color:#FFF; font-weight:900; border-radius:12px; padding:10px; cursor:pointer;">🔄 รันใหม่</button>
+              <button type="button" onclick="document.getElementById('health-steps-perm-help').remove();" style="flex:1; border:1.5px solid #E5E7EB; background:#FFF; color:#374151; font-weight:800; border-radius:12px; padding:10px; cursor:pointer;">ปิด</button>
+            </div>
+          </div>`;
+        document.body.appendChild(box);
+      }
+    }
+
     function checkAppleHealthUrlParams() {
       try {
         const params = new URLSearchParams(window.location.search);
         const stepsParam = params.get("steps");
         const stepsDatesParam = params.get("steps_dates");
         const stepsValsParam = params.get("steps_vals");
+        const stepsDaysParam = params.get("steps_days"); // V2: "YYYY-MM-DD=1234" per line
+        const fromShortcutV2 = params.get("src") === "sc2";
+        let healthStepsEmpty = false;
         const burnedParam = params.get("burned");
         const weightParam = params.get("weight");
         const pillParam = params.get("pill");
@@ -11616,10 +11649,42 @@
           ? [targetProfileParam]
           : ["paul", "partner"];
 
+        // 0) V2 Shortcut: one "date=value" pair per line, grouped by day with missing days filled as 0
+        let v2DayPairs = [];
+        if (stepsDaysParam) {
+          String(stepsDaysParam).split(/[\r\n;|,]+(?=\s*\d{4})/).forEach(line => {
+            const m = String(line).trim().match(/^(.+?)=\s*([\d.,]*)\s*$/);
+            if (!m) return;
+            const dStr = parseFlexibleShortcutDate(m[1]);
+            if (!dStr) return;
+            const numStr = m[2].replace(/,/g, "");
+            v2DayPairs.push({ dStr, val: numStr === "" ? 0 : Math.max(0, Math.round(Number(numStr) || 0)) });
+          });
+        }
+        const v2Total = v2DayPairs.reduce((a, p) => a + p.val, 0);
+        const todayStepsRaw = String(stepsParam || "").replace(/[^0-9.]/g, "").trim();
+        if (fromShortcutV2 || params.has("steps")) {
+          // Empty everywhere (or all zero for 14 days) = HealthKit permission missing, NOT "0 steps"
+          healthStepsEmpty = (todayStepsRaw === "" || Number(todayStepsRaw) === 0) && v2Total === 0;
+        }
+        if (v2DayPairs.length > 0 && !healthStepsEmpty) {
+          const v2Dates = v2DayPairs.map(p => p.dStr).join("\n");
+          const v2Vals = v2DayPairs.map(p => String(p.val)).join("\n");
+          params.set("steps_dates", v2Dates);
+          params.set("steps_vals", v2Vals);
+        }
+        // Today's value: prefer explicit sum, else today's daily bucket from the 14-day list
+        if (!healthStepsEmpty && todayStepsRaw === "") {
+          const tp = v2DayPairs.find(p => p.dStr === todayStr);
+          if (tp) params.set("steps", String(tp.val));
+        }
+
         // 1) Parse 14-day multi-day step history from upgraded CalorieHealthSync.shortcut (steps_dates & steps_vals)
-        if (stepsDatesParam && stepsValsParam) {
-          const rawDates = String(stepsDatesParam).split(/[\r\n;|]+/).map(s => s.trim()).filter(Boolean);
-          const rawVals = String(stepsValsParam).split(/[\r\n;|]+/).map(s => s.trim());
+        const stepsDatesFinal = params.get("steps_dates");
+        const stepsValsFinal = params.get("steps_vals");
+        if (!healthStepsEmpty && stepsDatesFinal && stepsValsFinal) {
+          const rawDates = String(stepsDatesFinal).split(/[\r\n;|]+/).map(s => s.trim()).filter(Boolean);
+          const rawVals = String(stepsValsFinal).split(/[\r\n;|]+/).map(s => s.trim());
           let multiCount = 0;
           for (let i = 0; i < rawDates.length; i++) {
             const dStr = parseFlexibleShortcutDate(rawDates[i]);
@@ -11661,9 +11726,13 @@
           }
         }
 
-        if (params.has("steps")) {
+        if (healthStepsEmpty) {
+          // Do NOT overwrite saved steps with 0 – show how to grant HealthKit permission instead
+          synced.push("⚠️ ยังอ่านก้าวเดินไม่ได้");
+          setTimeout(showHealthStepsPermissionHelp, 600);
+        } else if (params.has("steps")) {
           // Strip thousands commas (e.g. "4,350" from iOS Shortcuts) and handle empty string after midnight as 0 steps
-          const cleanStepsStr = String(stepsParam || "").replace(/[^0-9.]/g, "").trim();
+          const cleanStepsStr = String(params.get("steps") || "").replace(/[^0-9.]/g, "").trim();
           const st = cleanStepsStr === "" ? 0 : Math.max(0, Math.round(Number(cleanStepsStr) || 0));
           todayLog.steps = st;
           todayLog.stepsUpdatedAt = nowTs;
@@ -11682,7 +11751,7 @@
           synced.push(`${bn} kcal`);
         }
         // Mirror Apple Health steps/burned into profilesMap slots so Safari -> Home Screen PWA sync reaches whichever profile is active
-        if ((params.has("steps") || (burnedParam !== null && burnedParam !== "")) && state.profilesMap) {
+        if (((params.has("steps") && !healthStepsEmpty) || (burnedParam !== null && burnedParam !== "")) && state.profilesMap) {
           targetPids.forEach(pid => {
             const pSlot = state.profilesMap[pid];
             if (!pSlot) return;
