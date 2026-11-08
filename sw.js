@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calorie-pwa-v42';
+const CACHE_NAME = 'calorie-pwa-v43';
 const ASSETS = [
   './',
   './index.html',

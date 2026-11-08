@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Calorie</title>
   <script>
-    // 🛡️ Safari Self-Healing Bootstrapper (v35): clears any stale SW caches while preserving 100% of user data
+    // 🛡️ Safari Self-Healing Bootstrapper (v43): clears any stale SW caches while preserving 100% of user data
     (function() {
       try {
-        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v35") !== "1") {
-          localStorage.setItem("calorie_safari_healed_v35", "1");
+        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v43") !== "1") {
+          localStorage.setItem("calorie_safari_healed_v43", "1");
           caches.keys().then(function(keys) {
             keys.forEach(function(k) {
-              if (k !== "calorie-pwa-v35") caches.delete(k);
+              if (k !== "calorie-pwa-v43") caches.delete(k);
             });
           }).catch(function() {});
         }
@@ -844,7 +844,8 @@
       background: var(--green-soft);
       border-color: var(--green);
     }
-    .quest-check-box {
+    .quest-check-box,
+    .quest-check {
       width: 24px;
       height: 24px;
       border-radius: 8px;
@@ -858,7 +859,8 @@
       background: #F8FAFC;
       flex-shrink: 0;
     }
-    .quest-item.done .quest-check-box {
+    .quest-item.done .quest-check-box,
+    .quest-item.done .quest-check {
       background: var(--green);
       border-color: var(--green-dark);
     }
@@ -5696,9 +5698,7 @@
     let currentScanImageBase64 = "";
     let currentLibCategory = "ทั้งหมด";
     let activeCoach = "Cooper";
-    let currentSummaryDays = 30;
     let currentSummaryPeriodDays = 30;
-    let currentScheduleMonthOffset = 0;
     let currentSchedMonthOffset = 0;
     let currentSchedSelectedDate = getTodayStr();
     let customWorkoutTrainerChar = null;
@@ -6267,7 +6267,9 @@
     function syncActiveProfileIntoMap() {
       const pid = state.activeProfileId || "paul";
       if (!state.profilesMap) state.profilesMap = {};
+      const prevSlot = state.profilesMap[pid] || {};
       state.profilesMap[pid] = {
+        ...prevSlot,
         theme: state.theme,
         questMode: state.questMode || (state.profile.gender === "male" ? "macho" : "beauty"),
         profile: state.profile,
@@ -6275,7 +6277,8 @@
         days: state.days || {},
         weightHistory: state.weightHistory || [],
         beautyLogs: state.beautyLogs || {},
-        cycleData: state.cycleData || {}
+        cycleData: state.cycleData || {},
+        updatedAt: sanitizeSyncTimestamp(state.updatedAt || prevSlot.updatedAt || Date.now())
       };
     }
 
@@ -6402,7 +6405,7 @@
       const pri = cdT >= sdT ? cd : sd;
       const sec = cdT >= sdT ? sd : cd;
 
-      // Authoritative merge from newer state (pri) so deleted meals, reset water, or cleared steps stay deleted!
+      // Authoritative merge per domain (steps, water, meals) so concurrent edits on different fields never overwrite each other
       const sStepsT = sanitizeSyncTimestamp(sd.stepsUpdatedAt || 0);
       const cStepsT = sanitizeSyncTimestamp(cd.stepsUpdatedAt || 0);
       let mergedSteps = Number(pri.steps || 0);
@@ -6421,20 +6424,35 @@
       const cWaterT = sanitizeSyncTimestamp(cd.waterUpdatedAt || 0);
       let mergedWater = Number(pri.waterGlasses || 0);
       let mergedExtraWater = Number(pri.extraWaterMl || 0);
+      let mergedCustomBevs = Array.isArray(pri.customBeverages) ? pri.customBeverages : [];
       if (sWaterT > 0 || cWaterT > 0) {
         if (cWaterT >= sWaterT) {
           mergedWater = Number(cd.waterGlasses || 0);
           mergedExtraWater = Number(cd.extraWaterMl || 0);
+          mergedCustomBevs = Array.isArray(cd.customBeverages) ? cd.customBeverages : [];
         } else {
           mergedWater = Number(sd.waterGlasses || 0);
           mergedExtraWater = Number(sd.extraWaterMl || 0);
+          mergedCustomBevs = Array.isArray(sd.customBeverages) ? sd.customBeverages : [];
+        }
+      }
+
+      const sMealsT = sanitizeSyncTimestamp(sd.mealsUpdatedAt || 0);
+      const cMealsT = sanitizeSyncTimestamp(cd.mealsUpdatedAt || 0);
+      let mealsOwner = pri;
+      if (sMealsT > 0 || cMealsT > 0) {
+        mealsOwner = cMealsT >= sMealsT ? cd : sd;
+      } else {
+        const countMeals = (d) => Object.values(d?.meals || {}).reduce((acc, arr) => acc + (Array.isArray(arr) ? arr.length : 0), 0);
+        if (countMeals(pri) === 0 && countMeals(sec) > 0 && (Number(pri.stepsUpdatedAt || 0) > 0 || Number(pri.waterUpdatedAt || 0) > 0)) {
+          mealsOwner = sec;
         }
       }
 
       const mergedMeals = {};
-      ["มื้อเช้า", "มื้อกลางวัน", "มื้อเย็น", "ของว่าง", "breakfast", "lunch", "dinner", "snack", ...Object.keys(pri.meals || {})].forEach(slot => {
-        if (Array.isArray(pri.meals?.[slot])) {
-          mergedMeals[slot] = pri.meals[slot];
+      ["มื้อเช้า", "มื้อกลางวัน", "มื้อเย็น", "ของว่าง", "breakfast", "lunch", "dinner", "snack", ...Object.keys(mealsOwner.meals || {})].forEach(slot => {
+        if (Array.isArray(mealsOwner.meals?.[slot])) {
+          mergedMeals[slot] = mealsOwner.meals[slot];
         }
       });
 
@@ -6446,25 +6464,116 @@
         stepsUpdatedAt: Math.max(sStepsT, cStepsT),
         waterGlasses: mergedWater,
         extraWaterMl: mergedExtraWater,
+        customBeverages: mergedCustomBevs,
         waterUpdatedAt: Math.max(sWaterT, cWaterT),
         meals: mergedMeals,
-        dayUpdatedAt: Math.max(sdT, cdT)
+        mealsUpdatedAt: Math.max(sMealsT, cMealsT),
+        dayUpdatedAt: Math.max(sdT, cdT, sStepsT, cStepsT, sWaterT, cWaterT, sMealsT, cMealsT)
       };
     }
 
     function mergeDaysDict(sDaysObj, cDaysObj, sTime, cTime, sClearedAt = 0, cClearedAt = 0) {
       const sDays = sDaysObj || {};
       const cDays = cDaysObj || {};
-      // If one side cleared history more recently, only keep dates from the newer cleared side
-      if (cClearedAt > sClearedAt && cTime >= sTime) {
-        return JSON.parse(JSON.stringify(cDays));
+      const sClr = sanitizeSyncTimestamp(sClearedAt || 0);
+      const cClr = sanitizeSyncTimestamp(cClearedAt || 0);
+
+      const getDayMaxTs = (d, fallbackTs) => {
+        if (!d || typeof d !== "object") return sanitizeSyncTimestamp(fallbackTs || 0);
+        return Math.max(
+          sanitizeSyncTimestamp(d.dayUpdatedAt || 0),
+          sanitizeSyncTimestamp(d.stepsUpdatedAt || 0),
+          sanitizeSyncTimestamp(d.waterUpdatedAt || 0),
+          sanitizeSyncTimestamp(d.mealsUpdatedAt || 0),
+          sanitizeSyncTimestamp(fallbackTs || 0)
+        );
+      };
+
+      const allKeys = new Set([...Object.keys(sDays), ...Object.keys(cDays)]);
+      const mergedDays = {};
+      allKeys.forEach(dStr => {
+        let sd = sDays[dStr] || null;
+        let cd = cDays[dStr] || null;
+        if (sd && cClr > sClr && getDayMaxTs(sd, sTime) <= cClr) {
+          sd = null;
+        }
+        if (cd && sClr > cClr && getDayMaxTs(cd, cTime) <= sClr) {
+          cd = null;
+        }
+        const m = mergeSingleDayObj(sd, cd, sTime, cTime);
+        if (m) {
+          mergedDays[dStr] = JSON.parse(JSON.stringify(m));
+        }
+      });
+      return mergedDays;
+    }
+
+    function snapshotTopLevelIntoProfileSlot(st) {
+      if (!st || typeof st !== "object") return {};
+      const map = { ...(st.profilesMap || {}) };
+      const activePid = (st.activeProfileId === "partner") ? "partner" : "paul";
+      const existing = map[activePid] || {};
+      const topProf = st.profile || {};
+      map[activePid] = {
+        ...existing,
+        theme: st.theme || existing.theme,
+        questMode: st.questMode || existing.questMode,
+        profile: Object.keys(topProf).length > 0 ? { ...(existing.profile || {}), ...topProf } : (existing.profile || {}),
+        bookmarks: Array.isArray(st.bookmarks) ? st.bookmarks : (existing.bookmarks || []),
+        days: (st.days && typeof st.days === "object") ? st.days : (existing.days || {}),
+        weightHistory: Array.isArray(st.weightHistory) ? st.weightHistory : (existing.weightHistory || []),
+        beautyLogs: st.beautyLogs || existing.beautyLogs || {},
+        cycleData: st.cycleData || existing.cycleData || {},
+        updatedAt: Math.max(sanitizeSyncTimestamp(existing.updatedAt || 0), sanitizeSyncTimestamp(st.updatedAt || 0))
+      };
+      return map;
+    }
+
+    function mergeProfileSlot(sSlot, cSlot, pid, sGlobalTime, cGlobalTime, sClearedAt = 0, cClearedAt = 0) {
+      if (sSlot && !cSlot) return JSON.parse(JSON.stringify(sSlot));
+      if (cSlot && !sSlot) return JSON.parse(JSON.stringify(cSlot));
+      if (!sSlot && !cSlot) return defaultSingleProfileData(pid);
+
+      const sSlotTime = sanitizeSyncTimestamp(sSlot.updatedAt || sGlobalTime || 0);
+      const cSlotTime = sanitizeSyncTimestamp(cSlot.updatedAt || cGlobalTime || 0);
+      const priSlot = cSlotTime >= sSlotTime ? cSlot : sSlot;
+      const secSlot = cSlotTime >= sSlotTime ? sSlot : cSlot;
+
+      const mergedDays = mergeDaysDict(sSlot.days, cSlot.days, sSlotTime, cSlotTime, sClearedAt, cClearedAt);
+      const mergedWeightHistory = Array.isArray(priSlot.weightHistory)
+        ? [...priSlot.weightHistory].sort((a, b) => String(a.date).localeCompare(String(b.date)))
+        : (Array.isArray(secSlot.weightHistory) ? [...secSlot.weightHistory] : []);
+      const mergedBookmarks = Array.isArray(priSlot.bookmarks)
+        ? priSlot.bookmarks
+        : (Array.isArray(secSlot.bookmarks) ? secSlot.bookmarks : []);
+      const mergedBeautyLogs = normalizeBeautyLogsObj(priSlot.beautyLogs || secSlot.beautyLogs || {});
+
+      const priCycle = normalizeCycleDataObj(priSlot.cycleData || {});
+      const secCycle = normalizeCycleDataObj(secSlot.cycleData || {});
+      const priAhT = sanitizeSyncTimestamp(priCycle.appleHealthPeriodSyncedAt || 0);
+      const secAhT = sanitizeSyncTimestamp(secCycle.appleHealthPeriodSyncedAt || 0);
+      const maxClr = Math.max(sanitizeSyncTimestamp(sClearedAt || 0), sanitizeSyncTimestamp(cClearedAt || 0));
+      if (secAhT > priAhT && secAhT > maxClr) {
+        priCycle.appleHealthPeriodSyncedAt = secAhT;
+        priCycle.appleHealthPeriodDates = Array.from(new Set([...(priCycle.appleHealthPeriodDates || []), ...(secCycle.appleHealthPeriodDates || [])])).sort();
+        if (!priCycle.periodFlowDates) priCycle.periodFlowDates = {};
+        (secCycle.appleHealthPeriodDates || []).forEach(dStr => { priCycle.periodFlowDates[dStr] = true; });
+        if (secCycle.lastPeriodStart && (!priCycle.lastPeriodStart || secCycle.lastPeriodStart > priCycle.lastPeriodStart)) {
+          priCycle.lastPeriodStart = secCycle.lastPeriodStart;
+        }
       }
-      if (sClearedAt > cClearedAt && sTime > cTime) {
-        return JSON.parse(JSON.stringify(sDays));
-      }
-      // Also if primary (newer state) explicitly deleted a date or has empty days while secondary has old dates before primary.updatedAt, respect primary!
-      const primaryDays = cTime >= sTime ? cDays : sDays;
-      return JSON.parse(JSON.stringify(primaryDays));
+
+      return {
+        ...secSlot,
+        ...priSlot,
+        profile: { ...(secSlot.profile || {}), ...(priSlot.profile || {}) },
+        days: mergedDays,
+        weightHistory: mergedWeightHistory,
+        bookmarks: mergedBookmarks,
+        beautyLogs: mergedBeautyLogs,
+        cycleData: priCycle,
+        updatedAt: Math.max(sSlotTime, cSlotTime)
+      };
     }
 
     function mergeClientAndServerStates(serverState, clientState) {
@@ -6484,7 +6593,9 @@
 
       const merged = { ...primary };
       merged.cleanRealStartV42 = true;
-      merged.lastHistoryClearedAt = Math.max(Number(primary.lastHistoryClearedAt || 0), Number(secondary.lastHistoryClearedAt || 0));
+      const sClr = Number(serverState.lastHistoryClearedAt || 0);
+      const cClr = Number(clientState.lastHistoryClearedAt || 0);
+      merged.lastHistoryClearedAt = Math.max(sClr, cClr);
 
       // NEVER allow Cloud/Server sync to overwrite this device's chosen Theme, App Logo, or Active Profile!
       const localTheme = safeLocalGet(DEVICE_THEME_KEY) || clientState.theme;
@@ -6505,12 +6616,7 @@
       }
       merged.aiConfig = pAi;
 
-      // Primary (newer updatedAt) is authoritative for deletions on days, weightHistory, schedules, bookmarks, beautyLogs, and cycleData!
-      merged.days = mergeDaysDict(serverState.days, clientState.days, sTime, cTime, Number(serverState.lastHistoryClearedAt || 0), Number(clientState.lastHistoryClearedAt || 0));
-      merged.weightHistory = Array.isArray(primary.weightHistory)
-        ? [...primary.weightHistory].sort((a, b) => String(a.date).localeCompare(String(b.date)))
-        : [];
-      merged.bookmarks = Array.isArray(primary.bookmarks) ? primary.bookmarks : (secondary.bookmarks || []);
+      // Shared schedules, custom categories, and saved places
       merged.schedules = Array.isArray(primary.schedules) ? primary.schedules : [];
       const catSet = new Set([
         ...(primary.customScheduleCategories || []),
@@ -6525,35 +6631,27 @@
         }
       });
       merged.savedSchedulePlaces = Array.from(placeMap.values());
-      merged.beautyLogs = normalizeBeautyLogsObj(primary.beautyLogs || {});
-      merged.cycleData = normalizeCycleDataObj(primary.cycleData || {});
 
-      const pProfiles = { ...(primary.profilesMap || {}) };
-      const sProfiles = { ...(secondary.profilesMap || {}) };
-      ["paul", "partner"].forEach(pid => {
-        if (pProfiles[pid]) {
-          pProfiles[pid] = {
-            ...(sProfiles[pid] || {}),
-            ...pProfiles[pid],
-            days: pProfiles[pid].days || {},
-            weightHistory: Array.isArray(pProfiles[pid].weightHistory) ? pProfiles[pid].weightHistory : [],
-            beautyLogs: normalizeBeautyLogsObj(pProfiles[pid].beautyLogs || {}),
-            cycleData: normalizeCycleDataObj(pProfiles[pid].cycleData || {})
-          };
-        } else if (sProfiles[pid]) {
-          pProfiles[pid] = sProfiles[pid];
-        }
-      });
-      // Also make sure active profile's merged data is reflected inside profilesMap[activeProfileId]
-      const activePid = merged.activeProfileId || "paul";
-      if (pProfiles[activePid]) {
-        pProfiles[activePid].days = merged.days;
-        pProfiles[activePid].weightHistory = merged.weightHistory;
-        pProfiles[activePid].beautyLogs = merged.beautyLogs;
-        pProfiles[activePid].cycleData = merged.cycleData;
-      }
-      if (Object.keys(pProfiles).length > 0) {
-        merged.profilesMap = pProfiles;
+      // Merge each profile ("paul" and "partner") independently so one profile never overwrites the other!
+      const sProfiles = snapshotTopLevelIntoProfileSlot(serverState);
+      const cProfiles = snapshotTopLevelIntoProfileSlot(clientState);
+      const mergedProfiles = {
+        paul: mergeProfileSlot(sProfiles.paul, cProfiles.paul, "paul", sTime, cTime, sClr, cClr),
+        partner: mergeProfileSlot(sProfiles.partner, cProfiles.partner, "partner", sTime, cTime, sClr, cClr)
+      };
+      merged.profilesMap = mergedProfiles;
+
+      const activePid = (merged.activeProfileId === "partner") ? "partner" : "paul";
+      const activeSlot = mergedProfiles[activePid];
+      if (activeSlot) {
+        merged.profile = JSON.parse(JSON.stringify(activeSlot.profile || merged.profile));
+        merged.days = JSON.parse(JSON.stringify(activeSlot.days || {}));
+        merged.weightHistory = JSON.parse(JSON.stringify(activeSlot.weightHistory || []));
+        merged.bookmarks = JSON.parse(JSON.stringify(activeSlot.bookmarks || []));
+        merged.beautyLogs = normalizeBeautyLogsObj(activeSlot.beautyLogs || {});
+        merged.cycleData = normalizeCycleDataObj(activeSlot.cycleData || {});
+        if (!localTheme && activeSlot.theme) merged.theme = activeSlot.theme;
+        if (activeSlot.questMode) merged.questMode = activeSlot.questMode;
       }
 
       merged.updatedAt = Math.max(sTime, cTime);
@@ -6809,7 +6907,7 @@
 
     function calculateDayTotals(dateStr) {
       const dayLog = ensureDayLog(dateStr);
-      let cal = 0, p = 0, c = 0, f = 0, cost = 0, grams = 0;
+      let cal = 0, p = 0, c = 0, f = 0, cost = 0, grams = 0, count = 0;
       Object.values(dayLog.meals).forEach(list => {
         list.forEach(item => {
           cal += Number(item.cal) || 0;
@@ -6818,6 +6916,7 @@
           f += Number(item.f) || 0;
           cost += Number(item.price) || 0;
           grams += estimateFoodWeightGrams(item);
+          count += 1;
         });
       });
       return {
@@ -6827,6 +6926,7 @@
         f: Math.round(f),
         cost: Math.round(cost),
         grams: Math.round(grams),
+        count,
         burned: Number(dayLog.burned) || 0
       };
     }
@@ -6921,20 +7021,33 @@
       const hValEl = document.getElementById("home-height-val");
       if (hValEl) hValEl.textContent = heightCm;
       const bmiValEl = document.getElementById("home-bmi-val");
+      const bmiStatusEl = document.getElementById("home-bmi-status");
+      const bmiLabel = bmi < 18.5 ? "ผอม" : (bmi < 23.0 ? "สมส่วน" : (bmi < 25.0 ? "ท้วม" : "อ้วน"));
       if (bmiValEl) {
-        const bmiLabel = bmi < 18.5 ? "ผอม" : (bmi < 23.0 ? "สมส่วน" : "ท้วม");
-        bmiValEl.textContent = `${bmi.toFixed(1)} (${bmiLabel})`;
+        bmiValEl.textContent = bmiStatusEl ? bmi.toFixed(1) : `${bmi.toFixed(1)} (${bmiLabel})`;
+      }
+      if (bmiStatusEl) {
+        bmiStatusEl.textContent = bmiLabel;
       }
 
-      const totalToLose = Math.max(0.1, Math.abs(startW - goalW));
-      const lostSoFar = Math.max(0, startW - currW);
-      const prog = Math.min(1, lostSoFar / totalToLose);
+      const isGainGoal = goalW > startW;
+      const totalSpan = Math.max(0.1, Math.abs(startW - goalW));
+      const movedTowardGoal = isGainGoal
+        ? Math.max(0, currW - startW)
+        : Math.max(0, startW - currW);
+      const prog = Math.abs(startW - goalW) < 0.05 ? 1 : Math.min(1, movedTowardGoal / totalSpan);
       const dash = Math.round(60 + prog * 280);
       document.getElementById("w-ring-prog").setAttribute("stroke-dasharray", `${dash} 365`);
 
-      const diff = (currW - startW).toFixed(1);
+      const diffNum = currW - startW;
+      const diff = diffNum.toFixed(1);
       const diffEl = document.getElementById("w-diff-pill");
-      diffEl.textContent = `${diff > 0 ? '+' : ''}${diff} kg`;
+      if (diffEl) {
+        diffEl.textContent = `${diffNum > 0 ? '+' : ''}${diff} kg`;
+        const isGoodDir = isGainGoal ? diffNum >= 0 : diffNum <= 0;
+        diffEl.style.background = isGoodDir ? "#DCFCE7" : "#FEF3C7";
+        diffEl.style.color = isGoodDir ? "#16A34A" : "#B45309";
+      }
 
       // Sparkline SVG
       const hist = (state.weightHistory || []).slice(-7);
@@ -6957,14 +7070,14 @@
         }
       }
 
-      const remainKg = Math.max(0, currW - goalW);
+      const remainKg = isGainGoal ? Math.max(0, goalW - currW) : Math.max(0, currW - goalW);
       const estDays = Math.max(7, Math.round(remainKg * 14));
       const targetDate = new Date();
       targetDate.setDate(targetDate.getDate() + estDays);
       const monthNames = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
       document.getElementById("w-countdown-bar").textContent =
-        remainKg > 0
-          ? `เป้าหมายอีก ${estDays} วัน · ${targetDate.getDate()} ${monthNames[targetDate.getMonth()]} ${targetDate.getFullYear() + 543}`
+        remainKg > 0.05
+          ? `เป้าหมายอีก ${remainKg.toFixed(1).replace(/\.0$/, '')} กก. (~${estDays} วัน · ${targetDate.getDate()} ${monthNames[targetDate.getMonth()]} ${targetDate.getFullYear() + 543})`
           : `🎉 คุณถึงน้ำหนักเป้าหมายแล้ว! ยอดเยี่ยมมาก`;
 
       renderWeightHistoryLists();
@@ -6997,12 +7110,16 @@
         div.className = "glass-item";
         div.style.height = "68px";
         div.onclick = () => {
+          const nowTs = sanitizeSyncTimestamp(Date.now());
           dayLog.waterGlasses = (glasses === i) ? i - 1 : i;
-          dayLog.waterUpdatedAt = Date.now();
-          dayLog.dayUpdatedAt = Date.now();
+          dayLog.waterUpdatedAt = nowTs;
+          dayLog.dayUpdatedAt = nowTs;
           saveState();
           renderWaterCard();
-          if (typeof renderDailyMissions === "function") renderDailyMissions();
+          renderBeautyQuestsAndGlow();
+          updateStreak();
+          renderCalendarStrip();
+          updateHomeMiniGlance();
           const newTot = Math.round(dayLog.waterGlasses * cupMl + (dayLog.extraWaterMl || 0));
           showToast(`💧 ดื่มน้ำแก้วที่ ${dayLog.waterGlasses}/${goalGlasses} (รวม ${newTot} ml)`);
         };
@@ -7050,13 +7167,17 @@
     function addWater(delta) {
       const dayLog = ensureDayLog(currentSelectedDate);
       const cupMl = Number(state.profile.waterCupMl) || 300;
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       dayLog.waterGlasses = Math.max(0, Math.min(35, (dayLog.waterGlasses || 0) + delta));
       if (dayLog.waterGlasses === 0 && delta < 0) dayLog.extraWaterMl = 0;
-      dayLog.waterUpdatedAt = Date.now();
-      dayLog.dayUpdatedAt = Date.now();
+      dayLog.waterUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       saveState();
       renderWaterCard();
-      if (typeof renderDailyMissions === "function") renderDailyMissions();
+      renderBeautyQuestsAndGlow();
+      updateStreak();
+      renderCalendarStrip();
+      updateHomeMiniGlance();
       const totalMl = Math.round(dayLog.waterGlasses * cupMl + (dayLog.extraWaterMl || 0));
       showToast(`ดื่มน้ำรวม ${totalMl} ml (${dayLog.waterGlasses} แก้ว) 💧`);
     }
@@ -7064,17 +7185,21 @@
     function addWaterMl(mlDelta) {
       const dayLog = ensureDayLog(currentSelectedDate);
       const cupMl = Number(state.profile.waterCupMl) || 300;
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       let extra = (Number(dayLog.extraWaterMl) || 0) + mlDelta;
       while (extra >= cupMl) {
         dayLog.waterGlasses = (dayLog.waterGlasses || 0) + 1;
         extra -= cupMl;
       }
       dayLog.extraWaterMl = Math.max(0, extra);
-      dayLog.waterUpdatedAt = Date.now();
-      dayLog.dayUpdatedAt = Date.now();
+      dayLog.waterUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       saveState();
       renderWaterCard();
-      if (typeof renderDailyMissions === "function") renderDailyMissions();
+      renderBeautyQuestsAndGlow();
+      updateStreak();
+      renderCalendarStrip();
+      updateHomeMiniGlance();
       const totalMl = Math.round((dayLog.waterGlasses || 0) * cupMl + dayLog.extraWaterMl);
       showToast(`+100 ml! ดื่มน้ำรวมวันนี้ ${totalMl} ml 💧`);
     }
@@ -7164,9 +7289,9 @@
       }
       box.innerHTML = list.map((bm, idx) => `
         <div class="food-row" style="background:#FFF; border:1px solid var(--line); border-radius:14px; padding:9px 11px;">
-          <div class="food-thumb" style="width:40px; height:40px; font-size:20px;">${bm.icon || '⭐'}</div>
+          <div class="food-thumb" style="width:40px; height:40px; font-size:20px;">${escapeHtml(bm.icon || '⭐')}</div>
           <div class="food-info">
-            <div class="food-name" style="font-size:13.5px;">${bm.name} <span style="color:#C2410C; font-weight:800; font-size:12px;">฿${bm.price || 0}</span></div>
+            <div class="food-name" style="font-size:13.5px;">${escapeHtml(bm.name)} <span style="color:#C2410C; font-weight:800; font-size:12px;">฿${bm.price || 0}</span></div>
             <div class="food-cal-sub num">${bm.cal} kcal · P:${bm.p}g C:${bm.c}g F:${bm.f}g</div>
           </div>
           <div style="display:flex; align-items:center; gap:5px;">
@@ -7208,6 +7333,7 @@
       if (!bm) return;
       const mealId = document.getElementById("bm-target-meal")?.value || "มื้อกลางวัน";
       const dayLog = ensureDayLog(currentSelectedDate);
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       dayLog.meals[mealId].push({
         id: Date.now(),
         name: bm.name,
@@ -7219,6 +7345,8 @@
         unit: bm.unit || "1 ที่",
         icon: bm.icon || "⭐"
       });
+      dayLog.mealsUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       saveState();
       renderAll();
       showToast(`✅ เพิ่ม "${bm.name}" เข้า${mealId}เรียบร้อย!`);
@@ -7280,16 +7408,16 @@
             <div class="food-row">
               ${item.img
                 ? `<img src="${item.img}" class="food-thumb" />`
-                : `<div class="food-thumb">${item.icon || '🍽️'}</div>`
+                : `<div class="food-thumb">${escapeHtml(item.icon || '🍽️')}</div>`
               }
               <div class="food-info" style="cursor:pointer;" onclick="openEditFoodModal('${slot.id}', ${idx})" title="แตะเพื่อแก้ไขชื่อเมนู แคลอรี่ หรือราคา (บาท)">
                 <div class="food-name" style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
-                  <span>${item.name}</span>
+                  <span>${escapeHtml(item.name)}</span>
                   <span style="background:#ECFDF5; color:#047857; border:1px solid #A7F3D0; padding:1px 7px; border-radius:99px; font-size:11px; font-weight:800;">
                     💸 ฿${prVal} ✏️
                   </span>
                 </div>
-                <div class="food-cal-sub num">${item.cal} kcal · ${item.unit || '1 ที่'}</div>
+                <div class="food-cal-sub num">${item.cal} kcal · ${escapeHtml(item.unit || '1 ที่')}</div>
                 <div class="food-macros-dots num">
                   <span class="m-dot"><i style="background:var(--protein)"></i> ${item.p}g</span>
                   <span class="m-dot"><i style="background:var(--carbs)"></i> ${item.c}g</span>
@@ -7358,6 +7486,9 @@
       item.c = Math.max(0, Number(document.getElementById("edit-food-c").value) || 0);
       item.f = Math.max(0, Number(document.getElementById("edit-food-f").value) || 0);
 
+      const nowTs = sanitizeSyncTimestamp(Date.now());
+      dayLog.mealsUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       saveState();
       renderAll();
       closeModal("modal-edit-food");
@@ -7367,6 +7498,9 @@
     function deleteFoodItem(mealId, index) {
       const dayLog = ensureDayLog(currentSelectedDate);
       dayLog.meals[mealId].splice(index, 1);
+      const nowTs = sanitizeSyncTimestamp(Date.now());
+      dayLog.mealsUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       saveState();
       renderAll();
       showToast("ลบรายการอาหารแล้ว");
@@ -8239,10 +8373,13 @@
       const bLog = ensureBeautyDayLog(currentSelectedDate);
       if (!bLog.completedExercises) bLog.completedExercises = {};
       const dayLog = ensureDayLog(currentSelectedDate);
+      const nowTs = sanitizeSyncTimestamp(Date.now());
 
       if (!bLog.completedExercises[ex.key]) {
         bLog.completedExercises[ex.key] = true;
         dayLog.burned = (Number(dayLog.burned) || 0) + ex.cal;
+        dayLog.stepsUpdatedAt = nowTs;
+        dayLog.dayUpdatedAt = nowTs;
         bLog.roomWorkout = true;
         bLog.liftWeights = true;
         saveState();
@@ -8250,7 +8387,19 @@
         renderWorkoutStudio();
         showToast(`🔥 เยี่ยมมาก! ทำ "${ex.title}" สำเร็จ เผาผลาญเพิ่ม +${ex.cal} kcal!`);
       } else {
-        showToast(`✨ ท่า "${ex.title}" บันทึกแคลวันนี้ไปแล้วครับ!`);
+        delete bLog.completedExercises[ex.key];
+        dayLog.burned = Math.max(0, (Number(dayLog.burned) || 0) - ex.cal);
+        dayLog.stepsUpdatedAt = nowTs;
+        dayLog.dayUpdatedAt = nowTs;
+        const anyLeft = Object.keys(bLog.completedExercises).some(k => bLog.completedExercises[k]);
+        if (!anyLeft) {
+          bLog.roomWorkout = false;
+          bLog.liftWeights = false;
+        }
+        saveState();
+        renderAll();
+        renderWorkoutStudio();
+        showToast(`↩️ ยกเลิกบันทึกท่า "${ex.title}" (-${ex.cal} kcal) แล้วครับ`);
       }
     }
 
@@ -8259,6 +8408,7 @@
       const bLog = ensureBeautyDayLog(currentSelectedDate);
       if (!bLog.completedExercises) bLog.completedExercises = {};
       const dayLog = ensureDayLog(currentSelectedDate);
+      const nowTs = sanitizeSyncTimestamp(Date.now());
 
       let addedCal = 0;
       plan.exercises.forEach(ex => {
@@ -8270,6 +8420,8 @@
 
       if (addedCal > 0) {
         dayLog.burned = (Number(dayLog.burned) || 0) + addedCal;
+        dayLog.stepsUpdatedAt = nowTs;
+        dayLog.dayUpdatedAt = nowTs;
       }
       bLog.roomWorkout = true;
       bLog.liftWeights = true;
@@ -8286,7 +8438,10 @@
       const actCal = Math.max(10, Math.round(Number(calEl?.value) || 150));
       const dayLog = ensureDayLog(currentSelectedDate);
       const bLog = ensureBeautyDayLog(currentSelectedDate);
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       dayLog.burned = (Number(dayLog.burned) || 0) + actCal;
+      dayLog.stepsUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       bLog.roomWorkout = true;
       bLog.liftWeights = true;
       if (nameEl) nameEl.value = "";
@@ -9421,8 +9576,8 @@
       if (speechEl) {
         if (upcoming.length > 0) {
           const nextEv = upcoming[0];
-          const locSuffix = (nextEv.locationName || nextEv.mapUrl) ? ` ที่ <b>📍 ${nextEv.locationName || 'พิกัด Google Maps'}</b>` : "";
-          speechEl.innerHTML = `📌 นัดหมายถัดไปของ <b>${state.profile.name}</b> คือ <b>"${nextEv.title}"</b>${locSuffix} วันที่ <b>${nextEv.date}</b> เวลา ${nextEv.time || '09:00'} น. ห้ามลืมนะคะ! 🗓️✨`;
+          const locSuffix = (nextEv.locationName || nextEv.mapUrl) ? ` ที่ <b>📍 ${escapeHtml(nextEv.locationName || 'พิกัด Google Maps')}</b>` : "";
+          speechEl.innerHTML = `📌 นัดหมายถัดไปของ <b>${escapeHtml(state.profile.name)}</b> คือ <b>"${escapeHtml(nextEv.title)}"</b>${locSuffix} วันที่ <b>${escapeHtml(nextEv.date)}</b> เวลา ${escapeHtml(nextEv.time || '09:00')} น. ห้ามลืมนะคะ! 🗓️✨`;
         } else {
           speechEl.innerHTML = `ยังไม่มีนัดหมายเร็วๆ นี้เลย กดปุ่ม <b>+ เพิ่มนัด</b> เพื่อพิมพ์นัดหมาย ปักหมุด Google Maps หรือตั้งวันมาส์กหน้า/ขัดผิวได้เลยนะ! 🗓️`;
         }
@@ -9436,12 +9591,14 @@
       listEl.innerHTML = sorted.map(item => {
         const isPast = item.date < todayStr;
         const isSelectedDate = item.date === currentSchedSelectedDate;
-        const catDisplay = formatScheduleCategoryDisplay(item.cat);
+        const catDisplay = escapeHtml(formatScheduleCategoryDisplay(item.cat));
         const ic = extractScheduleCategoryIcon(item.cat, item.title);
-        const whoTxt = whoLabels[item.who] || item.who || "ทั้งคู่";
+        const whoTxt = escapeHtml(whoLabels[item.who] || item.who || "ทั้งคู่");
         const navUrl = buildScheduleNavigationUrl(item.locationName, item.mapUrl);
         const embedQuery = getScheduleEmbedQuery(item.locationName, item.mapUrl);
-        const locLabel = (item.locationName || "").trim() || (item.mapUrl ? "หมุดแผนที่ Google Maps" : "");
+        const locLabel = escapeHtml((item.locationName || "").trim() || (item.mapUrl ? "หมุดแผนที่ Google Maps" : ""));
+        const safeTitle = escapeHtml(item.title);
+        const safeNote = escapeHtml(item.note || "");
 
         return `
           <div style="display:flex; flex-direction:column; gap:8px; padding:12px 14px; border-radius:16px; background:${isSelectedDate ? '#FEF9C3' : (isPast ? '#F8FAFC' : '#FFFFFF')}; border:1.5px solid ${isSelectedDate ? '#FACC15' : 'var(--line)'}; opacity:${isPast ? '0.65' : '1'};">
@@ -9452,11 +9609,11 @@
                 </div>
                 <div style="flex:1; min-width:0;">
                   <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                    <span style="font-size:14px; font-weight:800; color:var(--ink);">${item.title}</span>
+                    <span style="font-size:14px; font-weight:800; color:var(--ink);">${safeTitle}</span>
                     ${catDisplay ? `<span style="font-size:10px; font-weight:800; background:var(--green-bg); color:var(--green-dark); padding:2px 8px; border-radius:99px;">${catDisplay}</span>` : ''}
                   </div>
-                  <div style="font-size:11.5px; color:var(--sub); font-weight:600; margin-top:2px;">📅 ${item.date} · ⏰ ${item.time || '10:00'} น. · ${whoTxt}</div>
-                  ${item.note ? `<div style="font-size:11px; color:var(--green-dark); margin-top:2px;">📝 ${item.note}</div>` : ''}
+                  <div style="font-size:11.5px; color:var(--sub); font-weight:600; margin-top:2px;">📅 ${escapeHtml(item.date)} · ⏰ ${escapeHtml(item.time || '10:00')} น. · ${whoTxt}</div>
+                  ${safeNote ? `<div style="font-size:11px; color:var(--green-dark); margin-top:2px;">📝 ${safeNote}</div>` : ''}
                 </div>
               </div>
               <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
@@ -10216,7 +10373,10 @@
         return;
       }
       if (!confirm(`ต้องการลบรายการอาหารทั้งหมดของวันที่ ${currentSelectedDate} (${tot.count} รายการ) ใช่ไหมคะ?`)) return;
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       dayLog.meals = { "มื้อเช้า": [], "มื้อกลางวัน": [], "มื้อเย็น": [], "ของว่าง": [] };
+      dayLog.mealsUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       saveState();
       renderAll();
       showToast(`🗑️ ล้างรายการอาหารวันที่ ${currentSelectedDate} เรียบร้อยแล้ว`);
@@ -10224,6 +10384,7 @@
 
     function clearAllFoodHistory() {
       if (!confirm("ต้องการล้างประวัติอาหารและน้ำดื่มของทุกวันทั้งหมดใช่ไหมคะ?")) return;
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       if (state.days && typeof state.days === "object") {
         Object.keys(state.days).forEach(dStr => {
           const d = state.days[dStr];
@@ -10232,6 +10393,9 @@
             d.waterGlasses = 0;
             d.extraWaterMl = 0;
             d.customBeverages = [];
+            d.mealsUpdatedAt = nowTs;
+            d.waterUpdatedAt = nowTs;
+            d.dayUpdatedAt = nowTs;
           }
         });
       }
@@ -10246,9 +10410,12 @@
         showToast("น้ำดื่มวันนี้เป็น 0 อยู่แล้วค่ะ");
         return;
       }
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       dayLog.waterGlasses = 0;
       dayLog.extraWaterMl = 0;
       dayLog.customBeverages = [];
+      dayLog.waterUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       if (state.beautyLogs?.daily?.[currentSelectedDate]) {
         state.beautyLogs.daily[currentSelectedDate].water8 = false;
       }
@@ -10259,8 +10426,11 @@
 
     function clearSelectedDaySteps() {
       const dayLog = ensureDayLog(currentSelectedDate);
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       dayLog.steps = 0;
       dayLog.burned = 0;
+      dayLog.stepsUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       saveState();
       renderAll();
       showToast(`🗑️ ล้างก้าวเดินและแคลเผาผลาญวันที่ ${currentSelectedDate} เป็น 0 แล้ว`);
@@ -10268,11 +10438,14 @@
 
     function clearAllStepsHistory() {
       if (!confirm("ต้องการล้างประวัติก้าวเดินและแคลเผาผลาญของทุกวันทั้งหมดใช่ไหมคะ?")) return;
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       if (state.days && typeof state.days === "object") {
         Object.keys(state.days).forEach(dStr => {
           if (state.days[dStr]) {
             state.days[dStr].steps = 0;
             state.days[dStr].burned = 0;
+            state.days[dStr].stepsUpdatedAt = nowTs;
+            state.days[dStr].dayUpdatedAt = nowTs;
           }
         });
       }
@@ -10641,13 +10814,17 @@
         badge.style.background = "#DBEAFE";
         badge.style.color = "#1D4ED8";
       } else if (bmi < 23.0) {
-        badge.textContent = "สุขภาพดี";
+        badge.textContent = "สมส่วน สุขภาพดี";
         badge.style.background = "#E8F5D6";
         badge.style.color = "#4D7C0F";
-      } else {
-        badge.textContent = "น้ำหนักเกินเกณฑ์เอเชีย";
+      } else if (bmi < 25.0) {
+        badge.textContent = "น้ำหนักเกินเกณฑ์เอเชีย (ท้วม)";
         badge.style.background = "#FEF3C7";
         badge.style.color = "#B45309";
+      } else {
+        badge.textContent = "อ้วน (เกินเกณฑ์เอเชีย)";
+        badge.style.background = "#FEE2E2";
+        badge.style.color = "#DC2626";
       }
 
       const pct = Math.max(5, Math.min(95, ((bmi - 15) / (28 - 15)) * 100));
@@ -10692,29 +10869,35 @@
         const dayData = state.days[dStr];
         if (dayData) {
           const t = calculateDayTotals(dStr);
-          if (t.cal > 0 || dayData.waterGlasses > 0) {
+          const dayWaterL = ((Number(dayData.waterGlasses) || 0) * 0.3) + ((Number(dayData.extraWaterMl) || 0) / 1000);
+          if (t.cal > 0 || dayWaterL > 0) {
             loggedDays++;
             totalCal += t.cal;
-            totalWaterL += (dayData.waterGlasses * 0.3);
+            totalWaterL += dayWaterL;
           }
         }
       }
       const avgCal = loggedDays > 0 ? Math.round(totalCal / loggedDays) : 0;
       const avgWater = loggedDays > 0 ? (totalWaterL / loggedDays).toFixed(1) : "0.0";
-      const wDiff = (state.profile.currWeight - state.profile.startWeight).toFixed(1);
+      const wDiffNum = (Number(state.profile.currWeight) || 65) - (Number(state.profile.startWeight) || 65);
+      const wDiff = (wDiffNum > 0 ? `+${wDiffNum.toFixed(1)}` : wDiffNum.toFixed(1));
 
       document.getElementById("rc-avg-cal").textContent = avgCal.toLocaleString();
       document.getElementById("rc-days-log").textContent = `${loggedDays}/7`;
       document.getElementById("rc-avg-water").textContent = `${avgWater} L`;
       document.getElementById("rc-w-diff").textContent = `${wDiff} กก.`;
 
+      const wProgressMsg = wDiffNum <= 0
+        ? `น้ำหนักลดลง ${Math.abs(wDiffNum).toFixed(1)} กก. จากจุดเริ่มต้น ถือเป็นผลลัพธ์ที่ยอดเยี่ยมและเป็นกำลังใจที่ดีมากๆ เลยค่ะ`
+        : `น้ำหนักเปลี่ยนแปลง ${wDiff} กก. จากจุดเริ่มต้น มาค่อยๆ ปรับสมดุลอาหารและเดินเพิ่มไปด้วยกันนะคะ`;
+
       document.getElementById("rc-summary-list").innerHTML = `
-        <li>• สวัสดีค่ะ! เห็นว่าสัปดาห์ที่ผ่านมาคุณ ${state.profile.name} ดูแลตัวเองได้ดีมากเลยนะคะ ทั้งเรื่องแคลอรี่และน้ำหนักก็ลดลงอย่างน่าชื่นชมค่ะ เก่งมากๆ เลยนะ!</li>
+        <li>• สวัสดีค่ะ! สัปดาห์ที่ผ่านมาคุณ ${escapeHtml(state.profile.name)} ตั้งใจบันทึกดูแลตัวเองได้ดีมากเลยนะคะ มาดูสรุปภาพรวมกันค่ะ!</li>
       `;
       document.getElementById("rc-good-list").innerHTML = `
-        <li>• คุณสามารถควบคุมปริมาณแคลอรี่เฉลี่ยอยู่ที่ ${avgCal} kcal/วัน เทียบกับเป้าหมาย ${state.profile.calGoal} kcal ช่วยให้การลดน้ำหนักเป็นไปได้ดีค่ะ</li>
-        <li>• น้ำหนักเปลี่ยนแปลง ${wDiff} กก. จากจุดเริ่มต้น ถือเป็นผลลัพธ์ที่ยอดเยี่ยมและเป็นกำลังใจที่ดีมากๆ เลยค่ะ</li>
-        <li>• การเลือกทานอาหารโปรตีนสูงและดื่มน้ำสม่ำเสมอ แสดงให้เห็นถึงความตั้งใจในการดูแลสุขภาพที่ดีมากๆ เลยนะ</li>
+        <li>• คุณควบคุมปริมาณแคลอรี่เฉลี่ยอยู่ที่ ${avgCal.toLocaleString()} kcal/วัน เทียบกับเป้าหมาย ${(Number(state.profile.calGoal) || 1600).toLocaleString()} kcal ช่วยให้การดูแลรูปร่างเป็นไปตามแผนค่ะ</li>
+        <li>• ${wProgressMsg}</li>
+        <li>• การเลือกทานอาหารที่มีประโยชน์และดื่มน้ำเฉลี่ย ${avgWater} ลิตร/วัน แสดงให้เห็นถึงความตั้งใจในการดูแลสุขภาพที่ดีมากๆ เลยนะ</li>
       `;
     }
 
@@ -10762,8 +10945,10 @@
 
     function addFoodFromLib(dbIndex) {
       const item = THAI_FOOD_DB[dbIndex];
+      if (!item) return;
       const mealId = document.getElementById("lib-meal-select").value;
       const dayLog = ensureDayLog(currentSelectedDate);
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       dayLog.meals[mealId].push({
         id: Date.now(),
         name: item.name,
@@ -10775,6 +10960,8 @@
         unit: item.unit,
         icon: item.icon
       });
+      dayLog.mealsUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       saveState();
       renderAll();
       closeModal("modal-food-lib");
@@ -10851,7 +11038,10 @@
       const f = Number(document.getElementById("man-f").value) || 8;
 
       const dayLog = ensureDayLog(currentSelectedDate);
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       dayLog.meals[mealId].push({ id: Date.now(), name, cal, price, p, c, f, unit, icon: "🍽️" });
+      dayLog.mealsUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       document.getElementById("man-name").value = "";
       document.getElementById("man-cal").value = "";
       if (document.getElementById("man-price")) document.getElementById("man-price").value = "";
@@ -10865,7 +11055,7 @@
       const w = parseFloat(document.getElementById("input-weight-val")?.value) || state.profile.currWeight || 65;
       const h = parseFloat(document.getElementById("input-height-val")?.value) || state.profile.height || 170;
       const bmi = w / ((h / 100) * (h / 100));
-      const status = bmi < 18.5 ? "น้ำหนักน้อย" : (bmi < 23.0 ? "สมส่วน สุขภาพดี" : "น้ำหนักเกินเกณฑ์เอเชีย");
+      const status = bmi < 18.5 ? "น้ำหนักน้อย" : (bmi < 23.0 ? "สมส่วน สุขภาพดี" : (bmi < 25.0 ? "น้ำหนักเกินเกณฑ์เอเชีย (ท้วม)" : "อ้วน (เกินเกณฑ์เอเชีย)"));
       const prevEl = document.getElementById("modal-weight-bmi-preview");
       if (prevEl) {
         prevEl.textContent = `📏 ส่วนสูง ${h} ซม. · ⚖️ น้ำหนัก ${w} กก. ➔ BMI = ${bmi.toFixed(1)} (${status})`;
@@ -10985,10 +11175,11 @@
       const stepsVal = Number(document.getElementById("input-steps-val").value) || 0;
       const burnedVal = Number(document.getElementById("input-burned-val").value) || 0;
       const dayLog = ensureDayLog(currentSelectedDate);
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       dayLog.steps = stepsVal;
       dayLog.burned = burnedVal;
-      dayLog.stepsUpdatedAt = Date.now();
-      dayLog.dayUpdatedAt = Date.now();
+      dayLog.stepsUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       saveState();
       renderAll();
       closeModal("modal-steps");
@@ -11150,7 +11341,8 @@
 
         const todayStr = getTodayStr();
         const todayLog = ensureDayLog(todayStr);
-        const nowTs = Date.now();
+        const nowTs = sanitizeSyncTimestamp(Date.now());
+        const targetProfileParam = params.get("profile");
         if (params.has("steps")) {
           // Strip thousands commas (e.g. "4,350" from iOS Shortcuts) and handle empty string after midnight as 0 steps
           const cleanStepsStr = String(stepsParam || "").replace(/[^0-9.]/g, "").trim();
@@ -11170,6 +11362,34 @@
           todayLog.stepsUpdatedAt = nowTs;
           todayLog.dayUpdatedAt = nowTs;
           synced.push(`${bn} kcal`);
+        }
+        // Mirror Apple Health steps/burned into profilesMap slots so Safari -> Home Screen PWA sync reaches whichever profile is active
+        if ((params.has("steps") || (burnedParam !== null && burnedParam !== "")) && state.profilesMap) {
+          const targetPids = (targetProfileParam === "paul" || targetProfileParam === "partner")
+            ? [targetProfileParam]
+            : ["paul", "partner"];
+          targetPids.forEach(pid => {
+            const pSlot = state.profilesMap[pid];
+            if (!pSlot) return;
+            if (!pSlot.days || typeof pSlot.days !== "object") pSlot.days = {};
+            if (!pSlot.days[todayStr]) {
+              pSlot.days[todayStr] = {
+                waterGlasses: 0,
+                extraWaterMl: 0,
+                steps: 0,
+                burned: 0,
+                meals: { "มื้อเช้า": [], "มื้อกลางวัน": [], "มื้อเย็น": [], "ของว่าง": [] }
+              };
+            }
+            pSlot.days[todayStr].steps = todayLog.steps;
+            const slotW = Number(pSlot.profile?.currWeight) || 65;
+            pSlot.days[todayStr].burned = (burnedParam !== null && burnedParam !== "" && !isNaN(Number(burnedParam)))
+              ? todayLog.burned
+              : Math.round(todayLog.steps * 0.04 * (slotW / 65));
+            pSlot.days[todayStr].stepsUpdatedAt = nowTs;
+            pSlot.days[todayStr].dayUpdatedAt = Math.max(sanitizeSyncTimestamp(pSlot.days[todayStr].dayUpdatedAt), nowTs);
+            pSlot.updatedAt = nowTs;
+          });
         }
         if (weightParam !== null && weightParam !== "" && !isNaN(parseFloat(weightParam))) {
           const wt = parseFloat(weightParam);
@@ -11814,7 +12034,10 @@
         icon: "📸"
       };
       const dayLog = ensureDayLog(currentSelectedDate);
+      const nowTs = sanitizeSyncTimestamp(Date.now());
       dayLog.meals[mealId].push(item);
+      dayLog.mealsUpdatedAt = nowTs;
+      dayLog.dayUpdatedAt = nowTs;
       saveState();
       renderAll();
       closeModal("modal-scan-menu");
@@ -11844,6 +12067,7 @@
         const parsed = JSON.parse(match[0]);
         const estPrice = Math.round(Number(parsed.price) || estimateThaiFoodPriceByName(parsed.name || text));
         const dayLog = ensureDayLog(currentSelectedDate);
+        const nowTs = sanitizeSyncTimestamp(Date.now());
         dayLog.meals[mealId].push({
           id: Date.now(),
           name: parsed.name || text,
@@ -11855,6 +12079,8 @@
           unit: parsed.unit || "1 ที่ (250g)",
           icon: "✨"
         });
+        dayLog.mealsUpdatedAt = nowTs;
+        dayLog.dayUpdatedAt = nowTs;
         saveState();
         renderAll();
         document.getElementById("txt-ai-input").value = "";
@@ -11863,6 +12089,7 @@
       } catch (err) {
         const estPrice = estimateThaiFoodPriceByName(text);
         const dayLog = ensureDayLog(currentSelectedDate);
+        const nowTs = sanitizeSyncTimestamp(Date.now());
         dayLog.meals[mealId].push({
           id: Date.now(),
           name: text,
@@ -11874,6 +12101,8 @@
           unit: "1 มื้อ (250g)",
           icon: "✍️"
         });
+        dayLog.mealsUpdatedAt = nowTs;
+        dayLog.dayUpdatedAt = nowTs;
         saveState();
         renderAll();
         closeModal("modal-text-ai");
@@ -11896,7 +12125,7 @@
       box.innerHTML = state.chatHistory.map(m => `
         <div class="chat-msg ${m.role === 'user' ? 'user' : 'bot'}">
           ${m.role === 'bot' ? `<div style="font-size:11px; font-weight:800; color:var(--green-dark); margin-bottom:2px;">${m.coach === 'Murph' ? '💪 โค้ช Murph' : '🥗 โค้ช Cooper'}</div>` : ''}
-          <div style="white-space:pre-line;">${m.text}</div>
+          <div style="white-space:pre-line;">${escapeHtml(m.text)}</div>
         </div>
       `).join("");
       box.scrollTop = box.scrollHeight;
