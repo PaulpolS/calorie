@@ -8,11 +8,11 @@
     // 🛡️ Safari Self-Healing Bootstrapper (v45): clears any stale SW caches while preserving 100% of user data
     (function() {
       try {
-        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v45") !== "1") {
-          localStorage.setItem("calorie_safari_healed_v45", "1");
+        if ("caches" in window && localStorage.getItem("calorie_safari_healed_v46") !== "1") {
+          localStorage.setItem("calorie_safari_healed_v46", "1");
           caches.keys().then(function(keys) {
             keys.forEach(function(k) {
-              if (k !== "calorie-pwa-v45") caches.delete(k);
+              if (k !== "calorie-pwa-v46") caches.delete(k);
             });
           }).catch(function() {});
         }
@@ -4282,7 +4282,7 @@
     <div id="view-profile" class="view">
       <div class="top-header">
         <div class="greeting-box">
-          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v45.1</span></div>
+          <div class="greet-sub">สลับโปรไฟล์ 2 คน · ตั้งค่าธีม & ระบบ AI <span style="background:var(--green-bg); color:var(--green-dark); padding:1px 6px; border-radius:99px; font-size:10px; font-weight:800;">v46</span></div>
           <div class="greet-main">โปรไฟล์ & ตั้งค่า ⚙️</div>
         </div>
         <div style="display:flex; gap:6px; align-items:center;">
@@ -11304,11 +11304,69 @@
       }
     }
 
-    function runAppleHealthShortcutNow() {
-      showToast("▶️ กำลังรันคำสั่งลัด CalorieHealthSyncV2 เพื่อดึงก้าวเดิน 14 วัน + วันนี้ + ประจำเดือน...");
-      // V2 name avoids colliding with the old 6-action "CalorieHealthSync" still installed on iPhone
-      window.location.href = "shortcuts://run-shortcut?name=" + encodeURIComponent(HEALTH_SHORTCUT_NAME);
+    // Home Screen web app has its own storage (separate from Safari), so the Shortcut must hand data back here directly
+    const HS_AWAIT_KEY = "calorie_hs_await_v46";
+    function isHomeScreenApp() {
+      try {
+        return window.navigator.standalone === true ||
+          (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+      } catch (_) { return false; }
     }
+
+    function runAppleHealthShortcutNow() {
+      // V2 name avoids colliding with the old 6-action "CalorieHealthSync" still installed on iPhone
+      let url = "shortcuts://run-shortcut?name=" + encodeURIComponent(HEALTH_SHORTCUT_NAME);
+      if (isHomeScreenApp()) {
+        // input "pwa" => Shortcut copies the sync link to clipboard instead of opening Safari
+        url += "&input=text&text=pwa";
+        safeLocalSet(HS_AWAIT_KEY, String(Date.now()));
+        showToast("▶️ กำลังดึงก้าว... เสร็จแล้วแตะ ◀ Calorie มุมซ้ายบนเพื่อกลับมาที่แอป");
+      } else {
+        showToast("▶️ กำลังรันคำสั่งลัด CalorieHealthSyncV2 เพื่อดึงก้าวเดิน 14 วัน + วันนี้ + ประจำเดือน...");
+      }
+      window.location.href = url;
+    }
+
+    function maybeShowHealthPastePrompt() {
+      if (!isHomeScreenApp() || document.visibilityState === "hidden") return;
+      const ts = Number(safeLocalGet(HS_AWAIT_KEY) || 0);
+      if (!ts || Date.now() - ts > 15 * 60 * 1000) return;
+      if (document.getElementById("health-paste-prompt")) return;
+      const box = document.createElement("div");
+      box.id = "health-paste-prompt";
+      box.className = "modal-backdrop";
+      box.style.cssText = "display:flex; z-index:99999; align-items:center; justify-content:center;";
+      box.innerHTML = `
+        <div style="background:#FFF; border-radius:20px; max-width:380px; width:calc(100% - 32px); padding:18px 16px; box-shadow:0 12px 30px rgba(0,0,0,0.25); text-align:center; color:#1F2937;">
+          <div style="font-size:34px;">👟</div>
+          <div style="font-size:16px; font-weight:900; margin:4px 0 6px;">รับก้าวเดินจาก Apple สุขภาพ</div>
+          <div style="font-size:12.5px; color:#4B5563; margin-bottom:12px;">แตะปุ่มด้านล่าง แล้วกด <b>"วาง"</b> ที่ iPhone เด้งขึ้นมา</div>
+          <button type="button" id="btn-health-paste" style="width:100%; border:none; background:linear-gradient(135deg,#059669,#10B981); color:#FFF; font-weight:900; font-size:15px; border-radius:14px; padding:13px; cursor:pointer;">📋 แตะเพื่อรับข้อมูลก้าว</button>
+          <button type="button" id="btn-health-paste-cancel" style="width:100%; margin-top:8px; border:1.5px solid #E5E7EB; background:#FFF; color:#6B7280; font-weight:800; border-radius:12px; padding:9px; cursor:pointer;">ยกเลิก</button>
+          <div id="health-paste-err" style="display:none; font-size:11.5px; color:#B91C1C; margin-top:8px;"></div>
+        </div>`;
+      document.body.appendChild(box);
+      document.getElementById("btn-health-paste-cancel").onclick = () => { safeLocalSet(HS_AWAIT_KEY, ""); box.remove(); };
+      document.getElementById("btn-health-paste").onclick = async () => {
+        const err = document.getElementById("health-paste-err");
+        try {
+          const txt = String(await navigator.clipboard.readText() || "").trim();
+          const qi = txt.indexOf("?");
+          if (qi < 0 || !/steps|period_date|src=sc2/.test(txt)) throw new Error("no_sync_data");
+          safeLocalSet(HS_AWAIT_KEY, "");
+          box.remove();
+          checkAppleHealthUrlParams(txt.slice(qi));
+        } catch (e) {
+          err.style.display = "block";
+          err.textContent = (e && e.message === "no_sync_data")
+            ? "ยังไม่เจอข้อมูลก้าวในคลิปบอร์ด ลองกด ⚡ ดึงก้าวเดินตอนนี้เลย อีกครั้งครับ"
+            : "iPhone ยังไม่ให้วาง — แตะปุ่มอีกครั้งแล้วกด \"วาง\" ครับ";
+        }
+      };
+    }
+    document.addEventListener("visibilitychange", maybeShowHealthPastePrompt);
+    window.addEventListener("focus", maybeShowHealthPastePrompt);
+    window.addEventListener("pageshow", () => setTimeout(maybeShowHealthPastePrompt, 400));
 
     // ==================== EASY STEP SYNC 1: IN-APP MOTION SENSOR AUTO-PEDOMETER (ไม่ต้องลงคำสั่งลัด!) ====================
     const AUTO_PEDOMETER_KEY = "calorie_auto_pedometer_v1";
@@ -11626,9 +11684,10 @@
       }
     }
 
-    function checkAppleHealthUrlParams() {
+    function checkAppleHealthUrlParams(searchOverride) {
       try {
-        const params = new URLSearchParams(window.location.search);
+        const fromClipboard = typeof searchOverride === "string";
+        const params = new URLSearchParams(fromClipboard ? searchOverride : window.location.search);
         const stepsParam = params.get("steps");
         const stepsDatesParam = params.get("steps_dates");
         const stepsValsParam = params.get("steps_vals");
@@ -11871,11 +11930,16 @@
         }
 
         if (synced.length > 0) {
-          window.history.replaceState({}, document.title, window.location.pathname);
+          if (!fromClipboard) window.history.replaceState({}, document.title, window.location.pathname);
           saveState(true);
           const sub = document.getElementById("health-sync-sub");
           if (sub) sub.textContent = `✅ ซิงค์จาก Apple Health ล่าสุด: ${synced.join(" · ")}`;
-          showSafariHealthSyncBanner(synced.join(" · "));
+          if (fromClipboard) {
+            if (typeof renderAll === "function") renderAll();
+            showToast(`🍎 รับข้อมูลแล้ว: ${synced.join(" · ")}`);
+          } else {
+            showSafariHealthSyncBanner(synced.join(" · "));
+          }
           // Immediately push to Cloud Bridge & Mac Server so the Home Screen App Icon gets it right away!
           syncWithMacServer(false);
         }
